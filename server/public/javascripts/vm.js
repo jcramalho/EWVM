@@ -39,11 +39,10 @@ module.exports = {
       var call_stack = []
       var operand_stack = []
       var frame_pointer = 0
-      var string_heap = []
 
       var stop = 0
       var error = ''
-      var result = null
+      var result = ''
 
       for (pointer_code = 0; pointer_code < code_stack.length; pointer_code++){
         c = code[pointer_code]
@@ -51,6 +50,8 @@ module.exports = {
         if (!stop && error===''){
           line = c[0]
 
+          console.log(operand_stack)
+          console.log(c[1])
           switch(c[1]){
             case 0: //stop                  //
               stop = 1
@@ -81,8 +82,12 @@ module.exports = {
             case 5: //div
               var n = operand_stack.pop()
               var m = operand_stack.pop()
-              if(Number.isInteger(n) && Number.isInteger(m))
-                operand_stack.push(m / n)
+              console.log(m)
+              console.log(n)
+              console.log(m/n)
+              if (m == 0) error = 'div - 0 division'
+              else if(Number.isInteger(n) && Number.isInteger(m))
+                operand_stack.push(n / m)
               else error = 'div - elements not Integer'
               break
             case 6: //mod
@@ -218,7 +223,7 @@ module.exports = {
               if(s){
                 i = parseInt(s)
                 if (i!=NaN) operand_stack.push(i)
-                else error = 'atoi: String does not represent Integer'
+                else error = 'atoi - String does not represent Integer'
               }
               else error = 'atoi - element not String'
               break
@@ -259,32 +264,42 @@ module.exports = {
               break
 
             case 30: //pushsp
+              operand_stack.push( this.toStackRef(operand_stack.length - 1) )
+              break
             case 31: //pushfp
+              operand_stack.push( this.toStackRef(frame_pointer) )
+              break
             case 32: //pushgp
+              operand_stack.push( this.toStackRef(0) )
+              break
 
             case 33: //loadn
-              var a = operand_stack.pop()
               var n = operand_stack.pop()
+              var a = operand_stack.pop()
               var stack_ref = this.getStackRef(a)
-              var heap_ref = this.getHeapRef(a)
               if (stack_ref >= 0)
                 operand_stack.push( operand_stack[stack_ref+n] )
-              //else if (heap_ref >= 0)                                       // heap
-              //  heap_stack.push( heap_stack[heap_ref+n] )
-              else error = 'load - element not Address'
+              else if (Array.isArray(a)){                                      // heap
+                var index = a[1] + n
+                var struct = a[0]
+                if (struct.length > index) operand.push( struct[index] )
+                else error = "loadn - index out of Struct"
+              }else error = 'loadn - element not Address'
               break
             case 34: //storen
               var v = operand_stack.pop()
               var n = operand_stack.pop()
               var a = operand_stack.pop()
               var stack_ref = this.getStackRef(a)
-              var heap_ref = this.getHeapRef(a)
               if (Number.isInteger(v))
                 if (stack_ref >= 0)
                   operand_stack[a+n] = v
-                //else if (heap_ref >= 0)                                       // heap
-                //  heap_stack[a+n] = v
-                else error = "storen - element not Address"
+                else if (Array.isArray(a)){                                    // heap
+                  var index = a[1] + n
+                  var struct = a[0]
+                  if (struct.length > index) struct[index] = v
+                  else error = "storen - index out of Struct"
+                } else error = "storen - element not Address"
               else error = "storen - element not Integer"
               break
 
@@ -298,20 +313,20 @@ module.exports = {
             case 36: //writei
               var n = operand_stack.pop()
               if (Number.isInteger(n))
-                result = n
+                result = result.concat( n.toString().concat('\n') )
               else error = 'writei - element not Integer'
               break
             case 37: //writef
               var n = operand_stack.pop()
               if (this.isNumber(n))
-                result = n
-              else error = 'writei - element not Real Number'
+                result = result.concat( n.toString().concat('\n') )
+              else error = 'writef - element not Real Number'
               break
             case 38: //writes
               var n = operand_stack.pop()
               if (this.isString(n))
-                result = n
-              else error = 'writei - element not String'
+                result = result.concat( this.getStringRef(n).concat('\n') )
+              else error = 'writes - element not String'
               break
             case 39: //read                                                 // interaction
 
@@ -330,7 +345,20 @@ module.exports = {
               break
 
             case 42: //allocn                                               // heap
+              var n = operand_stack.pop()
+              var h = []
+              h.length = n
+              operand_stack.push([h, 0])
+              break
             case 43: //free                                                 // heap
+              var a = operand_stack.pop()
+              if (Array.isArray(a))
+                a = null
+              else if (a == null)
+                error = 'free - element already freed'
+              else
+                error = 'free - element not Struct Address'
+              break
 
             case 44: //dupn
               var n = operand_stack.pop()
@@ -353,12 +381,14 @@ module.exports = {
               var n = operand_stack.pop()
               var a = operand_stack.pop()
               var stack_ref = this.getStackRef(a)
-              var heap_ref = this.getHeapRef(a)
               if (stack_ref >= 0)
                 operand_stack.push( this.toStackRef(stack_ref+n) )
-              //else if (heap_ref >= 0)                                       // heap
-              //  operand_stack.push( this.toHeapRef(stack_ref+n) )
-              else error = 'load - element not Address'
+              else if (Array.isArray(a)) {                                      // heap
+                var index = a[1] + n
+                var struct = a[0]
+                if (struct.length > index && index >= 0) operand_stack.push( [struct, index] )
+                else error = 'padd - index out of Struct'
+              } else error = 'padd - element not Address'
               break
 
             case 47: //pushi
@@ -369,21 +399,23 @@ module.exports = {
                 operand_stack.push(0)
               break
             case 49: //pushg
-              operand_stack.push( operand_stack(c[2]) )
+              operand_stack.push( operand_stack[c[2]] )
               break
             case 50: //pushl
-              operand_stack.push( operand_stack(frame_pointer+c[2]) )
+              operand_stack.push( operand_stack[frame_pointer+c[2]] )
               break
 
             case 51: //load
               var a = operand_stack.pop()
               var stack_ref = this.getStackRef(a)
-              var heap_ref = this.getHeapRef(a)
               if (stack_ref >= 0)
                 operand_stack.push( operand_stack[stack_ref+c[2]] )
-              //else if (heap_ref >= 0)                                       // heap
-              //  heap_stack.push( heap_stack[heap_ref+c[2]] )
-              else error = 'load - element not Address'
+              else if (Array.isArray(a)){                                       // heap
+                var index = a[1] + c[2]
+                var struct = a[0]
+                if (struct.length > index) operand_stack.push( struct[index] )
+                else error = 'load - index out of Struct'
+              } else error = 'load - element not Address'
               break
 
             case 52: //dup
@@ -413,15 +445,21 @@ module.exports = {
               var v = operand_stack.pop()
               var a = operand_stack.pop()
               var stack_ref = this.getStackRef(a)
-              var heap_ref = this.getHeapRef(a)
               if (stack_ref >= 0)
                 operand_stack[a+c[2]] = v
-              //else if (heap_ref >= 0)                                       // heap
-              //  heap_stack[a+c[2]] = v
-              else error = "store - element not Address"
+              else if (Array.isArray(a)){                                       // heap
+                var index = a[1] + c[2]
+                var struct = a[0]
+                if (struct.length > index) struct[index] = v
+                else error = "store - index out of Struct"
+              } else error = "store - element not Address"
               break
 
             case 57: //alloc                                                  // heap
+              var h = []
+              h.length = c[2]
+              operand_stack.push([h, 0])
+              break
 
             case 58: //pushf
               operand_stack.push(c[2])
@@ -452,7 +490,7 @@ module.exports = {
               operand_stack.push( this.toCodeRef(c[2]) )
               break
 
-            case 64: //nop
+            case 65: //nop
               break
             default: 
               console.log('Default case');
@@ -461,6 +499,6 @@ module.exports = {
         else break
       }
       if (error != '') return 'ERROR: '.concat(error)
-      return result.toString()
+      return result
     }
  }

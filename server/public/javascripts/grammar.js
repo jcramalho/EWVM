@@ -7,31 +7,31 @@ module.exports = {
        // Accepts expressions like "2 * (3 + 4)" and computes their value.
        
        {
-           var labelsRead = [];
-           var labelsUsed = []
-           var codigos = []
-           var lines = 1
-           var temp_lines = 0
-           
-           function result(){
-               let labelsMissing = labelsUsed.filter(x => !Object.keys(labelsRead).includes(x))
-               if (labelsMissing.length != 0) return "ERROR labels undefined: " + labelsMissing
-               
-               let cods = replaceEnderecos()
-               return cods
-           }
-           
-           function getInd(){
-               return codigos.length
-           }
-           
-           function replaceEnderecos(label){
-               return codigos.map(x => {
-                   if (x[0] >= 60 && x[0] <= 63) return [x[0], labelsRead[x[1]] ]
-                   else return x
-               }) 
-           }
-       }
+        var labelsRead = {};
+        var labelsUsed = []
+        var codigos = []
+        var lines = 1
+        var temp_lines = 0
+        
+        function result(){
+            let labelsMissing = labelsUsed.filter(x => !Object.keys(labelsRead).includes(x))
+            if (labelsMissing.length != 0) return "ERROR labels undefined: " + labelsMissing
+            
+            let cods = replaceEnderecos()
+            return cods
+        }
+        
+        function getInd(){
+            return codigos.length
+        }
+        
+        function replaceEnderecos(label){
+            return codigos.map(x => {
+                if (x[1] >= 61 && x[1] <= 64) return [x[0], x[1], labelsRead[x[2]] ]
+                else return x
+            }) 
+        }
+      }
        
        Code = (_ Line _)* 								{ return result() }
              
@@ -79,8 +79,8 @@ module.exports = {
        
        Label "label" = [a-zA-Z0-9]+ { return text(); }
        
-       String = '"' [^\\n"]* '"' { return text(); }
-       
+       String = '"' info:[^"]* '"' { return info.join(''); }
+
        Integer "integer" = ("+"/"-")? _ [0-9]+ { return parseInt(text(), 10); }
        
        Float = ("+"/"-")? _ Integer(.Integer)? { return parseFloat(text(), 10); }

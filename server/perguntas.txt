@@ -1,1 +1,15 @@
 pushsp, pushfp, pushgp registo -> ????????
+
+
+gp -> sempre a apontar para o inicio da stack?
+sp -> sempre para o topo
+
+
+load
+loadn
+store
+storen
+
+pusha : stacks label's code address
+
+div -> n/m em vez de m/n ? ex_4 email

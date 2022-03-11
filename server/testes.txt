@@ -1,0 +1,21 @@
+Struct Heap:
+
+alloc 3
+dup 1
+pushi 5
+store 1
+load 1
+writei
+-> 5
+
+alloc 3
+dup 1
+pushi 5
+store 1
+dup 1
+pushi 1
+padd
+load 0
+writei
+-> 5
+

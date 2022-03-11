@@ -10,19 +10,23 @@ var parser = peggy.generate(grammar.grammar())
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  var x = 'sou uma string'
-  var x1 = 'string#sou uma string'
-  console.log(vm.toStringRef(x))
-  console.log(vm.toStringRef(x1))
-  console.log(vm.getStringRef(vm.toStringRef(x)))
-  console.log(vm.getStringRef(vm.toStringRef(x1)))
   res.render('index', { title: 'Express', code: '', result: '' });
 });
 
 router.post('/run', function(req, res, next) {
-  console.log(req.body.code)
-  console.log(parser.parse(req.body.code))
-  var result = vm.run(parser.parse(req.body.code))
+  var result = null
+  var code_stack
+  try{
+    code_stack = parser.parse(req.body.code.toLowerCase())
+  } catch (error) {
+    result = "GRAMMAR - ".concat(error)
+  }
+  if (result == null) try{ 
+    result = vm.run(code_stack) 
+  } catch(error){ console.log(error) }
+
+  console.log("--------------------------------------------------------------------")
+  console.log(code_stack)
   res.render('index', { title: 'Express', code: req.body.code, result: result });
 });
 
