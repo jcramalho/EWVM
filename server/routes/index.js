@@ -22,8 +22,8 @@ router.get('/', function(req, res, next) {
 router.post('/run', function(req, res, next) {
   console.log(req.body.code)
   console.log(parser.parse(req.body.code))
-  vm.run(parser.parse(req.body.code))
-  res.render('index', { title: 'Express', code: req.body.code, result: parser.parse(req.body.code).toString() });
+  var result = vm.run(parser.parse(req.body.code))
+  res.render('index', { title: 'Express', code: req.body.code, result: result });
 });
 
 module.exports = router;

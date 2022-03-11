@@ -43,13 +43,13 @@ module.exports = {
          = info:Label _ ":" 							{ labelsRead[info] = getInd(); }
          / func:Inst_Atom 								{ lines += temp_lines }
          / func:Inst_Int _ info:Integer				{ codigos.push([lines, func, info]) }
-         / "pushf" _ info:Float						{ codigos.push([lines, 57, info]) }
-         / "pushs" _ info:String        				{ codigos.push([lines, 58, info]) }
-         / "err" _ info:String        					{ codigos.push([lines, 59, info]) }
-         / "check" _ info:(Integer _ "," _ Integer)    { codigos.push([lines, 60, info[0], info[1]]) }
-         / "jump" _ info:Label 						{ labelsUsed.push(info);codigos.push([lines, 61, info]) }
-         / "jz" _ info:Label 							{ labelsUsed.push(info);codigos.push([lines, 62, info]) }
-         / "pusha" _ info:Label 						{ labelsUsed.push(info);codigos.push([lines, 63, info]) }
+         / "pushf" _ info:Float						{ codigos.push([lines, 58, info]) }
+         / "pushs" _ info:String        				{ codigos.push([lines, 59, info]) }
+         / "err" _ info:String        					{ codigos.push([lines, 60, info]) }
+         / "check" _ info:(Integer _ "," _ Integer)    { codigos.push([lines, 61, info[0], info[1]]) }
+         / "jump" _ info:Label 						{ labelsUsed.push(info);codigos.push([lines, 62, info]) }
+         / "jz" _ info:Label 							{ labelsUsed.push(info);codigos.push([lines, 63, info]) }
+         / "pusha" _ info:Label 						{ labelsUsed.push(info);codigos.push([lines, 64, info]) }
          
         Inst_Atom = "stop" {codigos.push([lines, 0])} / "start" {codigos.push([lines, 1])} 
          / "add" {codigos.push([lines, 2])} / "sub" {codigos.push([lines, 3])} / "mul" {codigos.push([lines, 4])} 
@@ -67,12 +67,12 @@ module.exports = {
          / "writes" {codigos.push([lines, 38])} / "read" {codigos.push([lines, 39])} / "call" {codigos.push([lines, 40])} 
          / "return" {codigos.push([lines, 41])} / "allocn" {codigos.push([lines, 42])} / "free" {codigos.push([lines, 43])} 
          / "dupn" {codigos.push([lines, 44])} / "popn" {codigos.push([lines, 45])} / "padd" {codigos.push([lines, 46])} 
-         / "nop" {codigos.push([lines, 64])}
+         / "nop" {codigos.push([lines, 65])}
          
          
        Inst_Int = "pushi" {return 47} / "pushn" {return 48} / "pushg" {return 49} 
          / "pushl" {return 50} / "load" {return 51} / "dup" {return 52} / "pop" {return 53} 
-         / "storel" {return 54} / "storeg" {return 55} / "alloc" {return 56} 
+         / "storel" {return 54} / "storeg" {return 55} / "store" {return 56} / "alloc" {return 57} 
        
        
        Comment = "//" [^\\n]*
