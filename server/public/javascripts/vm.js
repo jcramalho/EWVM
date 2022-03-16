@@ -82,7 +82,7 @@ module.exports = {
             case 5: //div
               var n = operand_stack.pop()
               var m = operand_stack.pop()
-              if (n == 0) error = 'Illegal Operand: div - 0 division'
+              if (n == 0) error = 'Division By Zero: div'
               else if(Number.isInteger(n) && Number.isInteger(m))
                 operand_stack.push(n / m)
               else error = 'Illegal Operand: div - elements not Integer'
