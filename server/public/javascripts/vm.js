@@ -63,74 +63,71 @@ module.exports = {
               var m = operand_stack.pop()
               if(Number.isInteger(n) && Number.isInteger(m))
                 operand_stack.push(m + n)
-              else error = 'add - elements not Integer'
+              else error = 'Illegal Operand: add - elements not Integer'
               break
             case 3: //sub
               var n = operand_stack.pop()
               var m = operand_stack.pop()
               if(Number.isInteger(n) && Number.isInteger(m))
                 operand_stack.push(m - n)
-              else error = 'sub - elements not Integer'
+              else error = 'Illegal Operand: sub - elements not Integer'
               break
             case 4: //mul
               var n = operand_stack.pop()
               var m = operand_stack.pop()
               if(Number.isInteger(n) && Number.isInteger(m))
                 operand_stack.push(m * n)
-              else error = 'mul - elements not Integer'
+              else error = 'Illegal Operand: mul - elements not Integer'
               break
             case 5: //div
               var n = operand_stack.pop()
               var m = operand_stack.pop()
-              console.log(m)
-              console.log(n)
-              console.log(m/n)
-              if (m == 0) error = 'div - 0 division'
+              if (n == 0) error = 'Illegal Operand: div - 0 division'
               else if(Number.isInteger(n) && Number.isInteger(m))
                 operand_stack.push(n / m)
-              else error = 'div - elements not Integer'
+              else error = 'Illegal Operand: div - elements not Integer'
               break
             case 6: //mod
               var n = operand_stack.pop()
               var m = operand_stack.pop()
               if(Number.isInteger(n) && Number.isInteger(m))
                 operand_stack.push(m % n)
-              else error = 'mod - elements not Integer'
+              else error = 'Illegal Operand: mod - elements not Integer'
               break
 
             case 7: //not                  
               var n = operand_stack.pop()
               if(Number.isInteger(n))
                 operand_stack.push( +(n == 0) )
-              else error = 'not - element not Integer'
+              else error = 'Illegal Operand: not - element not Integer'
               break
             case 8: //inf
               var n = operand_stack.pop()
               var m = operand_stack.pop()
               if(Number.isInteger(n) && Number.isInteger(m))
                 operand_stack.push( +(m < n) )
-              else error = 'inf - elements not Integer'
+              else error = 'Illegal Operand: inf - elements not Integer'
               break
             case 9: //infeq
               var n = operand_stack.pop()
               var m = operand_stack.pop()
               if(Number.isInteger(n) && Number.isInteger(m))
                 operand_stack.push( +(m <= n) )
-              else error = 'infeq - elements not Integer'
+              else error = 'Illegal Operand: infeq - elements not Integer'
               break
             case 10: //sup
               var n = operand_stack.pop()
               var m = operand_stack.pop()
               if(Number.isInteger(n) && Number.isInteger(m))
                 operand_stack.push( +(m > n) )
-              else error = 'sup - elements not Integer'
+              else error = 'Illegal Operand: sup - elements not Integer'
               break
             case 11: //supeq
               var n = operand_stack.pop()
               var m = operand_stack.pop()
               if(Number.isInteger(n) && Number.isInteger(m))
                 operand_stack.push( +(m >= n) )
-              else error = 'supeq - elements not Integer'
+              else error = 'Illegal Operand: supeq - elements not Integer'
               break
 
             case 12: //fadd
@@ -138,41 +135,41 @@ module.exports = {
               var m = operand_stack.pop()
               if(this.isNumber(n) && this.isNumber(m))
                 operand_stack.push(m + n)
-              else error = 'fadd - elements not Real Number' 
+              else error = 'Illegal Operand: fadd - elements not Real Number' 
               break           
             case 13: //fsub
               var n = operand_stack.pop()
               var m = operand_stack.pop()
               if(this.isNumber(n) && this.isNumber(m))
                 operand_stack.push(m - n)
-              else error = 'fsub - elements not Real Number'
+              else error = 'Illegal Operand: fsub - elements not Real Number'
               break
             case 14: //fmul
               var n = operand_stack.pop()
               var m = operand_stack.pop()
               if(this.isNumber(n) && this.isNumber(m))
                 operand_stack.push(m * n)
-              else error = 'fmul - elements not Real Number'
+              else error = 'Illegal Operand: fmul - elements not Real Number'
               break
             case 15: //fdiv
               var n = operand_stack.pop()
               var m = operand_stack.pop()
               if(this.isNumber(n) && this.isNumber(m))
                 operand_stack.push(m / n)
-              else error = 'fdiv - elements not Real Number'
+              else error = 'Illegal Operand: fdiv - elements not Real Number'
               break
 
             case 16: //fcos
               var n = operand_stack.pop()
               if(this.isNumber(n))
                 operand_stack.push( Math.cos(n) )
-              else error = 'fcos - element not Real Number'
+              else error = 'Illegal Operand: fcos - element not Real Number'
               break
             case 17: //fsin
               var n = operand_stack.pop()
               if(this.isNumber(n))
                 operand_stack.push( Math.sin(n) )
-              else error = 'fsin - element not Real Number'
+              else error = 'Illegal Operand: fsin - element not Real Number'
               break
               
             case 18: //finf
@@ -180,28 +177,28 @@ module.exports = {
               var m = operand_stack.pop()
               if(this.isNumber(n) && this.isNumber(m))
                 operand_stack.push( +(m < n) )
-              else error = 'finf - elements not Real Number'  
+              else error = 'Illegal Operand: finf - elements not Real Number'  
               break          
             case 19: //finfeq
               var n = operand_stack.pop()
               var m = operand_stack.pop()
               if(this.isNumber(n) && this.isNumber(m))
                 operand_stack.push( +(m <= n) )
-              else error = 'finfeq - elements not Real Number'
+              else error = 'Illegal Operand: finfeq - elements not Real Number'
               break
             case 20: //fsup
               var n = operand_stack.pop()
               var m = operand_stack.pop()
               if(this.isNumber(n) && this.isNumber(m))
                 operand_stack.push( +(m > n) )
-              else error = 'fsup - elements not Real Number'
+              else error = 'Illegal Operand: fsup - elements not Real Number'
               break
             case 21: //fsupeq
               var n = operand_stack.pop()
               var m = operand_stack.pop()
               if(this.isNumber(n) && this.isNumber(m))
                 operand_stack.push( +(m >= n) )
-              else error = 'fsupeq - elements not Real Number'
+              else error = 'Illegal Operand: fsupeq - elements not Real Number'
               break
 
             case 22: //concat
@@ -209,7 +206,7 @@ module.exports = {
               var s2 = this.getStringRef( operand_stack.pop() )
               if( s1 && s2)
                 operand_stack.push( this.toStringRef(s1.concat(s2)) )
-              else error = 'concat - elements not String'
+              else error = 'Illegal Operand: concat - elements not String'
               break
 
             case 23: //equal
@@ -223,44 +220,44 @@ module.exports = {
               if(s){
                 i = parseInt(s)
                 if (i!=NaN) operand_stack.push(i)
-                else error = 'atoi - String does not represent Integer'
+                else error = 'Illegal Operand: atoi - String does not represent Integer'
               }
-              else error = 'atoi - element not String'
+              else error = 'Illegal Operand: atoi - element not String'
               break
             case 25: //atof
               var s = this.getStringRef( operand_stack.pop() )
               if(s){
                 i = parseFloat(s)
                 if (i!=NaN) operand_stack.push(i)
-                else error = 'atof: String does not represent Real Number'
+                else error = 'Illegal Operand: atof - String does not represent Real Number'
               }
-              else error = 'atof - element not String'
+              else error = 'Illegal Operand: atof - element not String'
               break
               
             case 26: //itof
               var n = operand_stack.pop()
               if(Number.isInteger(n))
                 operand_stack.push( parseFloat(n) )
-              else error = 'itof - element not Integer'
+              else error = 'Illegal Operand: itof - element not Integer'
               break
             case 27: //ftoi
               var n = operand_stack.pop()
               if(this.isNumber(n))
                 operand_stack.push( parseInt(n) )
-              else error = 'ftoi - element not Real Number'
+              else error = 'Illegal Operand: ftoi - element not Real Number'
               break
 
             case 28: //stri
               var n = operand_stack.pop()
               if(Number.isInteger(n))
                 operand_stack.push( this.toStringRef(n.toString()) )
-              else error = 'stri - element not Integer'
+              else error = 'Illegal Operand: stri - element not Integer'
               break
             case 29: //strf
               var n = operand_stack.pop()
               if(this.isNumber(n))
                 operand_stack.push( this.toStringRef(n.toString()) )
-              else error = 'strf - element not Real Number'
+              else error = 'Illegal Operand: strf - element not Real Number'
               break
 
             case 30: //pushsp
@@ -282,9 +279,9 @@ module.exports = {
               else if (Array.isArray(a)){                                      // heap
                 var index = a[1] + n
                 var struct = a[0]
-                if (struct.length > index) operand.push( struct[index] )
-                else error = "loadn - index out of Struct"
-              }else error = 'loadn - element not Address'
+                if (struct.length > index && index >= 0) operand.push( struct[index] )
+                else error = "Segmentation Fault: loadn - index out of Struct"
+              }else error = 'Illegal Operand: loadn - element not Address'
               break
             case 34: //storen
               var v = operand_stack.pop()
@@ -297,10 +294,10 @@ module.exports = {
                 else if (Array.isArray(a)){                                    // heap
                   var index = a[1] + n
                   var struct = a[0]
-                  if (struct.length > index) struct[index] = v
-                  else error = "storen - index out of Struct"
-                } else error = "storen - element not Address"
-              else error = "storen - element not Integer"
+                  if (struct.length > index && index >= 0) struct[index] = v
+                  else error = "Segmentation Fault: storen - index out of Struct"
+                } else error = "Illegal Operand: storen - element not Address"
+              else error = "Illegal Operand: storen - element not Integer"
               break
 
             case 35: //swap
@@ -314,19 +311,19 @@ module.exports = {
               var n = operand_stack.pop()
               if (Number.isInteger(n))
                 result = result.concat( n.toString().concat('\n') )
-              else error = 'writei - element not Integer'
+              else error = 'Illegal Operand: writei - element not Integer'
               break
             case 37: //writef
               var n = operand_stack.pop()
               if (this.isNumber(n))
                 result = result.concat( n.toString().concat('\n') )
-              else error = 'writef - element not Real Number'
+              else error = 'Illegal Operand: writef - element not Real Number'
               break
             case 38: //writes
               var n = operand_stack.pop()
               if (this.isString(n))
                 result = result.concat( this.getStringRef(n).concat('\n') )
-              else error = 'writes - element not String'
+              else error = 'Illegal Operand: writes - element not String'
               break
             case 39: //read                                                 // interaction
 
@@ -336,7 +333,7 @@ module.exports = {
                 call_stack.push([pointer_code, frame_pointer])
                 pointer_code = code_ref - 1
                 frame_pointer = operand_stack.length
-              } else error = 'call - element not Label' 
+              } else error = 'Illegal Operand: call - element not Label' 
               break
             case 41: //return                                               // call stack 
               var called = call_stack.pop()
@@ -355,9 +352,9 @@ module.exports = {
               if (Array.isArray(a))
                 a = null
               else if (a == null)
-                error = 'free - element already freed'
+                error = 'Illegal Operand: free - element null'
               else
-                error = 'free - element not Struct Address'
+                error = 'Illegal Operand: free - element not Struct Address'
               break
 
             case 44: //dupn
@@ -387,8 +384,8 @@ module.exports = {
                 var index = a[1] + n
                 var struct = a[0]
                 if (struct.length > index && index >= 0) operand_stack.push( [struct, index] )
-                else error = 'padd - index out of Struct'
-              } else error = 'padd - element not Address'
+                else error = 'Segmentation Fault: padd - index out of Struct'
+              } else error = 'Illegal Operand: padd - element not Address'
               break
 
             case 47: //pushi
@@ -414,8 +411,8 @@ module.exports = {
                 var index = a[1] + c[2]
                 var struct = a[0]
                 if (struct.length > index) operand_stack.push( struct[index] )
-                else error = 'load - index out of Struct'
-              } else error = 'load - element not Address'
+                else error = 'Segmentation Fault: load - index out of Struct'
+              } else error = 'Illegal Operand: load - element not Address'
               break
 
             case 52: //dup
@@ -451,8 +448,8 @@ module.exports = {
                 var index = a[1] + c[2]
                 var struct = a[0]
                 if (struct.length > index) struct[index] = v
-                else error = "store - index out of Struct"
-              } else error = "store - element not Address"
+                else error = "Segmentation Fault: store - index out of Struct"
+              } else error = "Illegal Operand: store - element not Address"
               break
 
             case 57: //alloc                                                  // heap
@@ -469,14 +466,14 @@ module.exports = {
               break
 
             case 60: //err
-              error = c[2]
+              error = "Error: ".concat(c[2])
               break
 
             case 61: //check
               var v = operand_stack.pop()
               operand_stack.push(v)
               if ( !(c[2] <= v && v <= c[3]) )
-                error = 'check - element not between given values' 
+                error = 'Illegal Operand: check - element not between given values' 
               break
 
             case 62: //jump
@@ -498,7 +495,7 @@ module.exports = {
         }
         else break
       }
-      if (error != '') return 'ERROR: '.concat(error)
+      if (error != '') return error
       return result
     }
  }

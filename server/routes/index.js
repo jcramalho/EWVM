@@ -21,12 +21,13 @@ router.post('/run', function(req, res, next) {
   } catch (error) {
     result = "GRAMMAR - ".concat(error)
   }
-  if (result == null) try{ 
+  if (result == null) 
+  try{ 
     result = vm.run(code_stack) 
-  } catch(error){ console.log(error) }
+  } catch(error){ 
+    result = "Anomaly: ".concat(error) 
+  }
 
-  console.log("--------------------------------------------------------------------")
-  console.log(code_stack)
   res.render('index', { title: 'Express', code: req.body.code, result: result });
 });
 

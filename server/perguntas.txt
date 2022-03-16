@@ -10,6 +10,13 @@ loadn
 store
 storen
 
+???????????
 pusha : stacks label's code address
 
 div -> n/m em vez de m/n ? ex_4 email
+
+stack overflow -> when?
+
+FALTA:
+read
+erros
