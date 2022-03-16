@@ -4,17 +4,25 @@ block script
   script(src="/javascripts/linedtext.js")
 
 block content
-  h1 JQuery LinedTextArea Demo
-  p Add a scrollable lined area to a standard TextArea control.
+  .w3-margin
+    h1 Virtual Machine EWVM
+    p Write your code in the textarea.
 
-  .w3-margin.w3-bar
-    .w3-left
-      form(action=`/run` method='POST')
-        textarea(class="lined" id="code" name="code" rows="30" cols="60")= code
-        input.w3-btn.w3-blue-grey.w3-round(type="submit" value="Run")
-    .w3-right(style="padding-right:50px")
-      .w3-container
-        textarea(rows="10" cols="90") Animation
-      .w3-container
-        textarea(rows="10" cols="90" readonly) #{result}
-    
+    .w3-bar
+      .w3-left
+        form(action=`/run` method='POST')
+          textarea(class="lined" id="code" name="code" rows="30" cols="60")= code
+          input.w3-btn.w3-blue-grey.w3-round(type="submit" value="Run")
+      .w3-right(style="padding-right:50px")
+        .w3-display-container
+          textarea(rows="10" cols="90") Animation
+        form(action=`/run` method='POST')
+          .w3-display-container
+            textarea(id="terminal" name="terminal" rows="10" cols="90" readonly) #{terminal}
+          if input
+            .w3-display-container
+              textarea(id="input" name="input" rows="1" cols="80")
+              .w3-display-right
+                input.w3-btn.w3-blue-grey.w3-round.w3-small(type="submit" value="Send")
+          
+      
