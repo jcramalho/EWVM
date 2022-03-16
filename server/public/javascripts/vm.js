@@ -48,12 +48,11 @@ module.exports = {
       var result = ''
       var read = 0
 
+
       if (input) operand_stack.push(this.toStringRef(input))
 
-      console.log(operand_stack)
-
-
       for (; pointer_code < code_stack.length; pointer_code++){
+
         c = code[pointer_code]
 
         if (!stop && !read && error===''){
@@ -356,7 +355,7 @@ module.exports = {
                 var stack_ref = this.getStackRef(a)
                 if (Number.isInteger(v))
                   if (stack_ref >= 0)
-                    operand_stack[a+n] = v
+                    operand_stack[stack_ref+n] = v
                   else if (Array.isArray(a)){                                    // heap
                     var index = a[1] + n
                     var struct = a[0]
@@ -405,7 +404,7 @@ module.exports = {
               break
 
             case 40: //call                                                 // call stack
-              if (operand_stack.length >= 1){
+            if (operand_stack.length >= 1){
                 var code_ref = this.getCodeRef( operand_stack.pop() )
                 if (code_ref >= 0){
                   call_stack.push([pointer_code, frame_pointer])
@@ -417,7 +416,7 @@ module.exports = {
             case 41: //return                                               // call stack 
               if (call_stack.length >= 1){
                 var called = call_stack.pop()
-                pointer_code = called[0]
+                pointer_code = called[0] 
                 frame_pointer = called[1]
               } else error = 'Segmentation Fault: return - elements missing'
               break
@@ -549,7 +548,7 @@ module.exports = {
                 var a = operand_stack.pop()
                 var stack_ref = this.getStackRef(a)
                 if (stack_ref >= 0)
-                  operand_stack[a+c[2]] = v
+                  operand_stack[stack_ref+c[2]] = v
                 else if (Array.isArray(a)){                                       // heap
                   var index = a[1] + c[2]
                   var struct = a[0]
@@ -586,16 +585,16 @@ module.exports = {
               break
 
             case 62: //jump
-              pointer_code = c[2] - 1
+              pointer_code = this.getCodeRef(c[2]) - 1
               break
             case 63: //jz
               if (operand_stack.length >= 1){
                 if (operand_stack.pop() === 0) 
-                  pointer_code = c[2] - 1
+                  pointer_code = this.getCodeRef(c[2]) - 1
               } else error = 'Segmentation Fault: jz - elements missing'
               break
             case 64: //pusha
-              operand_stack.push( this.toCodeRef(c[2]) )
+              operand_stack.push( c[2] )
               break
 
             case 65: //nop

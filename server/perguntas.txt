@@ -14,12 +14,21 @@ storen
 pusha : stacks label's code address
 
 div -> n/m em vez de m/n ? ex_4 email
+ex_77
+/extra/read.vm
+/simple/t1.vm
+/simple/t3.vm -> ftan?
 
 stack overflow -> when? -> pop empty?
 
 read -> \n enter submit
 
-FALTA:
-read
+start??
 
-pusha / call
+
+
+PROBLEMAS
+strings -> passadas para minusculas
+\n -> escrito \n
+input -> botao em vez de enter
+lines

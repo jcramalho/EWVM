@@ -36,9 +36,13 @@ router.post('/run', function(req, res, next) {
       result = "GRAMMAR - ".concat(error)
     }
   }
-  if (result == null) 
+  if (!Array.isArray(code_stack)) result = code_stack
+  else if (result == null) 
     try{ 
-      if (req.body.input != undefined) input = req.body.input
+      if (req.body.input != undefined){
+        input = req.body.input
+        req.body.terminal = req.body.terminal.concat(input).concat('\n')
+      }
       results = vm.run(input, code_stack, pointer_code, call_stack, operand_stack, frame_pointer) 
 
       read = results[0]
