@@ -379,7 +379,7 @@ module.exports = {
               if (operand_stack.length >= 1){
                 var n = operand_stack.pop()
                 if (Number.isInteger(n))
-                  result = result.concat( n.toString().concat('\n') )
+                  result = result.concat( n.toString() )
                 else error = 'Illegal Operand: writei - element not Integer'
               } else error = 'Segmentation Fault: writei - elements missing'
               break
@@ -387,7 +387,7 @@ module.exports = {
               if (operand_stack.length >= 1){
                 var n = operand_stack.pop()
                 if (this.isNumber(n))
-                  result = result.concat( n.toString().concat('\n') )
+                  result = result.concat( n.toString() )
                 else error = 'Illegal Operand: writef - element not Real Number'
               } else error = 'Segmentation Fault: writef - elements missing'
               break
@@ -395,7 +395,7 @@ module.exports = {
               if (operand_stack.length >= 1){
                 var n = operand_stack.pop()
                 if (this.isString(n))
-                  result = result.concat( this.getStringRef(n).concat('\n') )
+                  result = result.concat( this.getStringRef(n) )
                 else error = 'Illegal Operand: writes - element not String'
               } else error = 'Segmentation Fault: writes - elements missing'
               break

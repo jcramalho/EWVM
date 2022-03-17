@@ -71,7 +71,10 @@ module.exports = {
        
        Label "label" = [a-zA-Z0-9]+ { return text(); }
        
-       String = '"' info:[^"]* '"' { return info.join(''); }
+       String = '"' info:Content*  '"' { return info.join('') }
+
+       Content = "\\\\n"            {return "\\n"}
+               / [^"]               {return text()}
 
        Integer "integer" = ("+"/"-")? _ [0-9]+ { return parseInt(text(), 10); }
        

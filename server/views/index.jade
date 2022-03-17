@@ -1,7 +1,7 @@
 extends layout
 
 block script
-  script(src="/javascripts/linedtext.js")
+  script(src="/javascripts/helper.js")
 
 block content
   .w3-margin
@@ -22,7 +22,7 @@ block content
             textarea(id="terminal" name="terminal" rows="10" cols="90" readonly) #{terminal}
           if input
             .w3-display-container
-              textarea(id="input" name="input" rows="1" cols="80")
+              textarea(id="input" name="input" rows="1" cols="80" autofocus)
               .w3-display-right
                 input.w3-btn.w3-blue-grey.w3-round.w3-small(type="submit" value="Send")
           
