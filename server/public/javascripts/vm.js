@@ -617,7 +617,6 @@ module.exports = {
         else break
       }
       if (error != '') return [0, error, pointer_code, call_stack, operand_stack, frame_pointer, string_heap, struct_heap]
-      console.log(operand_stack)
       return [read, result, pointer_code, call_stack, operand_stack, frame_pointer, string_heap, struct_heap]
     }
  }

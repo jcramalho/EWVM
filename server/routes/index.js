@@ -17,12 +17,11 @@ var struct_heap = []
 var code
 
 Components = {
-  change: function(pc, call_s, operand_s, fp, c_s, string_h, struct_h){
+  change: function(pc, call_s, operand_s, fp, string_h, struct_h){
     pointer_code = pc
     call_stack = call_s
     operand_stack = operand_s
     frame_pointer = fp
-    code_stack = c_s
     string_heap = string_h
     struct_heap = struct_h
   },
