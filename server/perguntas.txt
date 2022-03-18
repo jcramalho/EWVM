@@ -5,17 +5,25 @@ gp -> sempre a apontar para o inicio da stack?
 sp -> sempre para o topo
 
 
-div -> n/m em vez de m/n ? ex_4 email
+div -> n/m em vez de m/n ? ex_4 email     m/n
 ex_77
 /extra/read.vm
 /simple/t1.vm
 /simple/t3.vm -> ftan?
 
-stack overflow -> when? -> pop empty?
 
 
-start??
 
 
 
 PROBLEMAS
+
+start?? define fp
+fp começar a null
+
+
+tirar input terminal
+
+if fp : sp > fp
+
+string e struct em arrays
