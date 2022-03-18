@@ -21,7 +21,6 @@ ex_77
 
 stack overflow -> when? -> pop empty?
 
-read -> \n enter submit
 
 start??
 
@@ -29,6 +28,3 @@ start??
 
 PROBLEMAS
 strings -> passadas para minusculas
-\n -> escrito \n
-input -> botao em vez de enter
-lines

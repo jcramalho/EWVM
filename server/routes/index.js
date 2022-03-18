@@ -30,8 +30,10 @@ router.post('/run', function(req, res, next) {
 
   if (req.body.code != undefined){
     code = req.body.code
+    var prepared_code = vm.lowerGrammar(code)
+
     try{
-      code_stack = parser.parse(req.body.code.toLowerCase())
+      code_stack = parser.parse(prepared_code)
     } catch (error) {
       result = "GRAMMAR - ".concat(error)
     }
