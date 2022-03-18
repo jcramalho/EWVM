@@ -38,7 +38,9 @@ router.post('/run', function(req, res, next) {
       result = "GRAMMAR - ".concat(error)
     }
   }
+
   if (!Array.isArray(code_stack)) result = code_stack
+
   else if (result == null) 
     try{ 
       if (req.body.input != undefined){
@@ -66,7 +68,11 @@ router.post('/run', function(req, res, next) {
       code_stack = []
     }
 
-    if (req.body.terminal != undefined) result = req.body.terminal.concat(result)
+    if (req.body.terminal != undefined){ 
+      result = req.body.terminal.concat(result)
+    }
+    if (read && req.body.input == undefined) result = result.concat("\n")
+
   res.render('index', { title: 'Express', code: code, terminal: result, input: read });
 });
 
