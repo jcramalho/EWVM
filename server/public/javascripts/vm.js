@@ -40,7 +40,7 @@ module.exports = {
       return this.toRef("struct", (struct_heap.length-1).toString().concat('#0') )
     },
 
-    run: function(input, code, pointer_code, call_stack, operand_stack, frame_pointer, string_heap, struct_heap) {
+    run: function(input, code, pointer_code, call_stack, operand_stack, frame_pointer, string_heap, struct_heap, animation) {
 
       var code_stack = code
       var stop = 0
@@ -610,13 +610,19 @@ module.exports = {
 
             case 65: //nop
               break
+
+            case 66: //writeln
+              result = result.concat( "\n" )
+              break
+              
             default: 
               error = 'Anomaly: Default case'
           }
+          animation.push([line, operand_stack.slice(0), call_stack.slice(0), string_heap.slice(0), struct_heap.slice(0)])
         }
         else break
       }
-      if (error != '') return [0, error, pointer_code, call_stack, operand_stack, frame_pointer, string_heap, struct_heap]
-      return [read, result, pointer_code, call_stack, operand_stack, frame_pointer, string_heap, struct_heap]
+      if (error != '') return [0, error, pointer_code, call_stack, operand_stack, frame_pointer, string_heap, struct_heap, animation]
+      return [read, result, pointer_code, call_stack, operand_stack, frame_pointer, string_heap, struct_heap, animation]
     }
  }

@@ -4,26 +4,34 @@ block script
   script(src="/javascripts/helper.js")
 
 block content
-  .w3-margin
-    h1 
-      a(href='/' style="text-decoration: none;") Virtual Machine EWVM
-    p Write your code in the textarea.
+  .w3-container
+    .w3-margin
+      h1 
+        a(href='/' style="text-decoration: none;") Virtual Machine EWVM
+      p Write your code in the textarea.
 
-    .w3-bar
-      .w3-left
-        form(action=`/run` method='POST')
-          textarea(class="lined" id="code" name="code" rows="30" cols="60")= code
-          input.w3-btn.w3-blue-grey.w3-round(type="submit" value="Run")
-      .w3-right(style="padding-right:50px")
-        .w3-display-container
-          textarea(rows="10" cols="90") Animation
-        form(action=`/run` method='POST')
-          .w3-display-container
-            textarea(id="terminal" name="terminal" rows="10" cols="90" readonly) #{terminal}
-          if input
-            .w3-display-container
-              textarea(id="input" name="input" rows="1" cols="80" autofocus)
-              .w3-display-right
-                input.w3-btn.w3-blue-grey.w3-round.w3-small(type="submit" value="Send")
-          
-      
+      .w3-bar
+        .w3-left.w3-third(style="height:100%;")
+          form(action=`/run` enctype="multipart/form-data" method='POST')
+            textarea(class="lined" id="code" name="code" style="width: 100%;" rows="30" )= code
+            input(type="file" id="file" name="file")
+            input.w3-btn.w3-blue-grey.w3-round.w3-right(style="margin-right:1%;" type="submit" value="Run")
+        .w3-right.w3-twothird(style="padding-right:1%; height: 500px;")
+          .w3-display-container.w3-border(id="terminal" name="terminal" style="height: 80%;" readonly)
+            .w3-display-bottomleft
+              .w3-btn.w3-blue-grey.w3-round.w3-small.w3-padding-small <<
+              .w3-btn.w3-blue-grey.w3-round.w3-small.w3-padding-small <
+              .w3-btn.w3-blue-grey.w3-round.w3-small.w3-padding-small 0
+              .w3-btn.w3-blue-grey.w3-round.w3-small.w3-padding-small >
+              .w3-btn.w3-blue-grey.w3-round.w3-small.w3-padding-small >>
+            .w3-display-bottomright
+              .w3-btn.w3-blue-grey.w3-round.w3-small.w3-padding-small
+          form(action=`/run` method='POST' style="height: 20%;")
+            .w3-display-container(style="height: 60%;")
+              textarea(id="terminal" name="terminal" style="width: 100%; height: 100%; margin-top:1%;" readonly) #{terminal}
+              if input
+                .w3-display-container
+                  textarea(id="input" name="input" rows="1" style="width: 100%;" autofocus)
+
+            
+        

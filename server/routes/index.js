@@ -1,6 +1,9 @@
 var express = require('express');
 var router = express.Router();
 var peggy = require("peggy");
+var fs = require('fs') ;
+var multer = require('multer');
+var upload = multer({ dest: 'uploads/' });
 
 const grammar = require('../public/javascripts/grammar.js');
 const vm = require('../public/javascripts/vm.js');
@@ -27,6 +30,15 @@ Components = {
   },
 }
 
+async function getFileCode(path) {
+  code = await fs.readFile(path, 'utf8', function(err, data) {
+    console.log("aqui 3")
+    if (err) console.log( err );
+    return data
+  })
+  return
+}
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express', code: '', terminal: '', input:0 });
@@ -34,16 +46,33 @@ router.get('/', function(req, res, next) {
   Components.change(0, [], [], 0, [], [])
 });
 
-router.post('/run', function(req, res, next) {
+router.post('/run', upload.single('file'), function(req, res, next) {
   var result = null
   var read = 0
   var input = 0
+  var animation = []
 
-  // Code submitted
-  if (req.body.code != undefined){
-    code = req.body.code
+  // New code submitted
+  if (req.file != undefined || req.body.code != undefined){
+    // new program, clean components
+    Components.change(0, [], [], 0, [], [])
+
+    //File submitted
+    if (req.file != undefined){
+      const fileCode = fs.readFileSync(req.file.path, 'utf8', function(err, data) {
+        if (err) console.log( err );
+        return data;
+        //await getFileCode(req.file.path)
+      })
+      code = fileCode
+      fs.unlinkSync(req.file.path)
+    }
+
+    // Written code submitted
+    else if (req.body.code != undefined) code = req.body.code
+
+    // Run Assembler
     var prepared_code = vm.lowerGrammar(code)
-
     try{
       code_stack = parser.parse(prepared_code)
     } catch (error) { // Grammar Error
@@ -53,7 +82,6 @@ router.post('/run', function(req, res, next) {
 
   // Grammar Error
   if (!Array.isArray(code_stack)) result = code_stack
-
   // Assembly Code done
   else if (result == null) 
     try{ 
@@ -61,23 +89,29 @@ router.post('/run', function(req, res, next) {
       if (req.body.input != undefined) input = req.body.input
       
       // run vm
-      results = vm.run(input, code_stack, pointer_code, call_stack, operand_stack, frame_pointer, string_heap, struct_heap) 
+      results = vm.run(input, code_stack, pointer_code, call_stack, operand_stack, frame_pointer, string_heap, struct_heap, animation) 
 
       read = results[0]
       result = results[1]
       Components.change(results[2], results[3], results[4], results[5], results[6], results[7])
+      animation = results[8]
 
     } catch(error){ 
       result = "Anomaly: ".concat(error) 
     }
 
-    // program executed, clean components
-    if (!read) Components.change(0, [], [], 0, [], [])
+  // Read input submitted
+  if (req.body.input != undefined){
+    input = req.body.input
+    // keep terminal info
+    result = req.body.terminal.concat(result)
+  }
 
-    // if input keep terminal info
-    if (req.body.terminal != undefined) result = req.body.terminal.concat(result)
+  // program done executing, clean components
+  if (!read) Components.change(0, [], [], 0, [], [])
 
-  res.render('index', { title: 'Express', code: code, terminal: result, input: read });
+  console.log(animation)
+  res.render('index', { title: 'Express', code: code, terminal: result, input: read, animation:animation });
 });
 
 module.exports = router;

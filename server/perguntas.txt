@@ -1,10 +1,3 @@
-pushsp, pushfp, pushgp registo -> ????????
-
-
-gp -> sempre a apontar para o inicio da stack?
-sp -> sempre para o topo
-
-
 div -> n/m em vez de m/n ? ex_4 email     m/n
 ex_77
 /extra/read.vm
@@ -12,18 +5,14 @@ ex_77
 /simple/t3.vm -> ftan?
 
 
-
-
-
+and
+or
+upload ficheiros
 
 PROBLEMAS
 
-start?? define fp
-fp começar a null
 
 
-tirar input terminal
 
-if fp : sp > fp
-
-string e struct em arrays
+FUNCIONALIDADES EXTRA
+writeln -> escrever \n
