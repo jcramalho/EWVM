@@ -8,7 +8,7 @@ block content
     .w3-margin
       h1 
         a(href='/' style="text-decoration: none;") Virtual Machine EWVM
-      p Write your code in the textarea.
+      p Write your code in the textarea.  
 
       .w3-bar
         .w3-left.w3-third(style="height:100%;")
@@ -19,11 +19,11 @@ block content
         .w3-right.w3-twothird(style="padding-right:1%; height: 500px;")
           .w3-display-container.w3-border(id="terminal" name="terminal" style="height: 80%;" readonly)
             .w3-display-bottomleft
-              .w3-btn.w3-blue-grey.w3-round.w3-small.w3-padding-small <<
-              .w3-btn.w3-blue-grey.w3-round.w3-small.w3-padding-small <
-              .w3-btn.w3-blue-grey.w3-round.w3-small.w3-padding-small 0
-              .w3-btn.w3-blue-grey.w3-round.w3-small.w3-padding-small >
-              .w3-btn.w3-blue-grey.w3-round.w3-small.w3-padding-small >>
+              .w3-btn.w3-blue-grey.w3-round.w3-small.w3-padding-small(onclick=`goFirst(${animation})`) <<
+              .w3-btn.w3-blue-grey.w3-round.w3-small.w3-padding-small(onclick=`goBack(${animation})`) <
+              .w3-btn.w3-blue-grey.w3-round.w3-small.w3-padding-small(class="index") 0
+              .w3-btn.w3-blue-grey.w3-round.w3-small.w3-padding-small(onclick=`goFoward(${animation})`) >
+              .w3-btn.w3-blue-grey.w3-round.w3-small.w3-padding-small(onclick=`goLast(${animation})`) >>
             .w3-display-bottomright
               .w3-btn.w3-blue-grey.w3-round.w3-small.w3-padding-small
           form(action=`/run` method='POST' style="height: 20%;")

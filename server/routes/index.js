@@ -111,7 +111,7 @@ router.post('/run', upload.single('file'), function(req, res, next) {
   if (!read) Components.change(0, [], [], 0, [], [])
 
   console.log(animation)
-  res.render('index', { title: 'Express', code: code, terminal: result, input: read, animation:animation });
+  res.render('index', { title: 'Express', code: code, terminal: result, input: read, animation:JSON.stringify(animation) });
 });
 
 module.exports = router;
