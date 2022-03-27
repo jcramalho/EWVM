@@ -49,7 +49,11 @@ module.exports = {
       var read = 0
 
       // stack input read
-      if (input) operand_stack.push(this.putString(string_heap, input))
+      if (input){
+        operand_stack.push(this.putString(string_heap, input))
+        animation[animation.length-1][1] = operand_stack.slice(0)
+        animation[animation.length-1][3] = string_heap.slice(0)
+      }
 
       // execute the code
       for (; pointer_code < code_stack.length; pointer_code++){
@@ -57,6 +61,7 @@ module.exports = {
         c = code[pointer_code]
 
         if (!stop && !read && error===''){
+
           var line = c[0]
           var instruction = c[1]
 

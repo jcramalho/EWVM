@@ -1,14 +1,14 @@
 extends layout
 
-block script
-  script(src="/javascripts/helper.js")
-
 block content
   .w3-container
     .w3-margin
       h1 
         a(href='/' style="text-decoration: none;") Virtual Machine EWVM
+      p 
+        div(class="squaree")
       p Write your code in the textarea.  
+
 
       .w3-bar
         .w3-left.w3-third(style="height:100%;")
@@ -17,17 +17,31 @@ block content
             input(type="file" id="file" name="file")
             input.w3-btn.w3-blue-grey.w3-round.w3-right(style="margin-right:1%;" type="submit" value="Run")
         .w3-right.w3-twothird(style="padding-right:1%; height: 500px;")
-          .w3-display-container.w3-border(id="terminal" name="terminal" style="height: 80%;" readonly)
+          .w3-display-container.w3-border(id="animation" name="animation" style="height:80%; overflow:auto" readonly)
+            .w3-quarter.w3-container(style="height:100%; display:inline;")
+              .w3-display-container.w3-border-bottom.w3-border-left.w3-border-right.w3-margin(id="call_stack" style="height:80%; overflow:auto")
+              .w3-center Call Stack
+            .w3-quarter.w3-container(style="height:100%; display:inline;")
+              .w3-display-container.w3-border-bottom.w3-border-left.w3-border-right.w3-margin(id="operand_stack" style="height:80%; overflow:auto")
+              .w3-center Operand Stack
+            .w3-half.w3-container(style="height:100%; display:inline;")
+              .w3-container(style="height:50%")
+                .w3-display-container.w3-border-bottom.w3-border-left.w3-border-right.w3-margin(id="string_heap" style="height:60%; overflow:auto")
+                  div.w3-blue-grey(id="square" class="square" style="visibility: hidden;") cell
+                .w3-center String Heap
+              .w3-container(style="height:50%")
+                .w3-display-container.w3-border-bottom.w3-border-left.w3-border-right.w3-margin(id="struct_heap" style="height:60%; overflow:auto")
+                .w3-center Struct Heap
+
             .w3-display-bottomleft
-              .w3-btn.w3-blue-grey.w3-round.w3-small.w3-padding-small(onclick=`goFirst(${animation})`) <<
-              .w3-btn.w3-blue-grey.w3-round.w3-small.w3-padding-small(onclick=`goBack(${animation})`) <
-              .w3-btn.w3-blue-grey.w3-round.w3-small.w3-padding-small(class="index") 0
-              .w3-btn.w3-blue-grey.w3-round.w3-small.w3-padding-small(onclick=`goFoward(${animation})`) >
-              .w3-btn.w3-blue-grey.w3-round.w3-small.w3-padding-small(onclick=`goLast(${animation})`) >>
-            .w3-display-bottomright
-              .w3-btn.w3-blue-grey.w3-round.w3-small.w3-padding-small
+              div(style="position:fixed;")
+                .w3-btn.w3-blue-grey.w3-round.w3-small.w3-padding-small(onclick=`goFirst(${animation})`) <<
+                .w3-btn.w3-blue-grey.w3-round.w3-small.w3-padding-small(onclick=`goBack(${animation})`) <
+                .w3-btn.w3-blue-grey.w3-round.w3-small.w3-padding-small(class="index", onclick=`go()`) 0
+                .w3-btn.w3-blue-grey.w3-round.w3-small.w3-padding-small(onclick=`goFoward(${animation})`) >
+                .w3-btn.w3-blue-grey.w3-round.w3-small.w3-padding-small(onclick=`goLast(${animation})`) >>
           form(action=`/run` method='POST' style="height: 20%;")
-            .w3-display-container(style="height: 60%;")
+            .w3-display-container.w3-margin-top(style="height: 60%;")
               textarea(id="terminal" name="terminal" style="width: 100%; height: 100%; margin-top:1%;" readonly) #{terminal}
               if input
                 .w3-display-container

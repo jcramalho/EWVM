@@ -1,3 +1,7 @@
+porta 50520
+
+kill -9 $(lsof -t -i:8081)
+
 div -> n/m em vez de m/n ? ex_4 email     m/n
 ex_77
 /extra/read.vm
@@ -7,7 +11,6 @@ ex_77
 
 and
 or
-upload ficheiros
 
 PROBLEMAS
 

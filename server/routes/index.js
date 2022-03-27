@@ -18,15 +18,17 @@ var code_stack = []
 var string_heap = []
 var struct_heap = []
 var code
+var animation
 
 Components = {
-  change: function(pc, call_s, operand_s, fp, string_h, struct_h){
+  change: function(pc, call_s, operand_s, fp, string_h, struct_h, a){
     pointer_code = pc
     call_stack = call_s
     operand_stack = operand_s
     frame_pointer = fp
     string_heap = string_h
     struct_heap = struct_h
+    animation = a
   },
 }
 
@@ -43,26 +45,24 @@ async function getFileCode(path) {
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express', code: '', terminal: '', input:0 });
   // clean components
-  Components.change(0, [], [], 0, [], [])
+  Components.change(0, [], [], 0, [], [], [])
 });
 
 router.post('/run', upload.single('file'), function(req, res, next) {
   var result = null
   var read = 0
   var input = 0
-  var animation = []
 
   // New code submitted
   if (req.file != undefined || req.body.code != undefined){
     // new program, clean components
-    Components.change(0, [], [], 0, [], [])
+    Components.change(0, [], [], 0, [], [], [])
 
     //File submitted
     if (req.file != undefined){
       const fileCode = fs.readFileSync(req.file.path, 'utf8', function(err, data) {
         if (err) console.log( err );
         return data;
-        //await getFileCode(req.file.path)
       })
       code = fileCode
       fs.unlinkSync(req.file.path)
@@ -93,8 +93,8 @@ router.post('/run', upload.single('file'), function(req, res, next) {
 
       read = results[0]
       result = results[1]
-      Components.change(results[2], results[3], results[4], results[5], results[6], results[7])
-      animation = results[8]
+
+      Components.change(results[2], results[3], results[4], results[5], results[6], results[7], animation)
 
     } catch(error){ 
       result = "Anomaly: ".concat(error) 
@@ -108,9 +108,8 @@ router.post('/run', upload.single('file'), function(req, res, next) {
   }
 
   // program done executing, clean components
-  if (!read) Components.change(0, [], [], 0, [], [])
+  if (!read) Components.change(0, [], [], 0, [], [], [])
 
-  console.log(animation)
   res.render('index', { title: 'Express', code: code, terminal: result, input: read, animation:JSON.stringify(animation) });
 });
 
