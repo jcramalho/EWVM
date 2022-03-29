@@ -8,14 +8,80 @@ ex_77
 /simple/t1.vm
 /simple/t3.vm -> ftan?
 
+			//top:100%; transform: translateY(-(${100*string_heap.length})%);
+
+			//element.scrollTop = element.scrollHeight - element.clientHeight;
 
 and
 or
 
-PROBLEMAS
+FAZER
+verificar file uploaded .vm ?
+
+after read manter animaçao no sitio
 
 
 
 
 FUNCIONALIDADES EXTRA
 writeln -> escrever \n
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+EX ANIMACAO
+for(var e=0; e < call_stack.length; e++){
+			$(`<div id="square" class="square w3-border" style="position:absolute; bottom: ${offsetHeight*e}px; left:0px; width:50%;">${call_stack[e][0]}</div>`).appendTo('#call_stack');
+			$(`<div id="square" class="square w3-border" style="position:absolute; bottom: ${offsetHeight*e}px; right:0px; width:50%;">${call_stack[e][1]}</div>`).appendTo('#call_stack');
+		}
+		for(var e=0; e < operand_stack.length; e++)
+			$(`<div id="square" class="square w3-border" style="position:absolute; bottom: ${offsetHeight*e}px; width:100%">${operand_stack[e]}</div>`).appendTo('#operand_stack');
+
+		$(`<div id="square" class="square w3-border" style="position:relative; top:0px; min-width:100%; visibility:hidden">}</div>`).appendTo('#string_heap');
+		for(var e=0; e < string_heap.length; e++){
+			var element = document.getElementById(`string_heap`)
+			var translate = element.offsetHeight - offsetHeight*(string_heap.length +1)
+			if (translate < 0) translate = 0
+			$(`<div id="square" class="square w3-border" style="position:relative; top:${translate}px; min-width:100%; width:inherit;">${string_heap[string_heap.length-1-e]}</div>`).appendTo('#string_heap');
+		}
+		
+		for(var e=0; e < struct_heap.length; e++){
+			var left = 0
+			for(var i=0; i < struct_heap[e].length; i++){
+				if(i > 0) left += document.getElementById(`struct${e}${i-1}`).offsetWidth;
+				$(`<div id="struct${e}${i}" class="square w3-border" style="position:absolute; bottom: ${offsetHeight*e}px; left:${left}px; padding-right:5px; padding-left:5px; display:inline">${struct_heap[e][i]}</div>`).appendTo('#struct_heap');
+			}
+			
+		}
+
+STRUCT ANIMACAO
+// struct heap
+		var element = document.getElementById(`struct_heap`)
+		for(var e=0; e < struct_heap.length; e++){
+			var left = 0
+			var translate = element.offsetHeight - offsetHeight*(e+1)
+			if (translate <= 0) translate = 0
+			$(`<div class="w3-container" style="position:relative; top: ${translate  - offsetHeight*(e)}"; overflow:auto>`).appendTo('#struct_heap');
+			for(var i=0; i < struct_heap[e].length; i++){
+				if(i > 0) left += document.getElementById(`struct${e}${i-1}`).offsetWidth;
+				$(`<div id="struct${e}${i}" class="square w3-border" style="position:relative; top:${translate - offsetHeight*(e)}px; padding-right:5px; padding-left:5px; display:inline">${struct_heap[e][i]}</div>`).appendTo('#struct_heap');
+			}
+			$(`</div>`).appendTo('#struct_heap');
+
+		}

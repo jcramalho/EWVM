@@ -28,10 +28,10 @@ module.exports = {
         }
       }
        
-       Code = Line* _  	{ return result() }							
+       Code = (_ Line)* _  	{ return result() }							
        
-       Line = (_ Instruction)  ([ \\t]* Comment)* 				
-         / _ Comment 									
+       Line = Instruction  ([ \\t]* Comment)* 				
+         / Comment 									
        
        Instruction = info:Label ':'						{ labelsRead[info] = getInd(); }
        	 / info:Inst_Atom 								{ codigos.push([lines, info]) }

@@ -107,8 +107,6 @@ router.post('/run', upload.single('file'), function(req, res, next) {
     result = req.body.terminal.concat(result)
   }
 
-  // program done executing, clean components
-  if (!read) Components.change(0, [], [], 0, [], [], [])
 
   res.render('index', { title: 'Express', code: code, terminal: result, input: read, animation:JSON.stringify(animation) });
 });

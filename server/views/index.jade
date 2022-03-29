@@ -1,12 +1,10 @@
 extends layout
 
 block content
-  .w3-container
+  .w3-container(style="height:device-width;")
     .w3-margin
       h1 
         a(href='/' style="text-decoration: none;") Virtual Machine EWVM
-      p 
-        div(class="squaree")
       p Write your code in the textarea.  
 
 
@@ -26,7 +24,7 @@ block content
               .w3-center Operand Stack
             .w3-half.w3-container(style="height:100%; display:inline;")
               .w3-container(style="height:50%")
-                .w3-display-container.w3-border-bottom.w3-border-left.w3-border-right.w3-margin(id="string_heap" style="height:60%; overflow:auto")
+                .w3-display-container.w3-border-bottom.w3-border-left.w3-border-right.w3-margin(id="string_heap" style="height:60%; overflow:auto; ")
                   div.w3-blue-grey(id="square" class="square" style="visibility: hidden;") cell
                 .w3-center String Heap
               .w3-container(style="height:50%")
