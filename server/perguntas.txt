@@ -85,3 +85,38 @@ STRUCT ANIMACAO
 			$(`</div>`).appendTo('#struct_heap');
 
 		}
+
+
+STUCT HOVER
+// operand stack
+		var element = document.getElementById(`operand_stack`)
+		var translate = element.offsetHeight - offsetHeight*(operand_stack.length +1)
+		if (translate <= 0) translate = 0
+		for(var e=0; e <= operand_stack.length; e++){
+
+			var hover_color = ''
+			var border_bottom = ''
+			if ( operand_stack.length-e === fp){ hover_color = hover_color.concat(' red') ; border_bottom="border-bottom:5px solid red;" }
+			if ( operand_stack.length-e === 0 ) hover_color = hover_color.concat(' blue')
+			var on_hover = `onmouseover="this.style.border='3px solid'; this.style.borderColor='${hover_color}';" onmouseout="this.style.border='1px solid #ccc';"`
+			if ( hover_color.length == 0 ) on_hover = ''
+
+			if (0 === e) $(`<div id="square" class="square" onmouseover = "this.style.border='3px solid'; this.style.borderColor='${hover_color} green';" onmouseout = "this.style.border='1px solid white';" style="position:relative; border-color:white; background-color:white; top:${translate}px; min-width:100%; height:${offsetHeight}px"></div>`).appendTo('#operand_stack');
+			else $(`<div id="square" class="square" ${on_hover} style="position:relative; top:${translate}px; ${border_bottom} min-width:100%; overflow-y:auto">${operand_stack[operand_stack.length-e]}</div>`).appendTo('#operand_stack');
+		}
+
+$(document).ready(function() {
+	$(".lined").linedtextarea(
+	  {selectedLine: -1}
+	);
+
+	scrollToLine(10000)
+	scrollToLine(0)
+	
+	var offsetHeight = document.getElementById('square').offsetHeight;
+	var element = document.getElementById(`operand_stack`)
+	var translate = element.offsetHeight - offsetHeight
+	if (translate <= 0) translate = 0
+	$(`<div id="square" class="square" onmouseover = "this.style.border='3px solid'; this.style.borderColor='blue green';" onmouseout = "this.style.border='1px solid white';" style="position:relative; border-color:white; background-color:white; top:${translate}px; min-width:100%; height:${offsetHeight}px"></div>`).appendTo('#operand_stack');
+		
+ });

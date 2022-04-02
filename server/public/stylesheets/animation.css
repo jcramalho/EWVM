@@ -4,7 +4,13 @@
     
     position:relative;
     text-align: center;
+    border: 0px solid #ccc;
+    border-bottom: 5px solid;
+    
 }
+
+
+
 
 ::-webkit-scrollbar {
     display: none;

@@ -1,13 +1,41 @@
 
 $(document).ready(function() {
+	// create lined text
 	$(".lined").linedtextarea(
 	  {selectedLine: -1}
 	);
 
-	scrollToLine(10000)
-	scrollToLine(0)
+	// create operand stack pointers
+	var offsetHeight = document.getElementById('square').offsetHeight;
+	var element = document.getElementById(`operand_stack`)
+	var translate = element.offsetHeight - offsetHeight
+	if (translate <= 0) translate = 0
+	$(`<div id="square" class="square" style="position:relative; border-color:white; border-image: linear-gradient(to right, blue 50%, green 50% ) 3; background-color:white; top:${translate}px; min-width:100%; height:${offsetHeight}px"></div>`).appendTo('#operand_stack');
+		
+	// lined text accept tab
+	document.getElementById('code').addEventListener("keydown", function(e) {
+		if (e.key==='Tab') {
+			// get caret position/selection
+			var start = this.selectionStart;
+			var end = this.selectionEnd;
+	
+			var target = e.target;
+			var value = target.value;
+	
+			// set textarea value to: text before caret + tab + text after caret
+			target.value = value.substring(0, start)
+						+ "\t"
+						+ value.substring(end);
+	
+			// put caret at right position again (add one for the tab)
+			this.selectionStart = this.selectionEnd = start + 1;
+	
+			// prevent the focus lose
+			e.preventDefault();
 
- });
+		}
+	}, false);
+});
 
 $(function(){
 	$("#input").keypress(function(e){
@@ -22,16 +50,28 @@ function scrollToLine(line){
 	document.getElementById(`code`).scrollTop += (offsetHeight * line) + 5;
 }
 
+function changeIndex(ex_line, new_line){
+	if(ex_line > 0){
+		$(`.line${ex_line}`).css('color', "#AAAAAA")
+		$(`.line${ex_line}`).css('text-shadow', "")
+		$(`.line${ex_line}`).html(`${ex_line}`)
+	}
+	if(new_line > 0){
+		$(`.line${new_line}`).css('color', 'black')
+		$(`.line${new_line}`).css('text-shadow', '0 0 3px #AAAAAA')
+		$(`.line${new_line}`).html(`<b>${new_line}</b>`)
+	}
+}
+
 function goFoward(animation){
 	var index = parseInt($(".index").text())
 
 	if (animation.length > index){
-		if(index > 0) $(`.line${animation[index-1][0]}`).css('color', "#AAAAAA")
-		$(`.line${animation[index][0]}`).css('color', 'red')
+		if(index > 0) changeIndex(animation[index-1][0], animation[index][0])
+		else changeIndex(0, animation[index][0])
 		$(".index").html(index + 1)
 
 		scrollToLine(animation[index][0]-1)
-
 		build_stacks(index + 1, animation)
 	}
 }
@@ -40,62 +80,72 @@ function goBack(animation){
 	var index = parseInt($(".index").text())
 
 	if (index > 0){
-		$(`.line${animation[index-1][0]}`).css('color', "#AAAAAA")
-		$(".index").html(index - 1)
-		scrollToLine(0)
-
-		if (index > 1)
-			$(`.line${animation[index-2][0]}`).css('color', 'red')
+		if (index > 1){ 
+			changeIndex(animation[index-1][0], animation[index-2][0])
 			scrollToLine(animation[index-2][0]-1)
-		
-		build_stacks(index - 1, animation)
+		}
+		else changeIndex(animation[index-1][0], 0)
+		$(".index").html(index - 1)
 	}
+	build_stacks(index - 1, animation)
 }
 
 function goLast(animation){
 	var index = parseInt($(".index").text())
 
-	$(`.line${animation[animation.length-1][0]}`).css('color', 'red')
+	changeIndex(0, animation[animation.length-1][0])
 
 	if (animation.length > index){
-		if(index > 0) $(`.line${animation[index-1][0]}`).css('color', "#AAAAAA")
+		if(index > 0) changeIndex(animation[index-1][0], animation[animation.length-1][0])
 		$(".index").html(animation.length)
 
 		scrollToLine(animation[animation.length-1][0]-1)
-
-		build_stacks(animation.length, animation)
 	}
+	build_stacks(animation.length, animation)
 }
 
 function goFirst(animation){
 	var index = parseInt($(".index").text())
 
 	if(index > 0){ 
-		$(`.line${animation[index-1][0]}`).css('color', "#AAAAAA")
+		changeIndex(animation[index-1][0], 0)
 		$(".index").html(0)
 
 		scrollToLine(0)
-
-		build_stacks(0, animation)
 	}
+	build_stacks(0, animation)
 }
 
 function build_stacks(index, animation){
 
 	var offsetHeight = document.getElementById('square').offsetHeight;
-
 	$(".square").remove()
 
-	if (index > 0){
+	if (index <= 0){
+		document.getElementById('fp').innerText = ' -'
+		document.getElementById('sp').innerText = ' 0'
+		var element = document.getElementById(`operand_stack`)
+		var translate = element.offsetHeight - offsetHeight
+		if (translate <= 0) translate = 0
+		$(`<div id="square" class="square" style="position:relative; border-color:white; border-image: linear-gradient(to right, blue 50%, green 50% ) 3; background-color:white; top:${translate}px; min-width:100%; height:${offsetHeight}px"></div>`).appendTo('#operand_stack');
+	}
+
+	else if (index > 0){
 		var state = animation[index-1]
 
 		var operand_stack = state[1]
 		var call_stack = state[2]
 		var string_heap = state[3]
 		var struct_heap = state[4]
+		var fp = state[5]
 
+		// update fp and sp
+		if (fp != -1) document.getElementById('fp').innerText = ' '.concat(fp)
+		else document.getElementById('fp').innerText = ' -'
+		document.getElementById('sp').innerText = ' '.concat(operand_stack.length)
+		
 		// call stack
-		$(`<div id="square" class="square w3-border" style="position:relative; top:0px; min-width:100%; visibility:hidden">}</div>`).appendTo('#call_stack');
+		$(`<div id="square" class="square" style="position:relative; top:0px; min-width:100%; visibility:hidden">}</div>`).appendTo('#call_stack');
 		var element = document.getElementById(`call_stack`)
 		var translate = element.offsetHeight - offsetHeight*(call_stack.length +1)
 		if (translate <= 0) translate = 0
@@ -105,12 +155,26 @@ function build_stacks(index, animation){
 		}
 
 		// operand stack
-		$(`<div id="square" class="square w3-border" style="position:relative; top:0px; min-width:100%; visibility:hidden">}</div>`).appendTo('#operand_stack');
 		var element = document.getElementById(`operand_stack`)
 		var translate = element.offsetHeight - offsetHeight*(operand_stack.length +1)
 		if (translate <= 0) translate = 0
-		for(var e=0; e < operand_stack.length; e++)
-			$(`<div id="square" class="square w3-border" style="position:relative; top:${translate}px; min-width:100%; overflow-y:auto">${operand_stack[operand_stack.length-1-e]}</div>`).appendTo('#operand_stack');
+		for(var e=0; e <= operand_stack.length; e++){
+			var colors = []
+			var border_bottom = 'border-bottom: 1px solid #ccc;'
+			var info = ''
+			var background = ''
+			if ( operand_stack.length-e === fp) colors.push('red')
+			if ( operand_stack.length-e === 0) colors.push('blue')
+			if ( e === 0 ){ colors.push('green') ; background="background-color:white;"}
+			else info = operand_stack[operand_stack.length-e]
+			if ( colors.length != 0 ){
+				var colors_string = '' 
+				for(var c = 0; c < colors.length; c++) colors_string = colors_string.concat(`, ${colors[c]} ${100/colors.length * c}%, ${colors[c]} ${100/colors.length * (c+1)}%`)
+				border_bottom = `border-image: linear-gradient(to right ${colors_string} ) 3;`
+			}
+			
+			$(`<div id="square" class="square" style="position:relative; ${background} top:${translate}px; ${border_bottom} min-width:100%; height:${offsetHeight}px; overflow-y:auto">${info}</div>`).appendTo('#operand_stack');
+		}
 
 		// string heap
 		$(`<div id="square" class="square w3-border" style="position:relative; top:0px; min-width:100%; visibility:hidden">}</div>`).appendTo('#string_heap');
@@ -118,7 +182,7 @@ function build_stacks(index, animation){
 		var translate = element.offsetHeight - offsetHeight*(string_heap.length +1)
 		if (translate <= 0) translate = 0
 		for(var e=0; e < string_heap.length; e++){
-			$(`<div id="square" class="square w3-border" style="position:relative; top:${translate}px; min-width:100%; overflow-y:auto">${string_heap[string_heap.length-1-e]}</div>`).appendTo('#string_heap');
+			$(`<div id="square" class="square" style="position:relative; border-bottom:1px solid #ccc; top:${translate}px; min-width:100%; overflow-y:auto; height:${offsetHeight}px">${string_heap[string_heap.length-1-e].replace('\n', '\\n')}</div>`).appendTo('#string_heap');
 		}
 		
 		// struct heap
@@ -131,14 +195,15 @@ function build_stacks(index, animation){
 			$(`<div id="struct_container${e}" class="w3-container" style="position:relative; padding:0px; top: ${translate}px"; min-width:100%; overflow-y:auto>`).appendTo('#struct_heap');
 			for(var i=0; i < struct_heap[struct_heap.length-1-e].length; i++){
 				if(i > 0) left += document.getElementById(`struct${e}${i-1}`).offsetWidth;
-				$(`<div id="struct${e}${i}" class="square w3-border" style="position:relative; padding-right:5px; padding-left:5px; display:inline">${struct_heap[struct_heap.length-1-e][i]}</div>`).appendTo(`#struct_container${e}`);
+				$(`<div id="struct${e}${i}" class="square w3-border" style="position:relative; border-bottom:1px solid #ccc; padding-right:5px; padding-left:5px; display:inline">${struct_heap[struct_heap.length-1-e][i]}</div>`).appendTo(`#struct_container${e}`);
 			}
 			$(`</div>`).appendTo('#struct_heap');
 
 		}
 	}
 	if(!$('.square').length)
-		$(`<div id="square" class="square" style="position:absolute; bottom: 0px; visibility: hidden;">cell</div>`).appendTo('#string_heap');
+		$(`<div id="square" class="square" style="position:absolute; border-bottom:1px solid #ccc; visibility: hidden;">cell</div>`).appendTo('#string_heap');
+	if(!$('.square').length) alert("here")
 	//anime({
 	//	targets: ".square1",
 	//	translateY:  '+=100%',

@@ -47,12 +47,14 @@ module.exports = {
       var error = ''
       var result = ''
       var read = 0
+      var fp_initialized = -1
 
       // stack input read
       if (input){
         operand_stack.push(this.putString(string_heap, input))
         animation[animation.length-1][1] = operand_stack.slice(0)
         animation[animation.length-1][3] = string_heap.slice(0)
+        fp_initialized = animation[animation.length-1][5]
       }
 
       // execute the code
@@ -70,7 +72,8 @@ module.exports = {
               stop = 1
               break
             case 1: //start  
-              frame_pointer = operand_stack.length                
+              frame_pointer = operand_stack.length 
+              fp_initialized = 0
               break
             case 2: //add
               if (operand_stack.length >= frame_pointer + 2){
@@ -623,7 +626,8 @@ module.exports = {
             default: 
               error = 'Anomaly: Default case'
           }
-          animation.push([line, operand_stack.slice(0), call_stack.slice(0), string_heap.slice(0), struct_heap.slice(0)])
+          if (fp_initialized > -1 || frame_pointer != 0) animation.push([line, operand_stack.slice(0), call_stack.slice(0), string_heap.slice(0), struct_heap.slice(0), frame_pointer])
+          else animation.push([line, operand_stack.slice(0), call_stack.slice(0), string_heap.slice(0), struct_heap.slice(0), -1])
         }
         else break
       }
