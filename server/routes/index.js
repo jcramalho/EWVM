@@ -43,7 +43,7 @@ async function getFileCode(path) {
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express', code: '', terminal: '', input:0 });
+  res.render('index', { title: 'Express', code: '', terminal: '', input:0 , animation:[]});
   // clean components
   Components.change(0, [], [], 0, [], [], [])
 });
@@ -106,7 +106,6 @@ router.post('/run', upload.single('file'), function(req, res, next) {
     // keep terminal info
     result = req.body.terminal.concat(result)
   }
-
 
   res.render('index', { title: 'Express', code: code, terminal: result, input: read, animation:JSON.stringify(animation) });
 });

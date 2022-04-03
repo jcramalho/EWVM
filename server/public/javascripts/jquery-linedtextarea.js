@@ -29,6 +29,22 @@
  */
 
 
+ function clickable_numbers(animation){
+	// lined text clickable numbers move animation
+	$( `.lineno` ).unbind().click(function() {
+		var clicked_line = parseInt($(this).text())
+		var index = parseInt($(".index").text())
+		var new_index = null
+		alert(animation.length)
+		for(var i = index; i < animation.length; i++ ){
+			if(animation[i][0] === clicked_line){ new_index = i+1; break }}
+		if (new_index == null){
+			for(var i = 0; i < index; i++ )
+				if(animation[i][0] === clicked_line) {new_index = i+1; break }
+		}
+		if (new_index !=null) goToIndex(animation, index, new_index)
+	  });
+}
 
 (function($) {
 
@@ -36,18 +52,19 @@
 		
 		// Get the Options
 		var opts = $.extend({}, $.fn.linedtextarea.defaults, options);
-		
-		
+
 		/*
 		 * Helper function to make sure the line numbers are always
 		 * kept up to the current system
 		 */
 		var fillOutLines = function(codeLines, h, lineNo){
+
 			while ( (codeLines.height() - h ) <= 0 ){
+
 				if ( lineNo == opts.selectedLine )
-					codeLines.append(`<div id='line${lineNo}' class='lineno lineselect line${lineNo}'>` + lineNo + "</div>");
+					codeLines.append(`<div id='line${lineNo}' class='lineno lineselect line${lineNo}' style="cursor: pointer;"'>` + lineNo + "</div>");
 				else
-					codeLines.append(`<div id='line${lineNo}' class='lineno line${lineNo}'>` + lineNo + "</div>");
+					codeLines.append(`<div id='line${lineNo}' class='lineno line${lineNo}' style="cursor: pointer;"'>` + lineNo + "</div>");
 				
 				lineNo++;
 			}
@@ -68,14 +85,14 @@
 			var originalTextAreaWidth	= textarea.outerWidth();
 
 			/* Wrap the text area in the elements we need */
-			textarea.wrap("<div class='linedtextarea'></div>");
-			var linedTextAreaDiv	= textarea.parent().wrap("<div class='linedwrap' style='width:" + originalTextAreaWidth + "px'></div>");
+			textarea.wrap("<div id='linedtextarea' class='linedtextarea' style=' height:100%'></div>");
+			var linedTextAreaDiv	= textarea.parent().wrap("<div class='linedwrap' style='width:" + originalTextAreaWidth + "px; height:70%''></div>");
 			var linedWrapDiv 			= linedTextAreaDiv.parent();
 			
-			linedWrapDiv.prepend("<div class='lines' style='width:50px'></div>");
+			linedWrapDiv.prepend("<div class='lines' style='width:50px;'></div>");
 			
 			var linesDiv	= linedWrapDiv.find(".lines");
-			linesDiv.height( textarea.height() + 6 );
+			linesDiv.height( '100%' );
 			
 			
 			/* Draw the number bar; filling it out where necessary */
@@ -109,6 +126,7 @@
 				var clientHeight 	= domTextArea.clientHeight;
 				codeLinesDiv.css( {'margin-top': (-1*scrollTop) + "px"} );
 				lineNo = fillOutLines( codeLinesDiv, scrollTop + clientHeight, lineNo );
+				clickable_numbers(opts.animation)
 			});
 
 
@@ -117,13 +135,15 @@
 				var domTextArea	= $(this)[0];
 				linesDiv.height( domTextArea.clientHeight + 6 );
 			});
-
+			
+			clickable_numbers(opts.animation)
 		});
 	};
 
   // default options
   $.fn.linedtextarea.defaults = {
   	selectedLine: -1,
-  	selectedClass: 'lineselect'
+  	selectedClass: 'lineselect',
+	animation: animation
   };
 })(jQuery);

@@ -1,5 +1,3 @@
-const grammar = require("./grammar")
-
 module.exports = {
     lowerGrammar: function(code){
       return code.replace( /[^"]+|".*?"/g, function(match){

@@ -1,10 +1,9 @@
-
-$(document).ready(function() {
+function on_ready(animation){
 	// create lined text
 	$(".lined").linedtextarea(
-	  {selectedLine: -1}
-	);
-
+        {selectedLine: -1, animation: animation}
+      );
+	
 	// create operand stack pointers
 	var offsetHeight = document.getElementById('square').offsetHeight;
 	var element = document.getElementById(`operand_stack`)
@@ -35,7 +34,7 @@ $(document).ready(function() {
 
 		}
 	}, false);
-});
+}
 
 $(function(){
 	$("#input").keypress(function(e){
@@ -50,71 +49,54 @@ function scrollToLine(line){
 	document.getElementById(`code`).scrollTop += (offsetHeight * line) + 5;
 }
 
-function changeIndex(ex_line, new_line){
-	if(ex_line > 0){
-		$(`.line${ex_line}`).css('color', "#AAAAAA")
-		$(`.line${ex_line}`).css('text-shadow', "")
-		$(`.line${ex_line}`).html(`${ex_line}`)
+function goToIndex(animation, ex_index, new_index){
+	var ex_line = 0
+	var new_line = 0
+	if (ex_index > 0 && ex_index <= animation.length) ex_line = animation[ex_index-1][0]
+	if (new_index >= 0 && new_index <= animation.length){
+		if(new_index > 0) new_line = animation[new_index-1][0]
+		$(".index").html(new_index)
 	}
-	if(new_line > 0){
-		$(`.line${new_line}`).css('color', 'black')
-		$(`.line${new_line}`).css('text-shadow', '0 0 3px #AAAAAA')
-		$(`.line${new_line}`).html(`<b>${new_line}</b>`)
+
+	if(new_index <= animation.length){
+
+		if(ex_line > 0){
+			$(`.line${ex_line}`).css('color', "#AAAAAA")
+			$(`.line${ex_line}`).css('text-shadow', "")
+			$(`.line${ex_line}`).html(`${ex_line}`)
+		}
+		if(new_line > 0 ){
+			$(`.line${new_line}`).css('color', 'black')
+			$(`.line${new_line}`).css('text-shadow', '0 0 3px #AAAAAA')
+			$(`.line${new_line}`).html(`<b>${new_line}</b>`)
+		}
+
+		scrollToLine(new_line-1)
+		build_stacks(new_index, animation)
 	}
 }
 
 function goFoward(animation){
 	var index = parseInt($(".index").text())
-
-	if (animation.length > index){
-		if(index > 0) changeIndex(animation[index-1][0], animation[index][0])
-		else changeIndex(0, animation[index][0])
-		$(".index").html(index + 1)
-
-		scrollToLine(animation[index][0]-1)
-		build_stacks(index + 1, animation)
-	}
+	goToIndex(animation, index, index +1)
 }
 
 function goBack(animation){
 	var index = parseInt($(".index").text())
-
-	if (index > 0){
-		if (index > 1){ 
-			changeIndex(animation[index-1][0], animation[index-2][0])
-			scrollToLine(animation[index-2][0]-1)
-		}
-		else changeIndex(animation[index-1][0], 0)
-		$(".index").html(index - 1)
-	}
-	build_stacks(index - 1, animation)
+	goToIndex(animation, index, index-1)
 }
 
 function goLast(animation){
 	var index = parseInt($(".index").text())
-
-	changeIndex(0, animation[animation.length-1][0])
-
-	if (animation.length > index){
-		if(index > 0) changeIndex(animation[index-1][0], animation[animation.length-1][0])
-		$(".index").html(animation.length)
-
-		scrollToLine(animation[animation.length-1][0]-1)
-	}
-	build_stacks(animation.length, animation)
+	goToIndex(animation, index, animation.length)
 }
 
 function goFirst(animation){
 	var index = parseInt($(".index").text())
-
-	if(index > 0){ 
-		changeIndex(animation[index-1][0], 0)
-		$(".index").html(0)
-
-		scrollToLine(0)
-	}
-	build_stacks(0, animation)
+	goToIndex(animation, index, 0)
 }
+
+function goTo(line){alert(line)}
 
 function build_stacks(index, animation){
 
@@ -188,7 +170,6 @@ function build_stacks(index, animation){
 		// struct heap
 		var element = document.getElementById(`struct_heap`)
 		for(var e=0; e < struct_heap.length; e++){
-			var left = 0
 			var translate = element.offsetHeight - offsetHeight*(struct_heap.length)
 			if (translate <= 0) translate = 0
 			//alert(translate)
@@ -209,3 +190,4 @@ function build_stacks(index, animation){
 	//	translateY:  '+=100%',
 	//  });
 }
+
