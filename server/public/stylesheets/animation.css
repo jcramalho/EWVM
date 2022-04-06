@@ -17,3 +17,8 @@ html, body, form
 ::-webkit-scrollbar {
     display: none;
 }
+
+#terminal
+{
+    white-space:pre-wrap;
+}

@@ -38,12 +38,12 @@ module.exports = {
       return this.toRef("struct", (struct_heap.length-1).toString().concat('#0') )
     },
 
-    run: function(input, code, pointer_code, call_stack, operand_stack, frame_pointer, string_heap, struct_heap, animation) {
+    run: function(input, code, pointer_code, call_stack, operand_stack, frame_pointer, string_heap, struct_heap, animation, terminal_length) {
 
       var code_stack = code
       var stop = 0
       var error = ''
-      var result = ''
+      var result = []
       var read = 0
       var fp_initialized = -1
 
@@ -57,7 +57,7 @@ module.exports = {
 
       // execute the code
       for (; pointer_code < code_stack.length; pointer_code++){
-
+        var result_length = result.length
         c = code[pointer_code]
 
         if (!stop && !read && error===''){
@@ -388,7 +388,7 @@ module.exports = {
               if (operand_stack.length >= frame_pointer + 1){
                 var n = operand_stack.pop()
                 if (Number.isInteger(n))
-                  result = result.concat( n.toString() )
+                  result.push( n.toString() )
                 else error = 'Illegal Operand: writei - element not Integer'
               } else error = 'Segmentation Fault: writei - elements missing'
               break
@@ -396,7 +396,7 @@ module.exports = {
               if (operand_stack.length >= frame_pointer + 1){
                 var n = operand_stack.pop()
                 if (this.isNumber(n))
-                  result = result.concat( n.toString() )
+                  result.push( n.toString() )
                 else error = 'Illegal Operand: writef - element not Real Number'
               } else error = 'Segmentation Fault: writef - elements missing'
               break
@@ -405,7 +405,7 @@ module.exports = {
                 var n = operand_stack.pop()
                 var ref = this.getRef(n)
                 if (ref[0] === "string")
-                  result = result.concat( string_heap[ref[1]] )
+                  result.push( string_heap[ref[1]] )
                 else error = 'Illegal Operand: writes - element not String Reference'
               } else error = 'Segmentation Fault: writes - elements missing'
               break
@@ -618,18 +618,25 @@ module.exports = {
               break
 
             case 66: //writeln
-              result = result.concat( "\n" )
+              result.push( "\n" )
               break
               
             default: 
               error = 'Anomaly: Default case'
           }
-          if (fp_initialized > -1 || frame_pointer != 0) animation.push([line, operand_stack.slice(0), call_stack.slice(0), string_heap.slice(0), struct_heap.slice(0), frame_pointer])
-          else animation.push([line, operand_stack.slice(0), call_stack.slice(0), string_heap.slice(0), struct_heap.slice(0), -1])
+          var fpointer = -1
+          if (fp_initialized > -1 || frame_pointer != 0) fpointer = frame_pointer
+          var terminal_index = [terminal_length + result.length, result.length - result_length]
+          animation.push([line, operand_stack.slice(0), call_stack.slice(0), string_heap.slice(0), struct_heap.slice(0), fpointer, terminal_index])
         }
         else break
       }
-      if (error != '') return [0, error, pointer_code, call_stack, operand_stack, frame_pointer, string_heap, struct_heap, animation]
+      if (error != ''){
+        forEach(element => {
+          element[5] = [-1,0]
+        });
+        return [0, error, pointer_code, call_stack, operand_stack, frame_pointer, string_heap, struct_heap, animation]
+      }
       return [read, result, pointer_code, call_stack, operand_stack, frame_pointer, string_heap, struct_heap, animation]
     }
  }

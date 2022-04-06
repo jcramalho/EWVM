@@ -53,6 +53,32 @@ function scrollToLine(line){
 	document.getElementById(`code`).scrollTop += (offsetHeight * line) + 5;
 }
 
+function update_terminal(new_index, animation){
+	var terminal_index = [-1, 0]
+	if (new_index > 0) terminal_index = animation[new_index-1][6]
+	var current_index = terminal_index[0]
+	var is_new = terminal_index[1]
+	var offset = 0
+	
+	$('.terminal').each(function(i, obj) {
+		if (i <= current_index){
+			$(this).css('color', "black")
+			if (i == current_index){
+				if (is_new) $(this).html(`<b>${$(this).text()}</b>`)
+				$('#terminal').animate({ scrollTop: $(this).position().top }, 500);
+			}
+			else{
+				$(this).html(`${$(this).text()}`)
+			}
+		}
+		else {
+			$(this).css('color', "#AAAAAA")
+			$(this).html(`${$(this).text()}`)
+		}
+	});
+
+}
+
 function goToIndex(animation, ex_index, new_index){
 	var ex_line = 0
 	var new_line = 0
@@ -78,6 +104,7 @@ function goToIndex(animation, ex_index, new_index){
 
 		scrollToLine(new_line-1)
 		build_stacks(new_index, animation)
+		update_terminal(new_index, animation)
 	}
 }
 

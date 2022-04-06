@@ -16,9 +16,6 @@ and
 or
 
 FAZER
-after read manter animaçao no sitio
-
-passos terminal
 
 save file button
 
