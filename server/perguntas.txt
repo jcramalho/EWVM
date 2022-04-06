@@ -16,9 +16,11 @@ and
 or
 
 FAZER
-verificar file uploaded .vm ?
-
 after read manter animaçao no sitio
+
+passos terminal
+
+save file button
 
 
 

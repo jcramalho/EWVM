@@ -34,9 +34,13 @@ function on_ready(animation){
 
 		}
 	}, false);
+
+	// keeps animation in its last place
+	var index = parseInt($(".index").text())
+	goToIndex(animation, 0, index)
 }
 
-$(function(){
+$(function(){	// enter input submits form
 	$("#input").keypress(function(e){
 		if(e.keyCode == 13)
 			e.currentTarget.closest('form').submit()
@@ -56,6 +60,7 @@ function goToIndex(animation, ex_index, new_index){
 	if (new_index >= 0 && new_index <= animation.length){
 		if(new_index > 0) new_line = animation[new_index-1][0]
 		$(".index").html(new_index)
+		$('input[name=index]').val(new_index);
 	}
 
 	if(new_index <= animation.length){

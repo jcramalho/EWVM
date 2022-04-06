@@ -32,26 +32,20 @@ Components = {
   },
 }
 
-async function getFileCode(path) {
-  code = await fs.readFile(path, 'utf8', function(err, data) {
-    console.log("aqui 3")
-    if (err) console.log( err );
-    return data
-  })
-  return
-}
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express', code: '', terminal: '', input:0 , animation:[]});
+  res.render('index', { title: 'Express', code: '', terminal: '', input:0, animation:[], index:0});
   // clean components
   Components.change(0, [], [], 0, [], [], [])
 });
+
 
 router.post('/run', upload.single('file'), function(req, res, next) {
   var result = null
   var read = 0
   var input = 0
+  var index = 0
 
   // New code submitted
   if (req.file != undefined || req.body.code != undefined){
@@ -78,6 +72,9 @@ router.post('/run', upload.single('file'), function(req, res, next) {
     } catch (error) { // Grammar Error
       result = "GRAMMAR - ".concat(error)
     }
+
+    // textarea in front end deletes one \n if at first
+    code = '\n'.concat(code)
   }
 
   // Grammar Error
@@ -87,14 +84,15 @@ router.post('/run', upload.single('file'), function(req, res, next) {
     try{ 
       // input submitted
       if (req.body.input != undefined) input = req.body.input
-      
+      if (req.body.index != undefined) index = req.body.index
+      console.log(req.body.index)
       // run vm
       results = vm.run(input, code_stack, pointer_code, call_stack, operand_stack, frame_pointer, string_heap, struct_heap, animation) 
 
       read = results[0]
       result = results[1]
 
-      Components.change(results[2], results[3], results[4], results[5], results[6], results[7], animation)
+      Components.change(results[2], results[3], results[4], results[5], results[6], results[7], results[8])
 
     } catch(error){ 
       result = "Anomaly: ".concat(error) 
@@ -107,7 +105,9 @@ router.post('/run', upload.single('file'), function(req, res, next) {
     result = req.body.terminal.concat(result)
   }
 
-  res.render('index', { title: 'Express', code: code, terminal: result, input: read, animation:JSON.stringify(animation) });
+
+  // render page
+  res.render('index', { title: 'Express', code: code, terminal: result, input: read, animation:JSON.stringify(animation), index:index });
 });
 
 module.exports = router;

@@ -35,7 +35,7 @@
 		var clicked_line = parseInt($(this).text())
 		var index = parseInt($(".index").text())
 		var new_index = null
-		alert(animation.length)
+		
 		for(var i = index; i < animation.length; i++ ){
 			if(animation[i][0] === clicked_line){ new_index = i+1; break }}
 		if (new_index == null){
@@ -135,7 +135,7 @@
 				var domTextArea	= $(this)[0];
 				linesDiv.height( domTextArea.clientHeight + 6 );
 			});
-			
+
 			clickable_numbers(opts.animation)
 		});
 	};

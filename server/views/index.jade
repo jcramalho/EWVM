@@ -36,7 +36,7 @@ block content
           .w3-container(style="height:50px; position:relative; padding:0px; margin-bottom:0px")
               .w3-btn.w3-blue-grey.w3-round.w3-small.w3-padding-small(onclick=`goFirst(${animation})`) <<
               .w3-btn.w3-blue-grey.w3-round.w3-small.w3-padding-small(onclick=`goBack(${animation})`) <
-              .w3-btn.w3-blue-grey.w3-round.w3-small.w3-padding-small(class="index", onclick=`go()`) 0
+              .w3-btn.w3-blue-grey.w3-round.w3-small.w3-padding-small(class="index", onclick=`go()`)= index
               .w3-btn.w3-blue-grey.w3-round.w3-small.w3-padding-small(onclick=`goFoward(${animation})`) >
               .w3-btn.w3-blue-grey.w3-round.w3-small.w3-padding-small(onclick=`goLast(${animation})`) >>
               b.w3-margin-left(style="color:blue; text-shadow:0 0 3px #AAAAAA") Global Pointer:
@@ -46,9 +46,10 @@ block content
               b.w3-margin-left(style="color:green; text-shadow:0 0 3px #AAAAAA") Stack Pointer:
               text(id="sp")  0
 
-          form(action=`/run` method='POST' style="height: 20%;")
-            .w3-display-container.w3-margin-top(style="height: 60%;")
-              textarea(id="terminal" name="terminal" style="width: 100%; height: 100%; margin-top:1%;" readonly) #{terminal}
+          form(action=`/run` method='POST' style="height: 25%;")
+            .w3-display-container(style="height: 60%;")
+              input(id="index" name="index" value="3" type="hidden")
+              textarea(id="terminal" name="terminal" style="width: 100%; height: 100%;" readonly) #{terminal}
               if input
                 .w3-display-container
                   textarea(id="input" name="input" rows="1" style="width: 100%;" autofocus)
