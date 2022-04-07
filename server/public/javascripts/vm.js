@@ -37,6 +37,10 @@ module.exports = {
       struct_heap.push(x)
       return this.toRef("struct", (struct_heap.length-1).toString().concat('#0') )
     },
+    animationError: function(animation){
+      for(var i=0; i < animation.length-1; i++) animation[i][6] = [-1,0]
+      animation[animation.length-1][6] = [0,1]
+    },
 
     run: function(input, code, pointer_code, call_stack, operand_stack, frame_pointer, string_heap, struct_heap, animation, terminal_length) {
 
@@ -632,9 +636,7 @@ module.exports = {
         else break
       }
       if (error != ''){
-        forEach(element => {
-          element[5] = [-1,0]
-        });
+        this.animationError(animation)
         return [0, error, pointer_code, call_stack, operand_stack, frame_pointer, string_heap, struct_heap, animation]
       }
       return [read, result, pointer_code, call_stack, operand_stack, frame_pointer, string_heap, struct_heap, animation]

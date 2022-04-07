@@ -35,7 +35,7 @@ Components = {
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express', code: '', terminal: '', input:0, animation:[], index:0});
+  res.render('index', { title: 'Express', code: '', terminal: [], input:0, animation:[], index:0});
   // clean components
   Components.change(0, [], [], 0, [], [], [])
 });
@@ -98,7 +98,8 @@ router.post('/run', upload.single('file'), function(req, res, next) {
       Components.change(results[2], results[3], results[4], results[5], results[6], results[7], results[8])
 
     } catch(error){ 
-      result = "Anomaly: ".concat(error) 
+      result = ["Anomaly: ".concat(error)]
+      vm.animationError(animation)
     }
 
   // render page

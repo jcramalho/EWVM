@@ -19,7 +19,7 @@ FAZER
 
 save file button
 
-
+resize coding area
 
 
 FUNCIONALIDADES EXTRA
