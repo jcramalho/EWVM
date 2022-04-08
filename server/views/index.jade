@@ -10,8 +10,8 @@ block content
 
 
       .w3-bar(style="height:100%")
-        .w3-left.w3-third(style="height:100%; padding-right:50px")
-          form(action=`/run` enctype="multipart/form-data" method='POST' style="height:100%")
+        .w3-left.w3-third(style="height:100%; padding-right:3%")
+          form(id="form" action=`/run` enctype="multipart/form-data" method='POST' style="height:100%")
             textarea(class="lined" id="code" name="code" style="width: 100%; height:100%" )= code
             input(type="file" id="file" name="file")
             input.w3-btn.w3-blue-grey.w3-round.w3-right(style="margin-right:1%;" type="submit" value="Run")

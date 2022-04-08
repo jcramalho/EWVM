@@ -1,10 +1,14 @@
+var animations
+
 function on_ready(animation){
+	this.animation = animation
+
 	// create lined text
 	$(".lined").linedtextarea(
         {selectedLine: -1, animation: animation}
       );
-	
-	// create operand stack pointers
+
+  	// create operand stack pointers
 	var offsetHeight = document.getElementById('square').offsetHeight;
 	var element = document.getElementById(`operand_stack`)
 	var translate = element.offsetHeight - offsetHeight
@@ -34,11 +38,35 @@ function on_ready(animation){
 
 		}
 	}, false);
-
+	
 	// keeps animation in its last place
 	var index = parseInt($(".index").text())
 	goToIndex(animation, 0, index)
+
+	
 }
+
+window.addEventListener('resize', function(event) {
+
+	// resize code height
+    $(".linedwrap").height("70%")
+    $(".lines").height("100%")
+	$(".lineno").remove()
+	fillOutLines( $(".codelines"), $(".lines").height(), 1, -1 )
+	clickable_numbers(animation)
+
+	// resize code width
+	var sidebarWidth = $(".lines").outerWidth();
+	var paddingHorizontal = parseInt( $(".linedwrap").css("border-left-width") ) + parseInt( $(".linedwrap").css("border-right-width") ) + parseInt( $(".linedwrap").css("padding-left") ) + parseInt( $(".linedwrap").css("padding-right") );
+	var originalTextAreaWidth = $("#form").width() - sidebarWidth - paddingHorizontal - 20
+    $("#code").width(`${originalTextAreaWidth}px`)
+    $(".linedwrap").width(`${$("#form").width() - paddingHorizontal}px`)
+
+	// resize animations
+	var index = parseInt($(".index").text())
+	goToIndex(animation, 0, index)
+
+}, true);
 
 $(function(){	// enter input submits form
 	$("#input").keypress(function(e){

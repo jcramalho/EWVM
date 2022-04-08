@@ -46,6 +46,24 @@
 	  });
 }
 
+/*
+* Helper function to make sure the line numbers are always
+* kept up to the current system
+*/
+var fillOutLines = function(codeLines, h, lineNo, selectedLine){
+
+	while ( (codeLines.height() - h ) <= 0 ){
+
+		if ( lineNo == selectedLine )
+			codeLines.append(`<div id='line${lineNo}' class='lineno lineselect line${lineNo}' style="cursor: pointer;"'>` + lineNo + "</div>");
+		else
+			codeLines.append(`<div id='line${lineNo}' class='lineno line${lineNo}' style="cursor: pointer;"'>` + lineNo + "</div>");
+		
+		lineNo++;
+	}
+	return lineNo;
+};
+
 (function($) {
 
 	$.fn.linedtextarea = function(options) {
@@ -53,23 +71,7 @@
 		// Get the Options
 		var opts = $.extend({}, $.fn.linedtextarea.defaults, options);
 
-		/*
-		 * Helper function to make sure the line numbers are always
-		 * kept up to the current system
-		 */
-		var fillOutLines = function(codeLines, h, lineNo){
-
-			while ( (codeLines.height() - h ) <= 0 ){
-
-				if ( lineNo == opts.selectedLine )
-					codeLines.append(`<div id='line${lineNo}' class='lineno lineselect line${lineNo}' style="cursor: pointer;"'>` + lineNo + "</div>");
-				else
-					codeLines.append(`<div id='line${lineNo}' class='lineno line${lineNo}' style="cursor: pointer;"'>` + lineNo + "</div>");
-				
-				lineNo++;
-			}
-			return lineNo;
-		};
+		
 		
 		
 		/*
@@ -85,8 +87,8 @@
 			var originalTextAreaWidth	= textarea.outerWidth();
 
 			/* Wrap the text area in the elements we need */
-			textarea.wrap("<div id='linedtextarea' class='linedtextarea' style=' height:100%'></div>");
-			var linedTextAreaDiv	= textarea.parent().wrap("<div class='linedwrap' style='width:" + originalTextAreaWidth + "px; height:70%''></div>");
+			textarea.wrap("<div id='linedtextarea' class='linedtextarea' style='width:100%; height:100%'></div>");
+			var linedTextAreaDiv	= textarea.parent().wrap("<div class='linedwrap' style='width:100%; height:70%;''></div>");
 			var linedWrapDiv 			= linedTextAreaDiv.parent();
 			
 			linedWrapDiv.prepend("<div class='lines' style='width:50px;'></div>");
@@ -98,7 +100,7 @@
 			/* Draw the number bar; filling it out where necessary */
 			linesDiv.append( "<div class='codelines'></div>" );
 			var codeLinesDiv	= linesDiv.find(".codelines");
-			lineNo = fillOutLines( codeLinesDiv, linesDiv.height(), 1 );
+			lineNo = fillOutLines( codeLinesDiv, linesDiv.height(), 1, opts.selectedLine );
 
 			/* Move the textarea to the selected line */ 
 			if ( opts.selectedLine != -1 && !isNaN(opts.selectedLine) ){
@@ -117,7 +119,6 @@
 			textarea.width( textareaNewWidth );
 			linedWrapDiv.width( linedWrapDivNewWidth );
 			
-
 			
 			/* React to the scroll event */
 			textarea.scroll( function(tn){
