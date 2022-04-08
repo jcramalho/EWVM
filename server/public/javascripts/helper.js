@@ -108,6 +108,15 @@ function goToIndex(animation, ex_index, new_index){
 	}
 }
 
+function goToTerminal(terminal_index, animation){
+	var index = parseInt($(".index").text())
+	for(var i=0; i < animation.length; i++)
+		if (animation[i][6][0] === terminal_index && animation[i][6][1] === 1){
+			goToIndex(animation, index, i+1 )
+			break
+		}
+}
+
 function goFoward(animation){
 	var index = parseInt($(".index").text())
 	goToIndex(animation, index, index +1)

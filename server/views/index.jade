@@ -51,7 +51,7 @@ block content
               input(id="index" name="index" value="3" type="hidden")
               div.w3-border(id="terminal" name="terminal" style="width: 100%; height: 100%; padding:2px; overflow:auto")
                 for t, i in terminal
-                  span(class=`terminal`) #{t}
+                  span(class=`terminal` onclick=`goToTerminal(${i}, ${animation})` style="cursor: pointer;") #{t}
               textarea(name="terminal" hidden) #{terminal.join('"').replace(/\n/g,'\\n')}
               if input
                 .w3-display-container
