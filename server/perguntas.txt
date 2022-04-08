@@ -22,10 +22,21 @@ save file button
 resize coding area
 
 
+PERGUNTAR writei erro, fazer pop?
+
+
+ERRO soma array introduzir numeros fast
+
+
+
+
 FUNCIONALIDADES EXTRA
 writeln -> escrever \n
 
-
+and 
+or
+tiram dois do top da stack
+qql diferente de zero  é 1, é verdadeiro
 
 
 

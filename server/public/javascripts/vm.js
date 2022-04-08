@@ -52,7 +52,7 @@ module.exports = {
       var fp_initialized = -1
 
       // stack input read
-      if (input){
+      if (input != null){
         operand_stack.push(this.putString(string_heap, input))
         animation[animation.length-1][1] = operand_stack.slice(0)
         animation[animation.length-1][3] = string_heap.slice(0)
@@ -75,7 +75,7 @@ module.exports = {
               break
             case 1: //start  
               frame_pointer = operand_stack.length 
-              fp_initialized = 0
+              fp_initialized = 1
               break
             case 2: //add
               if (operand_stack.length >= frame_pointer + 2){
@@ -283,7 +283,7 @@ module.exports = {
                 var s = this.getRef( operand_stack.pop() )
                 if(s[0] === "string"){
                   i = parseInt(string_heap[s[1]])
-                  if (i!=NaN) operand_stack.push(i)
+                  if (Number.isInteger(i)) operand_stack.push(i)
                   else error = 'Illegal Operand: atoi - String does not represent Integer'
                 }
                 else error = 'Illegal Operand: atoi - element not String Reference'
@@ -424,6 +424,8 @@ module.exports = {
                   call_stack.push([pointer_code, frame_pointer])
                   pointer_code = ref[1] - 1
                   frame_pointer = operand_stack.length
+                  fp_initialized = 1
+
                 } else error = 'Illegal Operand: call - element not Label' 
               } else error = 'Segmentation Fault: call - elements missing'
               break
@@ -432,6 +434,7 @@ module.exports = {
                 var called = call_stack.pop()
                 pointer_code = called[0] 
                 frame_pointer = called[1]
+                fp_initialized = 1
               } else error = 'Segmentation Fault: return - elements missing'
               break
 

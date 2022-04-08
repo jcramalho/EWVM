@@ -58,10 +58,10 @@ function update_terminal(new_index, animation){
 	if (new_index > 0) terminal_index = animation[new_index-1][6]
 	var current_index = terminal_index[0]
 	var is_new = terminal_index[1]
-	var offset = 0
 	
 	$('.terminal').each(function(i, obj) {
-		if (i <= current_index){
+		if (animation.length == 1 && animation[0] === "error") $(this).css('color', "black")
+		else if (i <= current_index){
 			$(this).css('color', "black")
 			if (i == current_index){
 				if (is_new) $(this).html(`<b>${$(this).text()}</b>`)
@@ -103,8 +103,8 @@ function goToIndex(animation, ex_index, new_index){
 		}
 
 		scrollToLine(new_line-1)
-		build_stacks(new_index, animation)
 		update_terminal(new_index, animation)
+		build_stacks(new_index, animation)
 	}
 }
 
@@ -128,7 +128,6 @@ function goFirst(animation){
 	goToIndex(animation, index, 0)
 }
 
-function goTo(line){alert(line)}
 
 function build_stacks(index, animation){
 
@@ -201,25 +200,21 @@ function build_stacks(index, animation){
 		
 		// struct heap
 		var element = document.getElementById(`struct_heap`)
+		// iterate all arrays
 		for(var e=0; e < struct_heap.length; e++){
 			var translate = element.offsetHeight - offsetHeight*(struct_heap.length)
 			if (translate <= 0) translate = 0
-			//alert(translate)
 			$(`<div id="struct_container${e}" class="w3-container" style="position:relative; padding:0px; top: ${translate}px"; min-width:100%; overflow-y:auto>`).appendTo('#struct_heap');
+			// build one array
 			for(var i=0; i < struct_heap[struct_heap.length-1-e].length; i++){
-				if(i > 0) left += document.getElementById(`struct${e}${i-1}`).offsetWidth;
 				$(`<div id="struct${e}${i}" class="square w3-border" style="position:relative; border-bottom:1px solid #ccc; padding-right:5px; padding-left:5px; display:inline">${struct_heap[struct_heap.length-1-e][i]}</div>`).appendTo(`#struct_container${e}`);
 			}
 			$(`</div>`).appendTo('#struct_heap');
 
 		}
 	}
+
 	if(!$('.square').length)
 		$(`<div id="square" class="square" style="position:absolute; border-bottom:1px solid #ccc; visibility: hidden;">cell</div>`).appendTo('#string_heap');
-	if(!$('.square').length) alert("here")
-	//anime({
-	//	targets: ".square1",
-	//	translateY:  '+=100%',
-	//  });
 }
 

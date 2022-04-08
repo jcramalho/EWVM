@@ -44,7 +44,7 @@ router.get('/', function(req, res, next) {
 router.post('/run', upload.single('file'), function(req, res, next) {
   var result = null
   var read = 0
-  var input = 0
+  var input = null
   var index = 0
   var terminal = []
 
@@ -71,7 +71,8 @@ router.post('/run', upload.single('file'), function(req, res, next) {
     try{
       code_stack = parser.parse(prepared_code)
     } catch (error) { // Grammar Error
-      result = "GRAMMAR - ".concat(error)
+      result = ["GRAMMAR - ".concat(error)]
+      animation = ["error"]
     }
 
     // textarea in front end deletes one \n if at first
@@ -87,21 +88,21 @@ router.post('/run', upload.single('file'), function(req, res, next) {
       if (req.body.input != undefined){
         input = req.body.input
         index = req.body.index
-        terminal = req.body.terminal.replaceAll('\\n','\n').split('"')
+        terminal = req.body.terminal.replace(/\\n/g,'\n').split('"')
       }
       // run vm
       results = vm.run(input, code_stack, pointer_code, call_stack, operand_stack, frame_pointer, string_heap, struct_heap, animation, terminal.length - 1) 
 
       read = results[0]
-      result = terminal.concat(results[1])  // keep terminal info + new results
+      if (Array.isArray(results[1])) result = terminal.concat(results[1])  // keep terminal info + new results
+      else result = [results[1]]    // result is an error
 
       Components.change(results[2], results[3], results[4], results[5], results[6], results[7], results[8])
 
     } catch(error){ 
       result = ["Anomaly: ".concat(error)]
-      vm.animationError(animation)
+      animation = ["error"]
     }
-
   // render page
   res.render('index', { title: 'Express', code: code, terminal: result, input: read, animation:JSON.stringify(animation), index:index });
 });
