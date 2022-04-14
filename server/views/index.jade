@@ -9,12 +9,18 @@ block content
         img(src onerror=`on_ready(${animation})`)
 
 
+
       .w3-bar(style="height:100%")
         .w3-left.w3-third(style="height:100%; padding-right:3%")
           form(id="form" action=`/run` enctype="multipart/form-data" method='POST' style="height:100%")
             textarea(class="lined" id="code" name="code" style="width: 100%; height:100%" )= code
-            input(type="file" id="file" name="file")
-            input.w3-btn.w3-blue-grey.w3-round.w3-right(style="margin-right:1%;" type="submit" value="Run")
+            .w3-bar
+              .w3-col
+                input(type="file" id="file" name="file" )
+              .w3-col
+                .w3-btn.w3-blue-grey.w3-round.w3-right(style="margin-right:1%;" onclick="download_file()")
+                  i(class="fa fa-save")
+                input.w3-btn.w3-blue-grey.w3-round.w3-right(style="margin-right:1%;" type="submit" value="Run")
 
         .w3-right.w3-twothird(style="padding-right:1%; height: 55%")
           .w3-container.w3-border(id="animation" name="animation" style="height:100%; padding:0px; margin:0px; overflow:auto" readonly)

@@ -1,4 +1,4 @@
-var animations
+var animation
 
 function on_ready(animation){
 	this.animation = animation
@@ -68,12 +68,14 @@ window.addEventListener('resize', function(event) {
 
 }, true);
 
-$(function(){	// enter input submits form
+
+$(function(){	// enter submits form
 	$("#input").keypress(function(e){
 		if(e.keyCode == 13)
 			e.currentTarget.closest('form').submit()
 		});
 });
+
 
 function scrollToLine(line){
 	var offsetHeight = document.getElementById('line1').offsetHeight;
@@ -84,6 +86,7 @@ function scrollToLine(line){
 function update_terminal(new_index, animation){
 	var terminal_index = [-1, 0]
 	if (new_index > 0) terminal_index = animation[new_index-1][6]
+
 	var current_index = terminal_index[0]
 	var is_new = terminal_index[1]
 	
@@ -93,7 +96,8 @@ function update_terminal(new_index, animation){
 			$(this).css('color', "black")
 			if (i == current_index){
 				if (is_new) $(this).html(`<b>${$(this).text()}</b>`)
-				$('#terminal').animate({ scrollTop: $(this).position().top }, 500);
+				else $(this).html(`${$(this).text()}`)
+				$('#terminal').animate({ scrollTop: $(this).position().top }, 500);	// scroll terminal
 			}
 			else{
 				$(this).html(`${$(this).text()}`)
@@ -255,3 +259,13 @@ function build_stacks(index, animation){
 		$(`<div id="square" class="square" style="position:absolute; border-bottom:1px solid #ccc; visibility: hidden;">cell</div>`).appendTo('#string_heap');
 }
 
+
+function download_file(){
+	var textcontent = document.getElementById("code").value;
+	var downloadableLink = document.createElement('a');
+	downloadableLink.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(textcontent));
+	downloadableLink.download = "myFile" + ".vm";
+	document.body.appendChild(downloadableLink);
+	downloadableLink.click();
+	document.body.removeChild(downloadableLink);
+}

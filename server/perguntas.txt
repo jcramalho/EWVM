@@ -19,7 +19,6 @@ FAZER
 
 save file button
 
-resize coding area
 
 
 PERGUNTAR writei erro, fazer pop?
