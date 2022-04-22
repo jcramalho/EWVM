@@ -15,12 +15,15 @@ block content
           form(id="form" action=`/run` enctype="multipart/form-data" method='POST' style="height:100%")
             textarea(class="lined" id="code" name="code" style="width: 100%; height:100%" )= code
             .w3-bar
-              .w3-col
-                input(type="file" id="file" name="file" )
-              .w3-col
-                .w3-btn.w3-blue-grey.w3-round.w3-right(style="margin-right:1%;" onclick="download_file()")
-                  i(class="fa fa-save")
-                input.w3-btn.w3-blue-grey.w3-round.w3-right(style="margin-right:1%;" type="submit" value="Run")
+              .w3-row 
+                div.w3-border( id="explanation" style="width: 100%; padding-left:5px; overflow:auto; font-size:13px; max-height:39px" )
+              .w3-row
+                .w3-col
+                  input(type="file" id="file" name="file" )
+                .w3-col
+                  .w3-btn.w3-blue-grey.w3-round.w3-right(style="margin-right:1%;" onclick="download_file()")
+                    i(class="fa fa-save")
+                  input.w3-btn.w3-blue-grey.w3-round.w3-right(style="margin-right:1%;" type="submit" value="Run")
 
         .w3-right.w3-twothird(style="padding-right:1%; height: 55%")
           .w3-container.w3-border(id="animation" name="animation" style="height:100%; padding:0px; margin:0px; overflow:auto" readonly)
@@ -55,7 +58,7 @@ block content
           form(action=`/run` method='POST' style="height: 25%;")
             .w3-display-container(style="height: 60%;")
               input(id="index" name="index" value="3" type="hidden")
-              div.w3-border(id="terminal" name="terminal" style="width: 100%; height: 100%; padding:2px; overflow:auto")
+              div.w3-border(id="terminal" name="terminal" style="width: 100%; height: 100%; padding:2px; overflow:auto;")
                 for t, i in terminal
                   span(class=`terminal` onclick=`goToTerminal(${i}, ${animation})` style="cursor: pointer;") #{t}
               textarea(name="terminal" hidden) #{terminal.join('"').replace(/\n/g,'\\n')}

@@ -16,12 +16,17 @@ and
 or
 
 FAZER
-
-save file button
+and 
+or
 
 
 
 PERGUNTAR writei erro, fazer pop?
+
+PERGUNTAR fazer referencia ao manual da vm?
+
+PERGUNTAR
+and or : negative numbers are true?
 
 
 ERRO soma array introduzir numeros fast

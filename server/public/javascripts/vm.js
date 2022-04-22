@@ -627,7 +627,29 @@ module.exports = {
             case 66: //writeln
               result.push( "\n" )
               break
-              
+            
+            case 67: //and
+              if (operand_stack.length >= frame_pointer + 2){
+                var n = operand_stack.pop()
+                var m = operand_stack.pop()
+                if (this.isNumber(n) && this.isNumber(m)) 
+                  if (n && m) operand_stack.push( 1 )
+                  else operand_stack.push( 0 )
+                else error = 'Illegal Operand: and - element not Number'
+              } else error = 'Segmentation Fault: and - elements missing'
+              break
+
+            case 68: //or
+              if (operand_stack.length >= frame_pointer + 2){
+                var n = operand_stack.pop()
+                var m = operand_stack.pop()
+                if (this.isNumber(n) && this.isNumber(m)) 
+                  if (n || m) operand_stack.push( 1 )
+                  else operand_stack.push( 0 )
+                else error = 'Illegal Operand: or - element not Number'
+              } else error = 'Segmentation Fault: or - elements missing'
+              break
+
             default: 
               error = 'Anomaly: Default case'
           }
