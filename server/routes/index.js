@@ -32,6 +32,13 @@ Components = {
 
 
 /* GET home page. */
+
+router.get('/manual', function(req, res, next) {
+  // render page
+  res.render('manual', { title: 'EWVM-Manual', manual:manual });
+})
+
+
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'EWVM', code: '', terminal: [], input:0, animation:[], index:0});
   // clean components
@@ -95,9 +102,5 @@ router.post('/run', function(req, res, next) {
   res.render('index', { title: 'EWVM', code: code, terminal: result, input: read, animation:JSON.stringify(animation), index:index });
 });
 
-router.get('/manual', function(req, res, next) {
-  // render page
-  res.render('manual', { title: 'EWVM-Manual', manual:manual });
-})
 
 module.exports = router;
