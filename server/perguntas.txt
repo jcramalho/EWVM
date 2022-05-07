@@ -16,6 +16,7 @@ ex_77
 FAZER
 manual
 docker
+mudar nomes na tab
 
 PERGUNTAR writei erro, fazer pop?
 
@@ -24,7 +25,6 @@ and or : negative numbers are true?
 
 
 ERRO soma array introduzir numeros fast
-stop depois de writei fica a bold
 
 
 

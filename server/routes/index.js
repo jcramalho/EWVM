@@ -1,11 +1,9 @@
 var express = require('express');
 var router = express.Router();
 var peggy = require("peggy");
-var fs = require('fs') ;
-var multer = require('multer');
-var upload = multer({ dest: 'uploads/' });
 
 const grammar = require('../public/javascripts/grammar.js');
+const { manual } = require('../public/javascripts/manual.js');
 const vm = require('../public/javascripts/vm.js');
 
 var parser = peggy.generate(grammar.grammar())
@@ -35,13 +33,13 @@ Components = {
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express', code: '', terminal: [], input:0, animation:[], index:0});
+  res.render('index', { title: 'EWVM', code: '', terminal: [], input:0, animation:[], index:0});
   // clean components
   Components.change(0, [], [], 0, [], [], [])
 });
 
 
-router.post('/run', upload.single('file'), function(req, res, next) {
+router.post('/run', function(req, res, next) {
   var result = null
   var read = 0
   var input = null
@@ -94,7 +92,12 @@ router.post('/run', upload.single('file'), function(req, res, next) {
       animation = ["error"]
     }
   // render page
-  res.render('index', { title: 'Express', code: code, terminal: result, input: read, animation:JSON.stringify(animation), index:index });
+  res.render('index', { title: 'EWVM', code: code, terminal: result, input: read, animation:JSON.stringify(animation), index:index });
 });
+
+router.get('/manual', function(req, res, next) {
+  // render page
+  res.render('manual', { title: 'EWVM-Manual', manual:manual });
+})
 
 module.exports = router;

@@ -5,14 +5,16 @@ block content
     .w3-margin(style="height:100%")
       h1 
         a(href='/' style="text-decoration: none;") Virtual Machine EWVM
-      p Write your code in the textarea.
+      p 
+        i(class="fa fa-info-circle" style="cursor: pointer; color:#607d8b" onclick="open_manual()")
+        span  Write your code in the textarea.
         img(src onerror=`on_ready(${animation})`)
 
 
 
       .w3-bar(style="height:100%")
         .w3-left.w3-third(style="height:100%; padding-right:3%")
-          form(id="form" action=`/run` enctype="multipart/form-data" method='POST' style="height:100%")
+          form(id="form" action=`/run` method='POST' style="height:100%")
             textarea(class="lined" id="code" name="code" spellcheck="false" style="width: 100%; height:100%" )= code
             .w3-bar
               .w3-row 
