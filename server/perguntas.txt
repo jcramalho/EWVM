@@ -12,25 +12,20 @@ ex_77
 
 			//element.scrollTop = element.scrollHeight - element.clientHeight;
 
-and
-or
 
 FAZER
-and 
-or
-
-
+colocar texto automaticamente na janela
+manual
+docker
 
 PERGUNTAR writei erro, fazer pop?
-
-PERGUNTAR fazer referencia ao manual da vm?
 
 PERGUNTAR
 and or : negative numbers are true?
 
 
 ERRO soma array introduzir numeros fast
-
+stop depois de writei fica a bold
 
 
 

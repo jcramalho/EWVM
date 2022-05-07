@@ -53,18 +53,8 @@ router.post('/run', upload.single('file'), function(req, res, next) {
     // new program, clean components
     Components.change(0, [], [], 0, [], [], [])
 
-    //File submitted
-    if (req.file != undefined){
-      const fileCode = fs.readFileSync(req.file.path, 'utf8', function(err, data) {
-        if (err) console.log( err );
-        return data;
-      })
-      code = fileCode
-      fs.unlinkSync(req.file.path)
-    }
-
     // Written code submitted
-    else if (req.body.code != undefined) code = req.body.code
+    if (req.body.code != undefined) code = req.body.code
 
     // Run Assembler
     var prepared_code = vm.lowerGrammar(code)

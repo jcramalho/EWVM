@@ -42,10 +42,26 @@ function on_ready(animation){
 	// keeps animation in its last place
 	var index = parseInt($(".index").text())
 	goToIndex(animation, 0, index)
-
-	
 }
 
+
+// when file is uploaded, print text
+$(document).ready(function() {
+    $('#file').change(function(e) {
+        if (e.target.files != undefined) {
+            var reader = new FileReader();
+            
+            reader.onload = function(e) {
+                $('#code').text(e.target.result);
+            };
+
+            reader.readAsText(e.target.files.item(0));
+        }
+    });
+});
+
+
+// resize code window when window size is changed
 window.addEventListener('resize', function(event) {
 
 	// resize code height
@@ -340,8 +356,8 @@ var instructions = {
 	"ERR": "|string x| throws an error with message x",
 	"STOP": "stops program execution",
 	"WRITELN": "prints \\n",
-	"AND": "takes n and m from the pile and pushes n && m",
-	"OR": "takes n and m from the pile and pushes n || m",
+	"AND": "takes n and m from the pile and stacks the result n && m",
+	"OR": "takes n and m from the pile and stacks the result n || m",
 }
 $(function(){	// clickable words
 	$("#code").on('click', function() {
