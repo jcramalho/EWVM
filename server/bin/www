@@ -12,7 +12,7 @@ var http = require('http');
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '50520');
+var port = '50520';
 app.set('port', port);
 
 /**
@@ -84,3 +84,4 @@ function onError(error) {
  function onListening() {
   console.log('APP server running na porta ' + port + '...');
 }
+
