@@ -21,11 +21,11 @@ block content
                   - var info = desc.split(' ::')
                   if (info.length > 1)
                     p 
-                      b #{inst} - #{info[0]}: 
+                      b(style="color:#425660") #{inst} #{info[0]}: 
                       span #{info[1]}
                   else 
                     p 
-                      b #{inst}: 
+                      b(style="color:#425660") #{inst}: 
                       span= desc
           
           else 
@@ -33,11 +33,11 @@ block content
               - var info = desc.split(' ::')
               if (info.length > 1)
                 p 
-                  b #{inst} - #{info[0]}: 
+                  b(style="color:#425660") #{inst} #{info[0]}: 
                   span #{info[1]}
               else 
                 p 
-                  b #{inst}: 
+                  b(style="color:#425660") #{inst}: 
                   span= desc
 
 

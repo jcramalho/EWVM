@@ -23,23 +23,27 @@
 .linedwrap {
 	border: 1px solid #c0c0c0;
 	padding: 3px;
+	background-color: white;
 }
 
 .linedtextarea {
 	padding: 0px;
 	margin: 0px;
+	background-color: white;
 }
 
 .linedtextarea textarea, .linedwrap .codelines .lineno {
 	font-size: 10pt;
 	font-family: monospace;
 	line-height: normal !important;
+	background-color: white;
 }
 
 .linedtextarea textarea {
 	padding-right:0.3em;
 	padding-top:0.3em;
 	border: 0;
+	background-color: white;
 }
 
 .linedwrap .lines {
@@ -49,10 +53,12 @@
 	overflow: hidden;
 	border-right: 1px solid #c0c0c0;
 	margin-right: 10px;
+	background-color: white;
 }
 
 .linedwrap .codelines {
 	padding-top: 5px;
+	background-color: white;
 }
 
 .linedwrap .codelines .lineno {
@@ -61,6 +67,7 @@
 	padding-top: 0.0em;
 	text-align: right;
 	white-space: nowrap;
+	background-color: white;
 }
 
 .linedwrap .codelines .lineselect {

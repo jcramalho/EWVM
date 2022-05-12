@@ -22,3 +22,17 @@ html, body, form
 {
     white-space:pre-wrap;
 }
+
+::file-selector-button {
+    color: white;
+    background-color: #7a98a7;
+    border: transparent;
+    border-radius: 3px;
+    padding:8px;
+    cursor: pointer;
+  }
+
+.button {
+    background-color: #7a98a7;
+    color: white;
+  }

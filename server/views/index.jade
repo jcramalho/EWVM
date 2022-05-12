@@ -1,10 +1,11 @@
 extends layout
 
 block content
-  .w3-container(style="height:100%")
+  .w3-container(style="height:100%;")
     .w3-margin(style="height:100%")
-      h1 
-        a(href='/' style="text-decoration: none;") Virtual Machine EWVM
+      h1.w3-text-blue-grey
+        b
+          a(href='/' style="text-decoration: none;") Virtual Machine EWVM
       p 
         i(class="fa fa-info-circle" style="cursor: pointer; color:#607d8b" onclick="open_manual()")
         span  Write your code in the textarea.
@@ -13,43 +14,55 @@ block content
 
 
       .w3-bar(style="height:100%")
+
+        //left side
         .w3-left.w3-third(style="height:100%; padding-right:3%")
           form(id="form" action=`/run` method='POST' style="height:100%")
-            textarea(class="lined" id="code" name="code" spellcheck="false" style="width: 100%; height:100%" )= code
+            //code area
+            textarea(class="lined" id="code" name="code" spellcheck="false" style="width: 100%; height:100%;" )= code
             .w3-bar
-              .w3-row 
-                div.w3-border( id="explanation" style="width: 100%; padding-left:5px; overflow:auto; font-size:13px; max-height:39px" )
+              // instruction description
               .w3-row
-                .w3-col
-                  input(type="file" id="file" name="file" )
-                .w3-col
-                  .w3-btn.w3-blue-grey.w3-round.w3-right(style="margin-right:1%;" onclick="download_file()")
+                .w3-display-container.w3-border( id="explanation" style="width: 100%; padding-left:5px; overflow:auto; font-size:13px; max-height:39px; background-color:transparent" )
+              // buttons
+              .w3-row
+                .w3-half
+                  input(type="file" id="file" name="file")
+                .w3-half
+                  .w3-btn.w3-round.w3-right(class="button" style="margin-right:1%;" onclick="download_file()")
                     i(class="fa fa-save")
-                  input.w3-btn.w3-blue-grey.w3-round.w3-right(style="margin-right:1%;" type="submit" value="Run")
+                  input.w3-btn.w3-round.w3-right(class="button" style="margin-right:1%;" type="submit" value="Run")
 
-        .w3-right.w3-twothird(style="padding-right:1%; height: 55%")
-          .w3-container.w3-border(id="animation" name="animation" style="height:100%; padding:0px; margin:0px; overflow:auto" readonly)
+        //right side
+        .w3-right.w3-twothird(style="padding-right:1%; height: 55%;")
+
+          //animation
+          .w3-container.w3-border(id="animation" name="animation" style="height:100%; padding:0px; margin:0px; overflow:auto; background-image: linear-gradient(white , #e9f2fa);" readonly) 
+            //call stack
             .w3-quarter.w3-container(style="height:100%; padding:0px; margin:0px; display:inline;")
-              .w3-display-container.w3-border-bottom.w3-border-left.w3-border-right.w3-margin(id="call_stack" style="height:85%; overflow:auto")
+              .w3-display-container.w3-border-bottom.w3-border-left.w3-border-right.w3-margin.w3-white(id="call_stack" style="height:85%; overflow:auto;")
               .w3-center Call Stack
+            //operand stack
             .w3-quarter.w3-container(style="height:100%; padding:0px; margin:0px; display:inline;")
-              .w3-display-container.w3-border-bottom.w3-border-left.w3-border-right.w3-margin(id="operand_stack" style="height:85%; overflow:auto;")
+              .w3-display-container.w3-border-bottom.w3-border-left.w3-border-right.w3-margin.w3-white(id="operand_stack" style="height:85%; overflow:auto;")
               .w3-center Operand Stack
+            //heaps
             .w3-half.w3-container(style="height:100%; padding:0px; margin:0px; display:inline;")
               .w3-container(style="height:50%; padding:0px; margin:0px; ")
-                .w3-display-container.w3-border-bottom.w3-border-left.w3-border-right.w3-margin(id="string_heap" style="height:70%; overflow:auto; ")
+                .w3-display-container.w3-border-bottom.w3-border-left.w3-border-right.w3-margin.w3-white(id="string_heap" style="height:70%; overflow:auto;")
                   div.w3-blue-grey(id="square" class="square" style="visibility: hidden;") cell
                 .w3-center String Heap
               .w3-container(style="height:50%; padding:0px; margin:0px; ")
-                .w3-display-container.w3-border-bottom.w3-border-left.w3-border-right.w3-margin(id="struct_heap" style="height:70%; overflow:auto")
+                .w3-display-container.w3-border-bottom.w3-border-left.w3-border-right.w3-margin.w3-white(id="struct_heap" style="height:70%; overflow:auto;")
                 .w3-center Struct Heap
 
+          //animation buttons
           .w3-container(style="height:50px; position:relative; padding:0px; margin-bottom:0px")
-              .w3-btn.w3-blue-grey.w3-round.w3-small.w3-padding-small(onclick=`goFirst(${animation})`) <<
-              .w3-btn.w3-blue-grey.w3-round.w3-small.w3-padding-small(onclick=`goBack(${animation})`) <
-              .w3-btn.w3-blue-grey.w3-round.w3-small.w3-padding-small(class="index", onclick=`go()`)= index
-              .w3-btn.w3-blue-grey.w3-round.w3-small.w3-padding-small(onclick=`goFoward(${animation})`) >
-              .w3-btn.w3-blue-grey.w3-round.w3-small.w3-padding-small(onclick=`goLast(${animation})`) >>
+              .w3-btn.w3-round.w3-small.w3-padding-small(class="button" onclick=`goFirst(${animation})`) <<
+              .w3-btn.w3-round.w3-small.w3-padding-small(class="button" onclick=`goBack(${animation})`) <
+              .w3-btn.w3-round.w3-small.w3-padding-small(class="index button", style="cursor:auto" onclick=`go()`)= index
+              .w3-btn.w3-round.w3-small.w3-padding-small(class="button" onclick=`goFoward(${animation})`) >
+              .w3-btn.w3-round.w3-small.w3-padding-small(class="button" onclick=`goLast(${animation})`) >>
               b.w3-margin-left(style="color:blue; text-shadow:0 0 3px #AAAAAA") Global Pointer:
               span(id="gp")  0
               b.w3-margin-left(style="color:red; text-shadow:0 0 3px #AAAAAA") Frame Pointer: 
@@ -57,16 +70,18 @@ block content
               b.w3-margin-left(style="color:green; text-shadow:0 0 3px #AAAAAA") Stack Pointer:
               text(id="sp")  0
 
+          //interaction area
           form(action=`/run` method='POST' style="height: 25%;")
-            .w3-display-container(style="height: 60%;")
+            .w3-display-container.w3-white(style="height: 60%;")
               input(id="index" name="index" value="3" type="hidden")
               div.w3-border(id="terminal" name="terminal" style="width: 100%; height: 100%; padding:2px; overflow:auto;")
                 for t, i in terminal
                   span(class=`terminal` onclick=`goToTerminal(${i}, ${animation})` style="cursor: pointer;") #{t}
               textarea(name="terminal" hidden) #{terminal.join('"').replace(/\n/g,'\\n')}
+              // reading container
               if input
                 .w3-display-container
-                  textarea(id="input" name="input" rows="1" style="width: 100%;" autofocus)
+                  textarea.w3-white(id="input" name="input" rows="1" style="width: 100%;" autofocus)
 
             
         

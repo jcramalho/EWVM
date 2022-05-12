@@ -8,18 +8,21 @@ function on_ready(animation){
 		else instructions = Object.assign({}, instructions, x[1])
 	})
 
+
 	// create lined text
 	$(".lined").linedtextarea(
         {selectedLine: -1, animation: animation}
       );
+
 
   	// create operand stack pointers
 	var offsetHeight = document.getElementById('square').offsetHeight;
 	var element = document.getElementById(`operand_stack`)
 	var translate = element.offsetHeight - offsetHeight
 	if (translate <= 0) translate = 0
-	$(`<div id="square" class="square" style="position:relative; border-color:white; border-image: linear-gradient(to right, blue 50%, green 50% ) 3; background-color:white; top:${translate}px; min-width:100%; height:${offsetHeight}px"></div>`).appendTo('#operand_stack');
+	$(`<div id="square" class="square" style="position:relative; border-color:white; border-image: linear-gradient(to right, blue 50%, green 50% ) 3; background-color:transparent; top:${translate}px; min-width:100%; height:${offsetHeight}px"></div>`).appendTo('#operand_stack');
 		
+
 	// lined text accept tab
 	document.getElementById('code').addEventListener("keydown", function(e) {
 		if (e.key==='Tab') {
@@ -44,6 +47,7 @@ function on_ready(animation){
 		}
 	}, false);
 	
+
 	// keeps animation in its last place
 	var index = parseInt($(".index").text())
 	goToIndex(animation, 0, index)
@@ -90,13 +94,84 @@ window.addEventListener('resize', function(event) {
 }, true);
 
 
-$(function(){	// enter submits form
+// button enter submits read form
+$(function(){	
 	$("#input").keypress(function(e){
 		if(e.keyCode == 13)
 			e.currentTarget.closest('form').submit()
 		});
 });
 
+
+// clickable code words
+var stopCharacters = [' ', '\n', '\r', '\t']
+$(function(){	
+	$("#code").on('click', function() {
+		var text = $(this).val();
+		var start = $(this)[0].selectionStart;
+		var end = $(this)[0].selectionEnd;
+		while (start >= 0) {
+			if (stopCharacters.indexOf(text[start]) == -1) {
+				--start;
+			} else {
+				break;
+			}                        
+		};
+		++start;
+		while (end < text.length) {
+			if (stopCharacters.indexOf(text[end]) == -1) {
+				++end;
+			} else {
+				break;
+			}
+		}
+		var currentWord = text.substr(start, end - start);
+
+		// if clicked on instruction, display explanation
+		if ( currentWord.toUpperCase() in instructions){
+			var description = instructions[currentWord.toUpperCase()]
+			var info = description.split(' ::')
+			if (info.length > 1) $('#explanation').html(`
+				<div style="margin-right:25px">
+					<b class="w3-text-blue-grey">${currentWord} ${info[0]}:</b> ${info[1]}
+				</div>
+				<b class="w3-text-blue-grey w3-display-topright" style="margin-right:8px; cursor:pointer" onclick="close_explanation()">x</b>
+			`)
+			else $('#explanation').html(`
+				<div style="margin-right:25px">
+					<b class="w3-text-blue-grey">${currentWord}:</b> ${description}
+				</div>
+				<b class="w3-text-blue-grey w3-display-topright" style="margin-right:8px; cursor:pointer" onclick="close_explanation()">x</b>
+			`)
+		}
+		
+	});
+});
+
+
+//x button - close explanation window
+function close_explanation(){
+	$('#explanation').empty()
+}
+
+
+// button save
+function download_file(){
+	var textcontent = document.getElementById("code").value;
+	var downloadableLink = document.createElement('a');
+	downloadableLink.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(textcontent));
+	downloadableLink.download = "myFile" + ".vm";
+	document.body.appendChild(downloadableLink);
+	downloadableLink.click();
+	document.body.removeChild(downloadableLink);
+}
+
+
+function open_manual(){
+	window.open('/manual');
+}
+
+// ---------------------------- ANIMATION ------------------------
 
 function scrollToLine(line){
 	var offsetHeight = document.getElementById('line1').offsetHeight;
@@ -114,13 +189,14 @@ function update_terminal(new_index, animation){
 	$('.terminal').each(function(i, obj) {
 		if (animation.length == 1 && animation[0] === "error") $(this).css('color', "black")
 		else if (i <= current_index){
-			$(this).css('color', "black")
 			if (i == current_index){
+				$(this).css('color', "#425660")
 				if (is_new) $(this).html(`<b>${$(this).text()}</b>`)
 				else $(this).html(`${$(this).text()}`)
 				$('#terminal').animate({ scrollTop: $(this).position().top }, 500);	// scroll terminal
 			}
 			else{
+				$(this).css('color', "black")
 				$(this).html(`${$(this).text()}`)
 			}
 		}
@@ -150,7 +226,7 @@ function goToIndex(animation, ex_index, new_index){
 			$(`.line${ex_line}`).html(`${ex_line}`)
 		}
 		if(new_line > 0 ){
-			$(`.line${new_line}`).css('color', 'black')
+			$(`.line${new_line}`).css('color', '#425660')
 			$(`.line${new_line}`).css('text-shadow', '0 0 3px #AAAAAA')
 			$(`.line${new_line}`).html(`<b>${new_line}</b>`)
 		}
@@ -190,7 +266,6 @@ function goFirst(animation){
 	goToIndex(animation, index, 0)
 }
 
-
 function build_stacks(index, animation){
 
 	var offsetHeight = document.getElementById('square').offsetHeight;
@@ -202,7 +277,7 @@ function build_stacks(index, animation){
 		var element = document.getElementById(`operand_stack`)
 		var translate = element.offsetHeight - offsetHeight
 		if (translate <= 0) translate = 0
-		$(`<div id="square" class="square" style="position:relative; border-color:white; border-image: linear-gradient(to right, blue 50%, green 50% ) 3; background-color:white; top:${translate}px; min-width:100%; height:${offsetHeight}px"></div>`).appendTo('#operand_stack');
+		$(`<div id="square" class="square" style="position:relative; border-color:white; border-image: linear-gradient(to right, blue 50%, green 50% ) 3; background-color:transparent; top:${translate}px; min-width:100%; height:${offsetHeight}px"></div>`).appendTo('#operand_stack');
 	}
 
 	else if (index > 0){
@@ -240,7 +315,7 @@ function build_stacks(index, animation){
 			var background = ''
 			if ( operand_stack.length-e === fp) colors.push('red')
 			if ( operand_stack.length-e === 0) colors.push('blue')
-			if ( e === 0 ){ colors.push('green') ; background="background-color:white;"}
+			if ( e === 0 ){ colors.push('green') ; background="background-color:transparent;"}
 			else info = operand_stack[operand_stack.length-e]
 			if ( colors.length != 0 ){
 				var colors_string = '' 
@@ -281,50 +356,4 @@ function build_stacks(index, animation){
 }
 
 
-function download_file(){
-	var textcontent = document.getElementById("code").value;
-	var downloadableLink = document.createElement('a');
-	downloadableLink.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(textcontent));
-	downloadableLink.download = "myFile" + ".vm";
-	document.body.appendChild(downloadableLink);
-	downloadableLink.click();
-	document.body.removeChild(downloadableLink);
-}
 
-function open_manual(){
-	window.open('/manual');
-}
-
-var stopCharacters = [' ', '\n', '\r', '\t']
-$(function(){	// clickable words
-	$("#code").on('click', function() {
-		var text = $(this).val();
-		var start = $(this)[0].selectionStart;
-		var end = $(this)[0].selectionEnd;
-		while (start >= 0) {
-			if (stopCharacters.indexOf(text[start]) == -1) {
-				--start;
-			} else {
-				break;
-			}                        
-		};
-		++start;
-		while (end < text.length) {
-			if (stopCharacters.indexOf(text[end]) == -1) {
-				++end;
-			} else {
-				break;
-			}
-		}
-		var currentWord = text.substr(start, end - start);
-
-		// if clicked on instruction, display explanation
-		if ( currentWord.toUpperCase() in instructions){
-			var description = instructions[currentWord.toUpperCase()]
-			var info = description.split(' ::')
-			if (info.length > 1) $('#explanation').html(`<b>${currentWord} - ${info[0]}:</b> ${info[1]}`)
-			else $('#explanation').html(`<b>${currentWord}:</b> ${description}`)
-		}
-		
-	});
-});

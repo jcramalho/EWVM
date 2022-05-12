@@ -22,7 +22,7 @@ module.exports = {
         
         function replaceEnderecos(label){
             return codigos.map(x => {
-                if (x[1] >= 61 && x[1] <= 64) return [x[0], x[1], "code#".concat(labelsRead[x[2]].toString()) ]
+                if (x[1] > 61 && x[1] <= 64) return [x[0], x[1], "code#".concat(labelsRead[x[2]].toString()) ]
                 else return x
             }) 
         }
