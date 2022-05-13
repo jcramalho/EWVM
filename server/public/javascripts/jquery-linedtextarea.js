@@ -88,7 +88,7 @@ var fillOutLines = function(codeLines, h, lineNo, selectedLine){
 
 			/* Wrap the text area in the elements we need */
 			textarea.wrap("<div id='linedtextarea' class='linedtextarea' style='width:100%; height:100%'></div>");
-			var linedTextAreaDiv	= textarea.parent().wrap("<div class='linedwrap' style='width:100%; height:70%;''></div>");
+			var linedTextAreaDiv	= textarea.parent().wrap(`<div class='linedwrap' style='width:100%; height:${$('#div').height()}px;'></div>`);
 			var linedWrapDiv 			= linedTextAreaDiv.parent();
 			
 			linedWrapDiv.prepend("<div class='lines' style='width:50px;'></div>");

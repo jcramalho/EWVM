@@ -20,7 +20,7 @@ function on_ready(animation){
 	var element = document.getElementById(`operand_stack`)
 	var translate = element.offsetHeight - offsetHeight
 	if (translate <= 0) translate = 0
-	$(`<div id="square" class="square" style="position:relative; border-color:white; border-image: linear-gradient(to right, blue 50%, green 50% ) 3; background-color:transparent; top:${translate}px; min-width:100%; height:${offsetHeight}px"></div>`).appendTo('#operand_stack');
+	$(`<div id="square" class="square" style="position:relative; border-bottom:7px solid; border-color:white; border-image: linear-gradient(to right, blue 50%, green 50% ) 3; background-color:transparent; top:${translate}px; min-width:100%; height:${offsetHeight}px"></div>`).appendTo('#operand_stack');
 		
 
 	// lined text accept tab
@@ -72,9 +72,8 @@ $(document).ready(function() {
 
 // resize code window when window size is changed
 window.addEventListener('resize', function(event) {
-
 	// resize code height
-    $(".linedwrap").height("70%")
+    $(".linedwrap").height(`${$('#div').height()}px;`)
     $(".lines").height("100%")
 	$(".lineno").remove()
 	fillOutLines( $(".codelines"), $(".lines").height(), 1, -1 )
@@ -103,7 +102,7 @@ $(function(){
 });
 
 
-// clickable code words
+// clickable code words - explanation / description
 var stopCharacters = [' ', '\n', '\r', '\t']
 $(function(){	
 	$("#code").on('click', function() {
@@ -132,17 +131,21 @@ $(function(){
 			var description = instructions[currentWord.toUpperCase()]
 			var info = description.split(' ::')
 			if (info.length > 1) $('#explanation').html(`
-				<div style="margin-right:25px">
-					<b class="w3-text-blue-grey">${currentWord} ${info[0]}:</b> ${info[1]}
+				<div style="padding-top:4px; padding-bottom:4px;">
+					<div style="margin-right:25px;">
+						<b class="w3-text-blue-grey">${currentWord} ${info[0]}:</b> ${info[1]}
+					</div>
+					<b class="w3-text-blue-grey w3-display-topright" style="margin-right:8px; cursor:pointer;" onclick="close_explanation()">x</b>
 				</div>
-				<b class="w3-text-blue-grey w3-display-topright" style="margin-right:8px; cursor:pointer" onclick="close_explanation()">x</b>
 			`)
 			else $('#explanation').html(`
-				<div style="margin-right:25px">
-					<b class="w3-text-blue-grey">${currentWord}:</b> ${description}
+				<div style="padding-top:4px; padding-bottom:4px;">
+					<div style="margin-right:25px;">
+						<b class="w3-text-blue-grey">${currentWord}:</b> ${description}
+					</div>
+					<b class="w3-text-blue-grey w3-display-topright" style="margin-right:8px; cursor:pointer;" onclick="close_explanation()">x</b>
 				</div>
-				<b class="w3-text-blue-grey w3-display-topright" style="margin-right:8px; cursor:pointer" onclick="close_explanation()">x</b>
-			`)
+				`)
 		}
 		
 	});
@@ -277,7 +280,7 @@ function build_stacks(index, animation){
 		var element = document.getElementById(`operand_stack`)
 		var translate = element.offsetHeight - offsetHeight
 		if (translate <= 0) translate = 0
-		$(`<div id="square" class="square" style="position:relative; border-color:white; border-image: linear-gradient(to right, blue 50%, green 50% ) 3; background-color:transparent; top:${translate}px; min-width:100%; height:${offsetHeight}px"></div>`).appendTo('#operand_stack');
+		$(`<div id="square" class="square" style="position:relative; border-bottom:7px solid; border-color:white; border-image: linear-gradient(to right, blue 50%, green 50% ) 3; background-color:transparent; top:${translate}px; min-width:100%; height:${offsetHeight}px"></div>`).appendTo('#operand_stack');
 	}
 
 	else if (index > 0){
@@ -320,7 +323,7 @@ function build_stacks(index, animation){
 			if ( colors.length != 0 ){
 				var colors_string = '' 
 				for(var c = 0; c < colors.length; c++) colors_string = colors_string.concat(`, ${colors[c]} ${100/colors.length * c}%, ${colors[c]} ${100/colors.length * (c+1)}%`)
-				border_bottom = `border-image: linear-gradient(to right ${colors_string} ) 3;`
+				border_bottom = `border-bottom:7px solid; border-image: linear-gradient(to right ${colors_string} ) 3;`
 			}
 			
 			$(`<div id="square" class="square" style="position:relative; ${background} top:${translate}px; ${border_bottom} min-width:100%; height:${offsetHeight}px; overflow-y:auto">${info}</div>`).appendTo('#operand_stack');

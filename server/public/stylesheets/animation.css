@@ -1,11 +1,13 @@
 .square {
     background-color: #607d8b;
     color: white;
-    
+    box-sizing: border-box;
     position:relative;
     text-align: center;
     border: 0px solid #ccc;
-    border-bottom: 5px solid;
+    border-bottom: 3px solid;
+    padding-top:2px;
+    padding-bottom:0px;
     
 }
 
@@ -36,3 +38,6 @@ html, body, form
     background-color: #7a98a7;
     color: white;
   }
+
+
+
