@@ -1,8 +1,8 @@
-var animation
+var animation = []
 var instructions = {}
 
 function on_ready(animation){
-	this.animation = animation
+	if(animation) this.animation = animation
 	manual.map( x => {
 		if(Array.isArray(x[1])) x[1].map( y => { instructions = Object.assign({}, instructions, y[1]) } )
 		else instructions = Object.assign({}, instructions, x[1])
@@ -73,7 +73,8 @@ $(document).ready(function() {
 // resize code window when window size is changed
 window.addEventListener('resize', function(event) {
 	// resize code height
-    $(".linedwrap").height(`${$('#div').height()}px;`)
+    $("#linedwrap").height(`10px`)
+    $("#linedwrap").height(`${$('#div_code').height()}px`)
     $(".lines").height("100%")
 	$(".lineno").remove()
 	fillOutLines( $(".codelines"), $(".lines").height(), 1, -1 )
@@ -84,11 +85,12 @@ window.addEventListener('resize', function(event) {
 	var paddingHorizontal = parseInt( $(".linedwrap").css("border-left-width") ) + parseInt( $(".linedwrap").css("border-right-width") ) + parseInt( $(".linedwrap").css("padding-left") ) + parseInt( $(".linedwrap").css("padding-right") );
 	var originalTextAreaWidth = $("#form").width() - sidebarWidth - paddingHorizontal - 20
     $("#code").width(`${originalTextAreaWidth}px`)
-    $(".linedwrap").width(`${$("#form").width() - paddingHorizontal}px`)
+    $(".linedwrap").width(`50px`)
+    $(".linedwrap").width(`${$("#div_code").width() - paddingHorizontal}px`)
 
 	// resize animations
 	var index = parseInt($(".index").text())
-	goToIndex(animation, 0, index)
+	goToIndex(this.animation, 0, index)
 
 }, true);
 
@@ -270,7 +272,6 @@ function goFirst(animation){
 }
 
 function build_stacks(index, animation){
-
 	var offsetHeight = document.getElementById('square').offsetHeight;
 	$(".square").remove()
 
