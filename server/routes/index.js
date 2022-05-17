@@ -2,7 +2,6 @@ var express = require('express');
 var router = express.Router();
 var peggy = require("peggy");
 const fs = require('fs');
-const jsonfile = require('jsonfile');
 const path = require('path');
 
 const grammar = require('../public/javascripts/grammar.js');

@@ -67,5 +67,6 @@
     "START": 0,
     "NOP": 0,
     "ERR": 0,
-    "STOP": 0
+    "STOP": 0,
+    "FSADSAFDA": null
 }
