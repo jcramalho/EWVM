@@ -123,10 +123,11 @@ router.post('/save', function(req, res, next) {
   // take off tabs and enters ; split words
   var code_divided = code.split('\n').join(' ').split('\t').join(' ').split(' ')
 
-  // increment words in json data
+  // increment instructions counter in json data
   code_divided.forEach( c => {
     if(c!='' && isNaN(parseInt(c)) ) {
-      json_file[c] += 1
+      if(json_file.hasOwnProperty(c))
+        json_file[c] += 1
     }
   })
 
