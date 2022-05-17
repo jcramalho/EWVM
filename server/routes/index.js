@@ -109,8 +109,9 @@ router.post('/run', function(req, res, next) {
   res.render('index', { title: 'EWVM', code: code, terminal: result, input: read, animation:JSON.stringify(animation), index:index });
 });
 
-router.post('/save', function(req, res, next) {
 
+router.post('/save', function(req, res, next) {
+  
   // delete strings
   var code = req.body.code.replace( /[^"]+|".*?"/g, function(match){
     if(match.charAt(0) != '"' || match.charAt(match.length - 1) != '"') {
@@ -136,6 +137,8 @@ router.post('/save', function(req, res, next) {
       console.log(err);
   });
   
+  res.sendStatus(200);
+	  
 });
 
 
