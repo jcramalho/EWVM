@@ -136,9 +136,7 @@ router.post('/save', function(req, res, next) {
     if (err)
       console.log(err);
   });
-  
-  res.sendStatus(200);
-	  
+  	  
 });
 
 

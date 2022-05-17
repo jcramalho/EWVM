@@ -159,16 +159,13 @@ function close_explanation(){
 	$('#explanation').empty()
 }
 
-
+// send code for statistics
 function submitForm(textcontent) {
 	var http = new XMLHttpRequest();
 	http.open("POST", "/save", true);
 	http.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	var params = "code=" + textcontent; // probably use document.getElementById(...).value
 	http.send(params);
-	http.onload = function() {
-		alert(http.responseText);
-	}
 }
 
 // button save
@@ -176,10 +173,8 @@ function download_file(){
 	var filename = document.getElementById("filename").value;
 	var textcontent = document.getElementById("code").value;
 
-	// put code in place for statistics
+	// send code for statistics
 	submitForm(textcontent)
-	//$('#final_code').val(textcontent)
-	//$('#statistics_form').submit()
 
 	// save file
 	var downloadableLink = document.createElement('a');
