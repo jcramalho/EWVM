@@ -166,6 +166,9 @@ function submitForm(textcontent) {
 	http.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	var params = "code=" + textcontent; // probably use document.getElementById(...).value
 	http.send(params);
+	http.onload = function() {
+		var answer = http.responseText;
+	}
 }
 
 // button save
