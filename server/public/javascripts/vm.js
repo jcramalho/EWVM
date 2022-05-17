@@ -1,12 +1,4 @@
 module.exports = {
-    lowerGrammar: function(code){
-      return code.replace( /[^"]+|".*?"/g, function(match){
-        if(match.charAt(0) != '"' || match.charAt(match.length - 1) != '"') {
-          return match.toLowerCase(); 
-        }
-        else return match
-      })
-    },
     isNumber: function(x){
       return typeof x === 'number'
     },

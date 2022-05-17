@@ -33,7 +33,7 @@ block content
               .w3-row(style="margin-top:4px; display:flex; flex-flow:row; flex-wrap:wrap")
                 input(type="file" id="file" name="file" style="margin-bottom:2px; min-width:30px; flex:1 1 170px; overflow:hidden")
                 input.w3-btn.w3-round.w3-right(class="button" style="margin-bottom:2px; margin-right:1%; flex: 0 1 auto" type="submit" value="Run")
-                .w3-btn.w3-round.w3-right(class="button" style="margin-bottom:2px; margin-right:1%; flex: 0 1 auto" onclick="document.getElementById('div_filename').style.display='block'" )
+                .w3-btn.w3-round.w3-right(class="button" style="margin-bottom:2px; margin-right:1%; flex: 0 1 auto" onclick="document.getElementById('div_filename').style.display='block'; document.getElementById('filename').focus();" )
                   i(class="fa fa-save")
 
         //right side
@@ -97,10 +97,12 @@ block content
           h5.w3-center
             b.w3-center.w3-margin-bottom.w3-text-blue-grey Write the name of your file.
             p
-              input(id="filename" autofocus) 
+              input(id="filename" name="filename" autofocus) 
+              input(id="final_code" name="final_code" type="hidden")  
             p
               .w3-button.w3-round.w3-white.w3-text-blue-grey.w3-medium(style="border:2px solid #7a98a7;" onclick="download_file()")
                 b(style="margin-right:4px") Save
                 i(class="fa fa-check")
+                
             
         

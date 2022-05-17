@@ -1,10 +1,15 @@
 var express = require('express');
 var router = express.Router();
 var peggy = require("peggy");
+const fs = require('fs');
+const jsonfile = require('jsonfile');
+const path = require('path');
 
 const grammar = require('../public/javascripts/grammar.js');
 const { manual } = require('../public/javascripts/manual.js');
 const vm = require('../public/javascripts/vm.js');
+var json_path = '../public/instruction_counter.json'
+const json_file = require(json_path);
 
 var parser = peggy.generate(grammar.grammar())
 
@@ -45,6 +50,9 @@ router.get('/', function(req, res, next) {
   Components.change(0, [], [], 0, [], [], [])
 });
 
+router.get('/run', function(req, res, next) {
+  res.redirect('/')
+});
 
 router.post('/run', function(req, res, next) {
   var result = null
@@ -62,7 +70,7 @@ router.post('/run', function(req, res, next) {
     if (req.body.code != undefined) code = req.body.code
 
     // Run Assembler
-    var prepared_code = vm.lowerGrammar(code)
+    var prepared_code = grammar.lowerGrammar(code)
     try{
       code_stack = parser.parse(prepared_code)
     } catch (error) { // Grammar Error
@@ -101,6 +109,36 @@ router.post('/run', function(req, res, next) {
   // render page
   res.render('index', { title: 'EWVM', code: code, terminal: result, input: read, animation:JSON.stringify(animation), index:index });
 });
+
+router.post('/save', function(req, res, next) {
+
+  // delete strings
+  var code = req.body.code.replace( /[^"]+|".*?"/g, function(match){
+    if(match.charAt(0) != '"' || match.charAt(match.length - 1) != '"') {
+      return match.toUpperCase(); 
+    }
+    else return ''
+  })
+
+  // take off tabs and enters ; split words
+  var code_divided = code.split('\n').join(' ').split('\t').join(' ').split(' ')
+
+  // increment words in json data
+  code_divided.forEach( c => {
+    if(c!='' && isNaN(parseInt(c)) ) {
+      json_file[c] += 1
+    }
+  })
+
+  // update json file
+  const absPath = path.join(__dirname, json_path);
+  fs.writeFile(absPath, JSON.stringify(json_file, null, 4), (err) => {
+    if (err)
+      console.log(err);
+  });
+  
+});
+
 
 
 module.exports = router;

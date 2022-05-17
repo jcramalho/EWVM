@@ -160,10 +160,28 @@ function close_explanation(){
 }
 
 
+function submitForm(textcontent) {
+	var http = new XMLHttpRequest();
+	http.open("POST", "/save", true);
+	http.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	var params = "code=" + textcontent; // probably use document.getElementById(...).value
+	http.send(params);
+	http.onload = function() {
+		alert(http.responseText);
+	}
+}
+
 // button save
 function download_file(){
 	var filename = document.getElementById("filename").value;
 	var textcontent = document.getElementById("code").value;
+
+	// put code in place for statistics
+	submitForm(textcontent)
+	//$('#final_code').val(textcontent)
+	//$('#statistics_form').submit()
+
+	// save file
 	var downloadableLink = document.createElement('a');
 	downloadableLink.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(textcontent));
 	if(filename) downloadableLink.download = filename + ".vm";
@@ -172,6 +190,7 @@ function download_file(){
 	downloadableLink.click();
 	document.body.removeChild(downloadableLink);
 
+	// hide modal
 	document.getElementById('div_filename').style.display='none'
 }
 
