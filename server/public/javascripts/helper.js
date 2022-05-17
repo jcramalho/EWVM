@@ -172,9 +172,17 @@ function download_file(){
 }
 
 
+// button clear
+function clear_code(){
+	$('#code').val('')
+}
+
+
 function open_manual(){
 	window.open('/manual');
 }
+
+
 
 // ---------------------------- ANIMATION ------------------------
 

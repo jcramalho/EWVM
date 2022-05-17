@@ -39,5 +39,7 @@ html, body, form
     color: white;
   }
 
-
+#clear:hover{
+    text-decoration: underline;
+}
 
