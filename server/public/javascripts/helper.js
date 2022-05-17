@@ -162,14 +162,25 @@ function close_explanation(){
 
 // button save
 function download_file(){
+	var filename = document.getElementById("filename").value;
 	var textcontent = document.getElementById("code").value;
 	var downloadableLink = document.createElement('a');
 	downloadableLink.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(textcontent));
-	downloadableLink.download = "myFile" + ".vm";
+	if(filename) downloadableLink.download = filename + ".vm";
+	else downloadableLink.download = "mycode" + ".vm";
 	document.body.appendChild(downloadableLink);
 	downloadableLink.click();
 	document.body.removeChild(downloadableLink);
+
+	document.getElementById('div_filename').style.display='none'
 }
+
+// button enter submits filename
+$(function(){	
+	$("#filename").keypress(function(e){
+		if(e.keyCode == 13) download_file()
+	})
+});
 
 
 // button clear
