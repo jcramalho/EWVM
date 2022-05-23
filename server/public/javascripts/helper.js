@@ -46,16 +46,11 @@ function on_ready(animation){
 
 		}
 	}, false);
-	
-
-	// keeps animation in its last place
-	var index = parseInt($(".index").text())
-	goToIndex(animation, 0, index)
 }
 
 
-// when file is uploaded, print text
 $(document).ready(function() {
+    // when file is uploaded, print text
     $('#file').change(function(e) {
         if (e.target.files != undefined) {
             var reader = new FileReader();
@@ -67,6 +62,10 @@ $(document).ready(function() {
             reader.readAsText(e.target.files.item(0));
         }
     });
+
+    // keeps animation where it was last
+    var index = parseInt($(".index".text())
+    goToIndex(this.animation, 0, index)
 });
 
 
@@ -223,11 +222,12 @@ function scrollToLine(line){
 function update_terminal(new_index, animation){
 	var terminal_index = [-1, 0]
 	if (new_index > 0) terminal_index = animation[new_index-1][6]
-
-	var current_index = terminal_index[0]
-	var is_new = terminal_index[1]
 	
+	var current_index = terminal_index[0]	
+	var is_new = terminal_index[1]
+	var g = 0
 	$('.terminal').each(function(i, obj) {
+		g = g+1
 		if (animation.length == 1 && animation[0] === "error") $(this).css('color', "black")
 		else if (i <= current_index){
 			if (i == current_index){
@@ -246,6 +246,7 @@ function update_terminal(new_index, animation){
 			$(this).html(`${$(this).text()}`)
 		}
 	});
+	alert(g)
 
 }
 
