@@ -1,5 +1,6 @@
 var animation = []
 var instructions = {}
+var z = 4
 
 function on_ready(animation){
 	if(animation) this.animation = animation
@@ -64,8 +65,8 @@ $(document).ready(function() {
     });
 
     // keeps animation where it was last
-    var index = parseInt($(".index".text())
-    goToIndex(this.animation, 0, index)
+    var index = parseInt($(".index").text())
+    goToIndex(animation, 0, index)
 });
 
 
@@ -225,9 +226,8 @@ function update_terminal(new_index, animation){
 	
 	var current_index = terminal_index[0]	
 	var is_new = terminal_index[1]
-	var g = 0
+
 	$('.terminal').each(function(i, obj) {
-		g = g+1
 		if (animation.length == 1 && animation[0] === "error") $(this).css('color', "black")
 		else if (i <= current_index){
 			if (i == current_index){
@@ -246,8 +246,6 @@ function update_terminal(new_index, animation){
 			$(this).html(`${$(this).text()}`)
 		}
 	});
-	alert(g)
-
 }
 
 function goToIndex(animation, ex_index, new_index){
