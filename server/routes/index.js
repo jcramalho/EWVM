@@ -7,7 +7,7 @@ const path = require('path');
 const grammar = require('../public/javascripts/grammar.js');
 const { manual } = require('../public/javascripts/manual.js');
 const vm = require('../public/javascripts/vm.js');
-var json_path = '../public/instruction_counter.json'
+var json_path = '../instruction_counter.json'
 const json_file = require(json_path);
 
 var parser = peggy.generate(grammar.grammar())

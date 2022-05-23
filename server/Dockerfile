@@ -4,9 +4,9 @@ COPY ./package.json /app/package.json
 
 WORKDIR /app
 
-RUN npm i
-
 COPY . /app
+
+RUN npm i
 
 CMD ["npm", "start"]
 
