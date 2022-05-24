@@ -1,0 +1,26 @@
+{
+    "examples":[
+        {
+            "title": "Smallest Number",
+            "category": "Categoria 1",
+            "description": "Selects the smaller number in the array.",
+            "difficulty": 1,
+            "file": "menor.vm"
+        },
+        {
+            "title": "Array Multiplication",
+            "category": "Categoria A265",
+            "description": "Multiplies all the written numbers.",
+            "difficulty": 1,
+            "file": "produtoN.vm"
+        },
+        {
+            "title": "Square Repeat",
+            "category": "Cat",
+            "description": "Calculates the square number of the written number and all its inferior numbers",
+            "difficulty": 1,
+            "file": "quadrado_repeat.vm"
+        }
+        
+    ]
+}

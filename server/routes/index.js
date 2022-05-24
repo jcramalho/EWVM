@@ -7,8 +7,9 @@ const path = require('path');
 const grammar = require('../public/javascripts/grammar.js');
 const { manual } = require('../public/javascripts/manual.js');
 const vm = require('../public/javascripts/vm.js');
-var json_path = '../instruction_counter.json'
-const json_file = require(json_path);
+var counter_path = '../instruction_counter.json'
+const counter_file = require(counter_path);
+const catalogo = require('../catalogo.json');
 
 var parser = peggy.generate(grammar.grammar())
 
@@ -49,9 +50,11 @@ router.get('/', function(req, res, next) {
   Components.change(0, [], [], 0, [], [], [])
 });
 
+
 router.get('/run', function(req, res, next) {
   res.redirect('/')
 });
+
 
 router.post('/run', function(req, res, next) {
   var result = null
@@ -126,22 +129,47 @@ router.post('/save', function(req, res, next) {
   // increment instructions counter in json data
   code_divided.forEach( c => {
     if(c!='' && isNaN(parseInt(c)) ) {
-      if(json_file.hasOwnProperty(c))
-        json_file[c] += 1
+      if(counter_file.hasOwnProperty(c))
+        counter_file[c] += 1
     }
   })
 
   // update json file
-  const absPath = path.join(__dirname, json_path);
-  fs.writeFile(absPath, JSON.stringify(json_file, null, 4), (err) => {
+  const absPath = path.join(__dirname, counter_path);
+  fs.writeFile(absPath, JSON.stringify(counter_file, null, 4), (err) => {
     if (err)
       console.log(err);
   });
   
   res.sendStatus(200);
-	  
 });
 
+
+router.get('/examples', function(req, res, next) {
+  
+  var exemplos = catalogo["examples"].sort( (a, b) => a.title.localeCompare(b.title) )
+  
+  var info = []
+  exemplos.forEach(e => {
+    const absPath = path.join(__dirname, "../exemplos/" + e.file);
+    e["code"] = fs.readFileSync(absPath, {encoding:'utf8', flag:'r'})
+    info.push(e)
+  })
+
+  res.render('examples', { title: 'EWVM-Examples', exemplos:info });
+});
+
+router.post('/examples/:title', function(req, res, next) {
+  
+  var exemplo = {
+    title: req.body.title,
+    category: req.body.category,
+    title: req.body.title,
+    code: req.body.code
+  }
+
+  res.render('example', { title: 'EWVM-Example', exemplo:exemplo });
+});
 
 
 module.exports = router;

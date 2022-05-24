@@ -164,7 +164,7 @@ function submitForm(textcontent) {
 	var http = new XMLHttpRequest();
 	http.open("POST", "/save", true);
 	http.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-	var params = "code=" + textcontent; // probably use document.getElementById(...).value
+	var params = "code=" + textcontent; 
 	http.send(params);
 	http.onload = function() {
 		var answer = http.responseText;
@@ -206,11 +206,28 @@ function clear_code(){
 }
 
 
-function open_manual(){
-	window.open('/manual');
+// open in new tab
+function new_window(path){
+	window.open(path);
 }
 
 
+// run code example
+function run_example(index){
+	$('#input_code').val($(`#code${index}`).text())
+	$('#form').attr('action', '/run');
+	$('#form').submit();
+}
+
+// show example
+function show_example(index, title, category, difficulty){
+	$('#input_code').val($(`#code${index}`).text())
+	$('#form').attr('action', `/examples/${title}`);
+	$('#form').append(`<input type="hidden" name="category" value="${category}" />`);
+	$('#form').append(`<input type="hidden" name="difficulty" value="${difficulty}" />`);
+	$('#form').append(`<input type="hidden" name="description" value="${$(`#description${index}`).text()}" />`);
+	$('#form').submit();
+}
 
 // ---------------------------- ANIMATION ------------------------
 

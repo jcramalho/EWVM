@@ -1,0 +1,21 @@
+extends layout
+
+block content
+  .w3-container(style="height:100%")
+    .w3-margin(style="height:100%")
+      h1.w3-center.w3-text-blue-grey(style="display: inline;")
+        b.w3-center.w3-text-blue-grey= exemplo.title
+        div.w3-right.w3-margin-right
+            h5(style="display: inline;").w3-right.w3-margin-left.w3-margin-right.w3-text-blue-grey  #{exemplo.category} | Dificulty: #{exemplo.difficulty}
+
+      form.w3-margin-top(id="form" method="POST" style="padding-top:14px; border-top:2px solid #607d8b")
+        input(id="input_code" name="code" type="hidden")
+
+        p(style="color:#425660")= exemplo.description 
+    
+        .w3-container.w3-padding.w3-white(id=`code` style="white-space:break-spaces;")= exemplo.code       
+        
+        button.w3-margin-top.w3-margin-right.w3-btn.w3-round(class="button" style="cursor:pointer;" onclick=`run_example('')`) Run
+      
+
+     

@@ -1,0 +1,27 @@
+extends layout
+
+block content
+  .w3-container(style="height:100%")
+    .w3-margin(style="height:100%")
+      h1.w3-center 
+        b.w3-text-blue-grey Examples
+      
+      form(id="form" method="POST") 
+        input(id="input_code" name="code" type="hidden")
+
+        each e,index in exemplos
+          p.w3-margin-top(style="padding-top:14px; border-top:2px solid #607d8b" onclick=`hide_div(arrow${index}, 'div${index}')`)= e.title
+            i.w3-margin-left(id=`arrow${index}` class="fa fa-angle-down" )
+            span.w3-margin-left.w3-text-blue-grey(style="text-decoration:underline; cursor:pointer; opacity:0.8" onclick=`show_example(${index}, '${e.title}', '${e.category}', ${e.difficulty})`) Open
+            span.w3-margin-left.w3-text-blue-grey(style="text-decoration:underline; cursor:pointer; opacity:0.8" onclick=`run_example(${index})`) Run
+            span.w3-right.w3-text-blue-grey  #{e.category} | Difficulty: #{e.difficulty}
+          div.w3-margin-left(id=`div${index}` style="display:none;")
+            p(id=`description${index}` style="color:#425660")= e.description 
+            
+            .w3-container.w3-white(id=`code${index}` style="white-space:break-spaces;")= e.code
+
+  
+         
+
+
+        
