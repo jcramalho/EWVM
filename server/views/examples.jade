@@ -3,9 +3,14 @@ extends layout
 block content
   .w3-container(style="height:100%")
     .w3-margin(style="height:100%")
+      
+      .w3-right.w3-margin-right
+        h6(style="display: inline;")
+          a(href="/examples/git") 
+            .w3-btn.w3-round(class="button") Atualizar
       h1.w3-center 
         b.w3-text-blue-grey Examples
-      
+
       form(id="form" method="POST") 
         input(id="input_code" name="code" type="hidden")
 

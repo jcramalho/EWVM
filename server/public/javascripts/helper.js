@@ -229,6 +229,19 @@ function show_example(index, title, category, difficulty){
 	$('#form').submit();
 }
 
+
+// update examples
+function update_examples(textcontent) {
+	var http = new XMLHttpRequest();
+	http.open("GET", "/git", true);
+	http.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	http.send();
+	http.onload = function() {
+		var answer = http.responseText;
+		window.location.reload()
+	}
+}
+
 // ---------------------------- ANIMATION ------------------------
 
 function scrollToLine(line){

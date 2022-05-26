@@ -19,7 +19,7 @@
             "category": "Cat",
             "description": "Calculates the square number of the written number and all its inferior numbers",
             "difficulty": 1,
-            "file": "square-repeat.vm"
+            "file": "quadrado_repeat.vm"
         }
         
     ]

@@ -1,0 +1,35 @@
+        pushi 0
+        pushi 0
+start
+        pushs "Introduza um inteiro positivo:"
+        writes
+        read
+        atoi
+        storeg 0
+        pushg 0
+        writeln
+label1:
+        pushl 0
+        jz label2
+        pushg 0
+        pushg 0
+        mul
+        storeg 1
+        pushg 0
+        writei
+        pushs "::"
+        writes
+        pushg 1
+        writei
+        writeln
+        pushg 0
+        pushi 1
+        sub
+        storeg 0
+        pushl 0
+        pushi 1
+        sub
+        storel 0
+        jump label1
+label2:
+stop
