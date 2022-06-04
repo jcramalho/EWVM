@@ -26,12 +26,12 @@ router.post('/:title', function(req, res, next) {
 });
 
 
-const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms))
 
+
+const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms))
 
 async function update_examples(){
 
-  catalogo_coded = 0
   var erros = []
   var exs = catalogo["examples"]
 
@@ -47,11 +47,10 @@ async function update_examples(){
 
 }
 
-
-
 router.get('/git', function(req, res, next){
 
   var erros = []
+  catalogo_coded = 0
 
   get_git('sotexera6/EWVM-Examples', 'catalogo.json', async function(err, resp) {
     if (err) res.send("Catalogo not found")
@@ -79,10 +78,12 @@ router.get('/git', function(req, res, next){
 })
 
 
+
+
 router.get('/', function(req, res, next) {
 
+  // get code from files
   if(!catalogo_coded){
-    var info = []
     catalogo["examples"].forEach(e => {
       const absPath = path.join(__dirname, "../examples/" + e.file);
       try{
