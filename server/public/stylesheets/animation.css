@@ -72,19 +72,33 @@ ul{
     padding-bottom: 5px;
 }
 
+#options{
+    border:1px solid #607d8b!important
+}
+
 #options:hover{
     overflow: visible;
+    border: 0!important
 }
 
 #options:hover ul{
+    background-color: #f0f8ff;
+    position: absolute;
+    border:1px solid #607d8b!important
+}
+
+#options .option:hover {
+    background:#bfcbd1;
+}
+
+
+
+#optionss:hover ul{
     background-color: #bfcbd1;
     position: absolute;
 }
 
-#options .option:hover {
+#optionss .option:hover {
     background:#e7f2fa
-    }
-
-
-
+}
 

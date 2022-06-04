@@ -236,7 +236,7 @@ function open_example(index, title, category, difficulty){
 // reorder examples asc/desc
 function reorder_examples() {
 
-	$("#arrow1").toggleClass('fa-angle-down fa-angle-up');
+	$("#arrow1").toggleClass('fa-long-arrow-down fa-long-arrow-up');
 
 	var items=$("#examples .example").toArray();
 	items.reverse();
