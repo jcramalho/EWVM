@@ -5,7 +5,9 @@ block content
     h1.w3-center.w3-text-blue-grey(style="display: inline;")
       b.w3-center.w3-text-blue-grey= exemplo.title
       div.w3-right.w3-margin-right
-          h5(style="display: inline;").w3-right.w3-margin-left.w3-margin-right.w3-text-blue-grey  #{exemplo.category} | Dificulty: #{exemplo.difficulty}
+        h5(style="display: inline;").w3-right.w3-margin-left.w3-margin-right.w3-text-blue-grey 
+          span(class="underline" onclick=`new_window("/examples/categories/${exemplo.category}")`) #{exemplo.category}
+          span  | Dificulty: #{exemplo.difficulty}
 
     form.w3-margin-top(id="form" method="POST" style="padding-top:14px; border-top:2px solid #607d8b")
       input(id="input_code" name="code" type="hidden")

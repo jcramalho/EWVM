@@ -226,10 +226,16 @@ function open_example(id, title, category, difficulty){
 	$('#input_code').val($(`#code${id}`).text())
 	$('#form').attr('action', `/examples/${title}`);
 	$('#form').attr('target', "_blank");
-	$('#form').append(`<input type="hidden" name="category" value="${category}" />`);
-	$('#form').append(`<input type="hidden" name="difficulty" value="${difficulty}" />`);
-	$('#form').append(`<input type="hidden" name="description" value="${$(`#description${id}`).text()}" />`);
+	$('#form').append(`<input class="temporary" type="hidden" name="category" value="${category}" />`);
+	$('#form').append(`<input class="temporary" type="hidden" name="difficulty" value="${difficulty}" />`);
+	$('#form').append(`<input class="temporary" type="hidden" name="description" value="${$(`#description${id}`).text()}" />`);
 	$('#form').submit();
+
+	//clean form
+	const elements = document.getElementsByClassName("temporary");
+    while(elements.length > 0){
+        elements[0].parentNode.removeChild(elements[0]);
+    }
 }
 
 
