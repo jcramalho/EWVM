@@ -11,24 +11,52 @@ block content
       b.w3-text-blue-grey Examples
 
     ul(class="order-bar")
+
       li(class="hor-line")
         b.w3-text-blue-grey(style="display:inline") Order By:
+
       li(class="hor-line")
-        i.w3-margin-left(id="arrow1" class="fa fa-long-arrow-up" onclick="reorder_examples()" style="color:#425660;")
+        i.w3-margin-left(id="arrow1" class="fa fa-long-arrow-up" onclick="reorder_examples(1)" style="color:#425660;")
       li.w3-round(id="options" class="hor-line")
         ul.w3-round( style="text-decoration: none; color:#425660; justify-content: space-around;")
-          li(style="text-align:center")
-            span( style="text-decoration: none; color:#425660") Title
-          li.w3-round(class="option")
-            a(href="/examples?order=dif" style="text-decoration: none;") Category
-          li.w3-round(class="option")
-            a(href="/examples?order=dif" style="text-decoration: none;") Difficulty
+          li
+            span( style="text-decoration: none; color:#425660")= order1
+          if order1 != "Category"
+            a(href="/examples?orderBy=cat" style="text-decoration: none;")
+              li.w3-round(class="option") Category
+          if order1 != "Difficulty"
+            a(href="/examples?orderBy=dif" style="text-decoration: none;")
+              li.w3-round(class="option") Difficulty
+          if order1 != "Title"
+            a(href="/examples" style="text-decoration: none;")
+              li.w3-round(class="option") Title
+
+      if order1 != "Title"
+        li(class="hor-line")
+          i.w3-margin-left(id="arrow2" class="fa fa-long-arrow-up" onclick="reorder_examples(2)" style="color:#425660;")
+        li.w3-round(id="options" class="hor-line")
+          ul.w3-round( style="text-decoration: none; color:#425660; justify-content: space-around;")
+            li
+              span( style="text-decoration: none; color:#425660")= order2
+            if order1 !="Category" && order2 != "Category"
+              a(href=`/examples?orderBy=${orderBy1},cat` style="text-decoration: none;")
+                li.w3-round(class="option") Category
+            if order1 !="Difficulty" && order2 != "Difficulty"
+              a(href=`/examples?orderBy=${orderBy1},dif` style="text-decoration: none;") 
+                li.w3-round(class="option") Difficulty
+            if order1 !="Title" && order2 != "Title"
+              a(href=`/examples?orderBy=${orderBy1}` style="text-decoration: none;") 
+                li.w3-round(class="option") Title
       
+
+
 
     form(id="form" method="POST" style="height:100%;") 
       input(id="input_code" name="code" type="hidden")
 
-      div(id="examples")
+
+      if order1 == "Title"
+        div(id="examples")
         each e,index in exemplos
           div(class="example")
             p.w3-margin-top(style="padding-top:14px; border-top:2px solid #607d8b;" onclick=`hide_div(arrow${index}, 'div${index}')`)= e.title
@@ -40,6 +68,26 @@ block content
               p(id=`description${index}` style="color:#425660")= e.description 
               
               .w3-container.w3-white(id=`code${index}` style="white-space:break-spaces;")= e.code
+
+      else
+        div(id="examples")
+          - var i = 0
+          each value,key in exemplos
+            - i = i + 1
+            div(class="examples_block")
+              h3.w3-margin-top(style="padding-top:14px; border-top:2px solid #607d8b;" onclick=`hide_div(arrow${i}, 'div${i}')`)= key
+                i.w3-margin-left(id=`arrow${i}` class="fa fa-angle-down" )
+              div(id=`div${i}` class="example")
+                each e,index in value
+                  p.w3-margin-top(style="padding-top:14px; border-top:1px dotted #607d8b;" onclick=`hide_div(arrow${i}${index}, 'div${i}${index}')`)= e.title
+                    i.w3-margin-left(id=`arrow${i}${index}` class="fa fa-angle-down" )
+                    span.w3-margin-left.w3-text-blue-grey(style="text-decoration:underline; cursor:pointer;" onclick=`open_example(${i}${index}, '${e.title}', '${e.category}', ${e.difficulty})`) Open
+                    span.w3-margin-left.w3-text-blue-grey(style="text-decoration:underline; cursor:pointer;" onclick=`run_example(${i}${index})`) Run
+                    span.w3-right.w3-text-blue-grey  #{e.category} | Difficulty: #{e.difficulty}
+                  div.w3-margin-left(id=`div${i}${index}` style="display:none;")
+                    p(id=`description${i}${index}` style="color:#425660")= e.description 
+                    
+                    .w3-container.w3-white(id=`code${i}${index}` style="white-space:break-spaces;")= e.code
 
   
          

@@ -214,36 +214,52 @@ function new_window(path){
 
 
 // run code example
-function run_example(index){
-	$('#input_code').val($(`#code${index}`).text())
+function run_example(id){
+	$('#input_code').val($(`#code${id}`).text())
 	$('#form').attr('action', '/run');
 	$('#form').submit();
 }
 
 
 // open example new window
-function open_example(index, title, category, difficulty){
-	$('#input_code').val($(`#code${index}`).text())
+function open_example(id, title, category, difficulty){
+	$('#input_code').val($(`#code${id}`).text())
 	$('#form').attr('action', `/examples/${title}`);
 	$('#form').attr('target', "_blank");
 	$('#form').append(`<input type="hidden" name="category" value="${category}" />`);
 	$('#form').append(`<input type="hidden" name="difficulty" value="${difficulty}" />`);
-	$('#form').append(`<input type="hidden" name="description" value="${$(`#description${index}`).text()}" />`);
+	$('#form').append(`<input type="hidden" name="description" value="${$(`#description${id}`).text()}" />`);
 	$('#form').submit();
 }
 
 
 // reorder examples asc/desc
-function reorder_examples() {
+function reorder_examples(order) {
+	if(order === 1) {
+		$("#arrow1").toggleClass('fa-long-arrow-down fa-long-arrow-up');
 
-	$("#arrow1").toggleClass('fa-long-arrow-down fa-long-arrow-up');
+		var items=$("#examples .examples_block").toArray();
+		if(items.length == 0) items=$("#examples .example").toArray();
+		items.reverse()
+		$.each(items,function(){
+			$("#examples").append(this); 
+		});
+	}
 
-	var items=$("#examples .example").toArray();
-	items.reverse();
-	$.each(items,function(){
-		$("#examples").append(this); 
-	});     
+	else if (order === 2){
+		$("#arrow2").toggleClass('fa-long-arrow-down fa-long-arrow-up');
 
+		var blocks = document.getElementsByClassName("examples_block")
+		$.each(blocks,function(){
+			const b = this
+			var list = b.getElementsByClassName("example")
+			var items = Array.prototype.slice.call( list, 0 );
+			items.reverse()
+			$.each(items,function(){
+				b.append(this); 
+			});
+		});
+	}
 }
 
 // ---------------------------- ANIMATION ------------------------

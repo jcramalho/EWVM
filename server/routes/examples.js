@@ -6,8 +6,10 @@ const path = require('path');
 var get_git = require('get-file');
 const util = require('util');
 const getChuckNorrisFact = util.promisify(get_git);
+const sortJson = require('sort-json');
 
 var catalogo = require('../catalogo.json');
+var catalogo_coded = 0
 
 
 router.post('/:title', function(req, res, next) {
@@ -29,6 +31,7 @@ const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms))
 
 async function update_examples(){
 
+  catalogo_coded = 0
   var erros = []
   var exs = catalogo["examples"]
 
@@ -77,22 +80,62 @@ router.get('/git', function(req, res, next){
 
 
 router.get('/', function(req, res, next) {
-  
-  var exemplos = catalogo["examples"].sort( (a, b) => a.title.localeCompare(b.title) )
-  
-  var info = []
-  exemplos.forEach(e => {
-    const absPath = path.join(__dirname, "../examples/" + e.file);
-    try{
-      e["code"] = fs.readFileSync(absPath, {encoding:'utf8', flag:'r'})
-      info.push(e)
-    }
-    catch(err){
-      console.log("MISSING FILE: " + e.file + " not found")
-    }
-  })
 
-  res.render('examples', { title: 'EWVM-Examples', exemplos:info });
+  if(!catalogo_coded){
+    var info = []
+    catalogo["examples"].forEach(e => {
+      const absPath = path.join(__dirname, "../examples/" + e.file);
+      try{
+        e["code"] = fs.readFileSync(absPath, {encoding:'utf8', flag:'r'})
+      }
+      catch(err){
+        console.log("MISSING FILE: " + e.file + " not found")
+      }
+    })
+  }
+
+  let orderBy1 = req.query.orderBy?.split(',')[0]
+  let orderBy2 = req.query.orderBy?.split(',')[1]
+
+  if ( orderBy1 === 'dif' || orderBy1 === 'cat'){
+
+    // categorize
+    const result = {}
+    catalogo["examples"].forEach( e => {
+      let div = "undefined"
+      if (orderBy1 === "dif") div = e.difficulty
+      else if (orderBy1 === "cat") div = e.category
+      if (div){
+        result[div] = result[div] ?? []
+        result[div].push(e)
+      }
+    });
+    // order categories
+    var exemplos = sortJson(result, { ignoreCase: true, reverse: false, depth: 1});
+    // order inside categories
+    for (let i = 0; i < Object.keys(exemplos).length; i++){
+      arr = exemplos[Object.keys(exemplos)[i]]
+      if (orderBy2 === "dif")       arr = arr.sort( (a, b) => a.difficulty.localeCompare(b.difficulty) )
+      else if (orderBy2 === "cat")  arr = arr.sort( (a, b) => a.category.localeCompare(b.category) )
+      else                          arr = arr.sort( (a, b) => a.title.localeCompare(b.title) )
+    }
+    
+    
+  }
+  // order by title
+  else{
+    var exemplos = catalogo["examples"].sort( (a, b) => a.title.localeCompare(b.title) )
+  }
+
+  let order1 = "Title"
+  if (orderBy1 === "dif") order1 = "Difficulty"
+  else if (orderBy1 === "cat") order1 = "Category"
+  let order2 = "Title"
+  if (orderBy2 === "dif") order2 = "Difficulty"
+  else if (orderBy2 === "cat") order2 = "Category"
+
+  res.render('examples', { title: 'EWVM-Examples', exemplos:exemplos, order1:order1, order2:order2, orderBy1:orderBy1 });
+
 });
 
 
