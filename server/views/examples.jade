@@ -1,29 +1,45 @@
 extends layout
 
 block content
-  .w3-container(style="height:100%")
-    .w3-margin(style="height:100%")
+  .w3-container.w3-margin
       
-      .w3-right.w3-margin-right
-        h6(style="display: inline;")
-          a(href="/examples/git") 
-            .w3-btn.w3-round(class="button") Atualizar
-      h1.w3-center 
-        b.w3-text-blue-grey Examples
+    .w3-right.w3-margin-right
+      h6(style="display: inline;")
+        a(href="/examples/git") 
+          .w3-btn.w3-round(class="button") Atualizar
+    h1.w3-center 
+      b.w3-text-blue-grey Examples
 
-      form(id="form" method="POST") 
-        input(id="input_code" name="code" type="hidden")
+    ul(class="order-bar")
+      li(class="hor-line")
+        b.w3-text-blue-grey(style="display:inline") Order By:
+      li(class="hor-line")
+        i.w3-margin-left(id="arrow1" class="fa fa-angle-up" onclick="reorder_examples()")
+      li(id="options" class="hor-line")
+        ul.w3-round
+          li
+            a( style="text-decoration: none;") Title
+          li(class="option")
+            a(href="/examples?order=dif" style="text-decoration: none;") Category
+          li(class="option")
+            a(href="/examples?order=dif" style="text-decoration: none;") Difficulty
+      
 
+    form(id="form" method="POST" style="height:100%;") 
+      input(id="input_code" name="code" type="hidden")
+
+      div(id="examples")
         each e,index in exemplos
-          p.w3-margin-top(style="padding-top:14px; border-top:2px solid #607d8b" onclick=`hide_div(arrow${index}, 'div${index}')`)= e.title
-            i.w3-margin-left(id=`arrow${index}` class="fa fa-angle-down" )
-            span.w3-margin-left.w3-text-blue-grey(style="text-decoration:underline; cursor:pointer; opacity:0.8" onclick=`show_example(${index}, '${e.title}', '${e.category}', ${e.difficulty})`) Open
-            span.w3-margin-left.w3-text-blue-grey(style="text-decoration:underline; cursor:pointer; opacity:0.8" onclick=`run_example(${index})`) Run
-            span.w3-right.w3-text-blue-grey  #{e.category} | Difficulty: #{e.difficulty}
-          div.w3-margin-left(id=`div${index}` style="display:none;")
-            p(id=`description${index}` style="color:#425660")= e.description 
-            
-            .w3-container.w3-white(id=`code${index}` style="white-space:break-spaces;")= e.code
+          div(class="example")
+            p.w3-margin-top(style="padding-top:14px; border-top:2px solid #607d8b; z-index:0" onclick=`hide_div(arrow${index}, 'div${index}')`)= e.title
+              i.w3-margin-left(id=`arrow${index}` class="fa fa-angle-down" )
+              span.w3-margin-left.w3-text-blue-grey(style="text-decoration:underline; cursor:pointer; opacity:0.8" onclick=`open_example(${index}, '${e.title}', '${e.category}', ${e.difficulty})`) Open
+              span.w3-margin-left.w3-text-blue-grey(style="text-decoration:underline; cursor:pointer; opacity:0.8" onclick=`run_example(${index})`) Run
+              span.w3-right.w3-text-blue-grey  #{e.category} | Difficulty: #{e.difficulty}
+            div.w3-margin-left(id=`div${index}` style="display:none;")
+              p(id=`description${index}` style="color:#425660")= e.description 
+              
+              .w3-container.w3-white(id=`code${index}` style="white-space:break-spaces;")= e.code
 
   
          

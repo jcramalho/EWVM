@@ -192,6 +192,7 @@ function download_file(){
 	document.getElementById('div_filename').style.display='none'
 }
 
+
 // button enter submits filename
 $(function(){	
 	$("#filename").keypress(function(e){
@@ -219,10 +220,12 @@ function run_example(index){
 	$('#form').submit();
 }
 
-// show example
-function show_example(index, title, category, difficulty){
+
+// open example new window
+function open_example(index, title, category, difficulty){
 	$('#input_code').val($(`#code${index}`).text())
 	$('#form').attr('action', `/examples/${title}`);
+	$('#form').attr('target', "_blank");
 	$('#form').append(`<input type="hidden" name="category" value="${category}" />`);
 	$('#form').append(`<input type="hidden" name="difficulty" value="${difficulty}" />`);
 	$('#form').append(`<input type="hidden" name="description" value="${$(`#description${index}`).text()}" />`);
@@ -230,16 +233,17 @@ function show_example(index, title, category, difficulty){
 }
 
 
-// update examples
-function update_examples(textcontent) {
-	var http = new XMLHttpRequest();
-	http.open("GET", "/git", true);
-	http.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-	http.send();
-	http.onload = function() {
-		var answer = http.responseText;
-		window.location.reload()
-	}
+// reorder examples asc/desc
+function reorder_examples() {
+
+	$("#arrow1").toggleClass('fa-angle-down fa-angle-up');
+
+	var items=$("#examples .example").toArray();
+	items.reverse();
+	$.each(items,function(){
+		$("#examples").append(this); 
+	});     
+
 }
 
 // ---------------------------- ANIMATION ------------------------

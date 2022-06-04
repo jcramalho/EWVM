@@ -39,7 +39,52 @@ html, body, form
     color: white;
   }
 
+
 #clear:hover{
     text-decoration: underline;
 }
+
+
+
+
+
+.order-bar {
+    text-align: left;
+    margin: 0;
+    padding: 0;
+    height: 24px;
+}
+    
+.hor-line {
+    display: inline-block;
+    margin-right: 6px;
+    vertical-align: top;
+    width: auto;
+    height: 100%;
+    overflow: hidden;
+
+}
+
+ul{
+    list-style-type: none;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-bottom: 5px;
+}
+
+#options:hover{
+    overflow: visible;
+}
+
+#options:hover ul{
+    background-color: #bfcbd1;
+    position: absolute;
+}
+
+#options .option:hover {
+    background:#e7f2fa
+    }
+
+
+
 
