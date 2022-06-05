@@ -3,10 +3,14 @@ extends layout
 block content
   .w3-container.w3-margin
       
-    .w3-right.w3-margin-right
+    .w3-left.w3-margin-right
       h6(style="display: inline;")
-        a(href="/examples/git") 
-          .w3-btn.w3-round(class="button") Atualizar
+        .w3-btn.w3-round(class="button" onclick="history.back()") 
+          i(class="fa fa-long-arrow-left")
+    .w3-right.w3-margin-right
+      h6(style="display: inline; visibility:hidden")
+        .w3-btn.w3-round(class="button") 
+          i(class="fa fa-long-arrow-left")
     h1.w3-center 
       b.w3-text-blue-grey= category
 

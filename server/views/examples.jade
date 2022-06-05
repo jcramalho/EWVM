@@ -2,13 +2,18 @@ extends layout
 
 block content
   .w3-container.w3-margin
-      
+
+    .w3-left.w3-margin-left
+      h6(style="display: inline; visibility:hidden")
+        a(href="/examples/git") 
+          .w3-btn.w3-round(class="button") Atualizar  
     .w3-right.w3-margin-right
       h6(style="display: inline;")
         a(href="/examples/git") 
           .w3-btn.w3-round(class="button") Atualizar
     h1.w3-center 
       b.w3-text-blue-grey Examples
+    
 
     ul(class="order-bar")
 
@@ -63,7 +68,7 @@ block content
                 span.w3-margin-left.w3-text-blue-grey(style="text-decoration:underline; cursor:pointer;" onclick=`open_example(${index}, '${e.title}', '${e.category}', ${e.difficulty})`) Open
                 span.w3-margin-left.w3-text-blue-grey(style="text-decoration:underline; cursor:pointer;" onclick=`run_example(${index})`) Run
                 span.w3-right.w3-text-blue-grey 
-                  span(class="underline" onclick=`new_window("/examples/categories/${e.category}")`) #{e.category}
+                  a(class="underline" href=`/examples/categories/${e.category}` style="text-decoration:none") #{e.category}
                   span  | Difficulty: #{e.difficulty}
               div.w3-margin-left(id=`div${index}` style="display:none;")
                 p(id=`description${index}` style="color:#425660")= e.description 
@@ -86,7 +91,7 @@ block content
                     span.w3-margin-left.w3-text-blue-grey(style="text-decoration:underline; cursor:pointer;" onclick=`open_example(${i}${index}, '${e.title}', '${e.category}', ${e.difficulty})`) Open
                     span.w3-margin-left.w3-text-blue-grey(style="text-decoration:underline; cursor:pointer;" onclick=`run_example(${i}${index})`) Run
                     span.w3-right.w3-text-blue-grey 
-                      span(class="underline" onclick=`new_window("/examples/categories/${e.category}")`) #{e.category}
+                      a(class="underline" href=`/examples/categories/${e.category}` style="text-decoration:none") #{e.category}
                       span  | Difficulty: #{e.difficulty}
                   div.w3-margin-left(id=`div${i}${index}` style="display:none;")
                     p(id=`description${i}${index}` style="color:#425660")= e.description 

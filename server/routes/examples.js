@@ -62,7 +62,7 @@ router.get('/categories/:cat', function(req, res, next) {
     exemplos = sortJson(result, { ignoreCase: true, reverse: false, depth: 1});
   }
     
-  res.render('categories', { title: 'EWVM-Category-Examples', exemplos:exemplos, category:req.params.cat, order:order });
+  res.render('categories', { title: 'EWVM-Category', exemplos:exemplos, category:req.params.cat, order:order });
 
 });
 
