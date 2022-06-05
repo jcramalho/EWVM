@@ -1,44 +1,43 @@
 extends layout
 
 block content
-  .w3-container(style="height:100%")
-    .w3-margin(style="height:100%")
-      h1.w3-center 
-        b.w3-text-blue-grey Documentation
+  .w3-container.w3-margin
+    h1.w3-center 
+      b.w3-text-blue-grey Documentation
+    
+    each category, index in manual
+      h3.w3-margin-top(style="padding-top:14px; border-top:2px solid #607d8b")= category[0]
+        i.w3-margin-left(id=`arrow${index}` class="fa fa-angle-down" onclick=`hide_div(arrow${index}, 'div${index}')`)
       
-      each category, index in manual
-        h2.w3-margin-top(style="padding-top:14px; border-top:2px solid #607d8b")= category[0]
-          i.w3-margin-left(id=`arrow${index}` class="fa fa-angle-down" onclick=`hide_div(arrow${index}, 'div${index}')`)
+      div.w3-margin-left(id=`div${index}` style="display:block")
+        if Array.isArray(category[1])
+
+          each subcategory, subindex in category[1]
+            h4= subcategory[0]
+              i.w3-margin-left(id=`arrow${index}${subindex}` class="fa fa-angle-down" onclick=`hide_div(arrow${index}${subindex}, 'div${index}${subindex}')`)
+            div.w3-margin-left(id=`div${index}${subindex}` style="display:block")
+              each desc, inst in subcategory[1]
+                - var info = desc.split(' ::')
+                if (info.length > 1)
+                  p 
+                    b(style="color:#425660") #{inst} #{info[0]}: 
+                    span #{info[1]}
+                else 
+                  p 
+                    b(style="color:#425660") #{inst}: 
+                    span= desc
         
-        div.w3-margin-left(id=`div${index}` style="display:block")
-          if Array.isArray(category[1])
-
-            each subcategory, subindex in category[1]
-              h3= subcategory[0]
-                i.w3-margin-left(id=`arrow${index}${subindex}` class="fa fa-angle-down" onclick=`hide_div(arrow${index}${subindex}, 'div${index}${subindex}')`)
-              div.w3-margin-left(id=`div${index}${subindex}` style="display:block")
-                each desc, inst in subcategory[1]
-                  - var info = desc.split(' ::')
-                  if (info.length > 1)
-                    p 
-                      b(style="color:#425660") #{inst} #{info[0]}: 
-                      span #{info[1]}
-                  else 
-                    p 
-                      b(style="color:#425660") #{inst}: 
-                      span= desc
-          
-          else 
-            each desc, inst in category[1] 
-              - var info = desc.split(' ::')
-              if (info.length > 1)
-                p 
-                  b(style="color:#425660") #{inst} #{info[0]}: 
-                  span #{info[1]}
-              else 
-                p 
-                  b(style="color:#425660") #{inst}: 
-                  span= desc
+        else 
+          each desc, inst in category[1] 
+            - var info = desc.split(' ::')
+            if (info.length > 1)
+              p 
+                b(style="color:#425660") #{inst} #{info[0]}: 
+                span #{info[1]}
+            else 
+              p 
+                b(style="color:#425660") #{inst}: 
+                span= desc
 
 
-        
+      

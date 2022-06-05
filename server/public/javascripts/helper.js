@@ -192,6 +192,7 @@ function download_file(){
 	document.getElementById('div_filename').style.display='none'
 }
 
+
 // button enter submits filename
 $(function(){	
 	$("#filename").keypress(function(e){
@@ -213,32 +214,57 @@ function new_window(path){
 
 
 // run code example
-function run_example(index){
-	$('#input_code').val($(`#code${index}`).text())
+function run_example(id){
+	$('#input_code').val($(`#code${id}`).text())
 	$('#form').attr('action', '/run');
 	$('#form').submit();
 }
 
-// show example
-function show_example(index, title, category, difficulty){
-	$('#input_code').val($(`#code${index}`).text())
+
+// open example new window
+function open_example(id, title, category, difficulty){
+	$('#input_code').val($(`#code${id}`).text())
 	$('#form').attr('action', `/examples/${title}`);
-	$('#form').append(`<input type="hidden" name="category" value="${category}" />`);
-	$('#form').append(`<input type="hidden" name="difficulty" value="${difficulty}" />`);
-	$('#form').append(`<input type="hidden" name="description" value="${$(`#description${index}`).text()}" />`);
+	$('#form').attr('target', "_blank");
+	$('#form').append(`<input class="temporary" type="hidden" name="category" value="${category}" />`);
+	$('#form').append(`<input class="temporary" type="hidden" name="difficulty" value="${difficulty}" />`);
+	$('#form').append(`<input class="temporary" type="hidden" name="description" value="${$(`#description${id}`).text()}" />`);
 	$('#form').submit();
+
+	//clean form
+	const elements = document.getElementsByClassName("temporary");
+    while(elements.length > 0){
+        elements[0].parentNode.removeChild(elements[0]);
+    }
 }
 
 
-// update examples
-function update_examples(textcontent) {
-	var http = new XMLHttpRequest();
-	http.open("GET", "/git", true);
-	http.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-	http.send();
-	http.onload = function() {
-		var answer = http.responseText;
-		window.location.reload()
+// reorder examples asc/desc
+function reorder_examples(order) {
+	if(order === 1) {
+		$("#arrow1").toggleClass('fa-long-arrow-down fa-long-arrow-up');
+
+		var items=$("#examples .examples_block").toArray();
+		if(items.length == 0) items=$("#examples .example").toArray();
+		items.reverse()
+		$.each(items,function(){
+			$("#examples").append(this); 
+		});
+	}
+
+	else if (order === 2){
+		$("#arrow2").toggleClass('fa-long-arrow-down fa-long-arrow-up');
+
+		var blocks = document.getElementsByClassName("examples_block")
+		$.each(blocks,function(){
+			const b = this
+			var list = b.getElementsByClassName("example")
+			var items = Array.prototype.slice.call( list, 0 );
+			items.reverse()
+			$.each(items,function(){
+				b.append(this); 
+			});
+		});
 	}
 }
 

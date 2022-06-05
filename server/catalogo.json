@@ -2,7 +2,7 @@
     "examples":[
         {
             "title": "Smallest Number",
-            "category": "Categoria 1",
+            "category": "Cat",
             "description": "Selects the smaller number in the array.",
             "difficulty": 1,
             "file": "menor.vm"
