@@ -69,51 +69,16 @@ router.get('/categories/:cat', function(req, res, next) {
 
 const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms))
 
-async function update_examples(){
 
-  var erros = []
-  var exs = catalogo["examples"]
+router.get('/update', function(req, res, next){
 
-  for await( var e of exs ) {
-    var error = 0
-    const resp = await getChuckNorrisFact('sotexera6/EWVM-Examples', e["file"]).catch(err => { erros.push(err); error = 1 } )
-    if (!error){
-      var file = fs.createWriteStream('examples/'+ e["file"]);
-      resp.pipe(file)
-    }
-  }
-  return erros.join(' | ')
-
-}
-
-router.get('/git', function(req, res, next){
-
-  var erros = []
   catalogo_coded = 0
 
-  get_git('sotexera6/EWVM-Examples', 'catalogo.json', async function(err, resp) {
-    if (err) res.send("Catalogo not found")
+  delete require.cache[require.resolve('../catalogo.json')]
 
-    else{
+  catalogo = require('../catalogo.json')
 
-      delete require.cache[require.resolve('../catalogo.json')]
-      var file = fs.createWriteStream('catalogo.json');
-      resp.pipe(file);
-      
-      file.on('finish', async () => {
-        file.close() 
-        catalogo = require('../catalogo.json')
-
-        const absPath = path.join(__dirname, "../examples");
-        fsExtra.emptyDirSync(absPath)
-
-        erros = await update_examples()
-        console.log(erros)
-
-        res.redirect('/examples')
-      })     
-    }
-  });
+  res.redirect('/examples')
 })
 
 

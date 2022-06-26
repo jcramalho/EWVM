@@ -43,6 +43,9 @@ module.exports = {
       var read = 0
       var fp_initialized = -1
 
+      let nr_instructions = 0
+      var max_instructions = 7000
+
       // stack input read
       if (input != null){
         operand_stack.push(this.putString(string_heap, input))
@@ -52,7 +55,7 @@ module.exports = {
       }
 
       // execute the code
-      for (; pointer_code < code_stack.length; pointer_code++){
+      for (; pointer_code < code_stack.length && nr_instructions < max_instructions ; pointer_code++, nr_instructions++){
         var result_length = result.length
         c = code[pointer_code]
 
@@ -652,6 +655,8 @@ module.exports = {
         }
         else break
       }
+      if (nr_instructions >= max_instructions) error = 'ERROR: Out of Memory. Possible cause: infinite loop.'
+
       if (error != ''){
         this.animationError(animation)
         return [0, error, pointer_code, call_stack, operand_stack, frame_pointer, string_heap, struct_heap, animation]

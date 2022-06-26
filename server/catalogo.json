@@ -20,6 +20,13 @@
             "description": "Calculates the square number of the written number and all its inferior numbers",
             "difficulty": 1,
             "file": "square-repeat.vm"
+        },
+        {
+            "title": "Square Repeat - Function",
+            "category": "Functions",
+            "description": "Calculates the square number of the written number and all its inferior numbers",
+            "difficulty": 1,
+            "file": "square-repeat-function.vm"
         }
         
     ]
