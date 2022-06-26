@@ -1,0 +1,39 @@
+        pushi 0
+        pushi 0
+start
+        pushs "Introduza um inteiro positivo:"
+        writes
+        read
+        atoi
+	writeln
+	pusha loop
+	call
+	stop
+
+loop:
+	pushfp
+	load -1
+	pusha square
+	call
+	pushi 1
+	sub
+	dup 1
+	storel -1
+	not
+	jz loop
+	return
+	
+        
+square:
+	pushfp
+        load -1
+	dup 1
+	writei
+	dup 1
+        mul
+        pushs "::"
+        writes
+        writei
+        writeln
+	return
+

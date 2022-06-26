@@ -1,0 +1,38 @@
+{
+    "$schema": "https://json-schema.org/draft/2022-06/schema",
+    "$id": "https://example.com/examples.schema.json",
+    "title": "Example",
+    "description": "An Educational Code Example",
+    "type": "object",
+    "required": [ "examples"],
+    "properties": {
+      "examples": {
+        "items": {
+          "type": "object",
+          "required": [ "title", "category", "file" ],
+          "properties": {
+              "title": {
+                "description": "The unique identifier/title for an example",
+                "type": "string"
+              },
+              "category": {
+                "description": "Category of the example",
+                "type": "string"
+              },
+              "description": {
+                "description": "Description of the example",
+                "type": "string"
+              },
+              "difficulty": {
+                "description": "Difficulty of the product.",
+                "type": "integer"
+              },
+              "file": {
+                "description": "Filename of the example's code",
+                "type": "string"
+              }
+          }
+        } 
+      }
+    }
+  }
