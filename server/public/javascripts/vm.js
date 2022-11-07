@@ -259,7 +259,7 @@ module.exports = {
               if (operand_stack.length >= frame_pointer + 2){
                 var s1 = this.getRef( operand_stack.pop() )
                 var s2 = this.getRef( operand_stack.pop() )
-                if( s1[0] === "string" && s2[0] === "String" )
+                if( s1[0] === "string" && s2[0] === "string" )
                   operand_stack.push( this.putString( string_heap, string_heap[s1[1]].concat(string_heap[s2[1]])) )
                 else error = 'Illegal Operand: concat - elements not String'
               } else error = 'Segmentation Fault: concat - elements missing'
@@ -378,8 +378,8 @@ module.exports = {
               if (operand_stack.length >= frame_pointer + 2){
                 var n = operand_stack.pop()
                 var m = operand_stack.pop()
-                operand_stack.push(m)
                 operand_stack.push(n)
+                operand_stack.push(m)
               } else error = 'Segmentation Fault: swap - elements missing'
               break
 
