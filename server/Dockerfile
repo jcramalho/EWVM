@@ -1,8 +1,8 @@
 FROM node:16.15-alpine3.14
 
-WORKDIR /app
+WORKDIR .
 
-COPY *.* /app/
+COPY . .
 
 RUN npm i
 
