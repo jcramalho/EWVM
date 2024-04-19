@@ -105,7 +105,7 @@ module.exports = {
                 var m = operand_stack.pop()
                 if (n == 0) error = 'Division By Zero: div'
                 else if(Number.isInteger(n) && Number.isInteger(m))
-                  operand_stack.push(m / n)
+                  operand_stack.push((m / n) | 0)
                 else error = 'Illegal Operand: div - elements not Integer'
               } else error = 'Segmentation Fault: div - elements missing'
               break
