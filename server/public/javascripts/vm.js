@@ -645,6 +645,29 @@ module.exports = {
               } else error = 'Segmentation Fault: or - elements missing'
               break
 
+            case 69: //chrcode
+              if (operand_stack.length >= frame_pointer + 1) {
+                var n = operand_stack.pop()
+                var ref = this.getRef(n)
+                var string = string_heap[ref[1]]
+                if (ref[0] === "string" && string.length > 0)
+                  operand_stack.push(string.charCodeAt(0))
+                else if (ref[0] === "string")
+                  error = 'Illegal Operand: chrcode - empty String'
+                else
+                  error = 'Illegal Operand: chrcode - element not String Reference'
+              } else error = 'Segmentation Fault: chrcode - elements missing'
+              break
+  
+            case 70: //writechr
+              if (operand_stack.length >= frame_pointer + 1) {
+                var n = operand_stack.pop()
+                if (Number.isInteger(n))
+                  result.push(String.fromCharCode(n))
+                else error = 'Illegal Operand: writechr - element not Integer'
+              } else error = 'Segmentation Fault: writechr - elements missing'
+              break
+  
             default: 
               error = 'Anomaly: Default case'
           }
