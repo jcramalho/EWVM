@@ -31,7 +31,8 @@ var manual = [
         [ "String Operations" , {
           "CONCAT": "takes n and m, from the pile and stacks the concatenated strings (string ns + string ms) address",
           "CHRCODE": "takes n from the pile, which must be a string, and stacks the ASCII code from the first character",
-          "STRLEN": "takes n, from the pile and stacks the size of the string"
+          "STRLEN": "takes n, from the pile and stacks the size of the string",
+          "CHARAT": "takes n and m, from the pile and stacks the ASCII code from the character in the string m at the position n"
         }],
         [ "Heap Operations" , {
           "ALLOC": "integer_n :: allocates a structured block, sized n, and stacks its address",
