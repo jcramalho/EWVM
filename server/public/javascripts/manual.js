@@ -30,6 +30,7 @@ var manual = [
         }],
         [ "String Operations" , {
           "CONCAT": "takes n and m, from the pile and stacks the concatenated strings (string ns + string ms) address",
+          "CHRCODE": "takes n from the pile, which must be a string, and stacks the ASCII code from the first character",
           "STRLEN": "takes n, from the pile and stacks the size of the string"
         }],
         [ "Heap Operations" , {
@@ -89,6 +90,7 @@ var manual = [
       "WRITEF": "takes a real number from the pile and prints its value",
       "WRITES": "takes a String Heap address from the pile and prints its string",
       "WRITELN": "prints \\n",
+      "WRITECHR": "takes an integer from the pile and prints its corresponding ASCII character",
       "READ": "reads a string from the keyboard, stores it in the String Heap and stacks its address",
     }],
     [ "Control Operations" , [
