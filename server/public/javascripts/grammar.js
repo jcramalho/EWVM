@@ -70,6 +70,7 @@ module.exports = {
          / "return" {return 41} / "allocn" {return 42} / "free" {return 43} 
          / "dupn" {return 44} / "popn" {return 45} / "padd" {return 46} 
          / "nop" {return 65} / "writeln" {return 66} / "and" {return 67} / "or" {return 68}
+         / "strlen" {return 71}
        
        Inst_Int = "pushi" {return 47} / "pushn" {return 48} / "pushg" {return 49} 
          / "pushl" {return 50} / "load" {return 51} / "dup" {return 52} / "pop" {return 53} 
