@@ -645,6 +645,19 @@ module.exports = {
               } else error = 'Segmentation Fault: or - elements missing'
               break
 
+            case 71: //strlen
+              if (operand_stack.length >= frame_pointer + 1){
+                var n = operand_stack.pop()
+                var ref = this.getRef(n)
+                if (ref[0] === "string") {
+                  var string = string_heap[ref[1]]
+                  operand_stack.push(string.length)
+                }
+                else
+                  error = 'Illegal Operand: strlen - element not String Reference'
+              } else error = 'Segmentation Fault: strlen - elements missing'
+              break
+
             default: 
               error = 'Anomaly: Default case'
           }
