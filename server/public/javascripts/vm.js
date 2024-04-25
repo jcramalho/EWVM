@@ -22,7 +22,7 @@ module.exports = {
       else return [0]
     },
     putString: function(string_heap, x){
-      string_heap.push(x)
+      string_heap.push(x.substring(0, 30))
       return this.toRef("string", string_heap.length-1)
     },
     putStruct: function(struct_heap, x){
@@ -44,7 +44,7 @@ module.exports = {
       var fp_initialized = -1
 
       let nr_instructions = 0
-      var max_instructions = 7000
+      const max_instructions = 1000
 
       // stack input read
       if (input != null){
@@ -695,6 +695,7 @@ module.exports = {
 
       if (error != ''){
         this.animationError(animation)
+        animation = animation.slice(0, 100)
         return [0, error, pointer_code, call_stack, operand_stack, frame_pointer, string_heap, struct_heap, animation]
       }
       return [read, result, pointer_code, call_stack, operand_stack, frame_pointer, string_heap, struct_heap, animation]
