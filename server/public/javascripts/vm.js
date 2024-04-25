@@ -361,7 +361,8 @@ module.exports = {
                 var n = operand_stack.pop()
                 var a = operand_stack.pop()
                 var ref = this.getRef(a)
-                if (Number.isInteger(v))
+                var r = this.getRef(v)
+                if (r[0] !== 'stack' && r[0] !== 'code' && r[0] !== 'struct')
                   if (ref[0] === "stack")
                     operand_stack[ref[1]+n] = v
                   else if (ref[0] === "struct"){                                    // heap
@@ -370,7 +371,7 @@ module.exports = {
                     if (struct.length > index && index >= 0) struct[index] = v
                     else error = "Segmentation Fault: storen - index out of Struct"
                   } else error = "Illegal Operand: storen - element not Address"
-                else error = "Illegal Operand: storen - element not Integer"
+                else error = "Illegal Operand: storen - element not Integer, Float or String"
               } else error = 'Segmentation Fault: storen - elements missing'
               break
 
