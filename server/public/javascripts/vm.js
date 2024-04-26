@@ -22,7 +22,7 @@ module.exports = {
       else return [0]
     },
     putString: function(string_heap, x){
-      string_heap.push(x.substring(0, 30))
+      string_heap.push(x.substring(0, 100))
       return this.toRef("string", string_heap.length-1)
     },
     putStruct: function(struct_heap, x){
@@ -695,7 +695,7 @@ module.exports = {
 
       if (error != ''){
         this.animationError(animation)
-        animation = animation.slice(0, 100)
+        animation = animation.slice(0, 200)
         return [0, error, pointer_code, call_stack, operand_stack, frame_pointer, string_heap, struct_heap, animation]
       }
       return [read, result, pointer_code, call_stack, operand_stack, frame_pointer, string_heap, struct_heap, animation]
