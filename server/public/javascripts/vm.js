@@ -682,6 +682,23 @@ module.exports = {
               } else error = 'Segmentation Fault: strlen - elements missing'
               break
 
+              case 72: //charat
+              if (operand_stack.length >= frame_pointer + 2){
+                var n = operand_stack.pop()
+                var m = operand_stack.pop()
+                var ref = this.getRef(m)
+                if (this.isNumber(n) && ref[0] === "string") {
+                  var string = string_heap[ref[1]]
+                  if (string.length > n && n >= 0)
+                    operand_stack.push(string.charCodeAt(n))
+                  else
+                    error = "Segmentation Fault:  - elements missing (string too short)"
+                }
+                else
+                  error = 'Illegal Operand: charat - elements not Number and String Reference'
+              } else error = 'Segmentation Fault:  - elements missing'
+              break
+
             default: 
               error = 'Anomaly: Default case'
           }

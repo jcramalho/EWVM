@@ -73,6 +73,7 @@ module.exports = {
          / "chrcode" {return 69} 
          / "writechr" {return 70}
          / "strlen" {return 71}
+         / "charat" {return 72}
 
        
        Inst_Int = "pushi" {return 47} / "pushn" {return 48} / "pushg" {return 49} 
