@@ -44,7 +44,7 @@ module.exports = {
       var fp_initialized = -1
 
       let nr_instructions = 0
-      const max_instructions = 1000
+      const max_instructions = 10000
 
       // stack input read
       if (input != null){
@@ -709,7 +709,8 @@ module.exports = {
         }
         else break
       }
-      if (nr_instructions >= max_instructions) error = 'ERROR: Out of Memory. Possible cause: infinite loop.'
+      if (nr_instructions >= max_instructions) error =
+          `ERROR: Max instructions reached (${max_instructions}). Step-by-step will be limited to 200 iterations. Possible cause: infinite loop.`
 
       if (error != ''){
         this.animationError(animation)
