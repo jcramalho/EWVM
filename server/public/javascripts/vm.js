@@ -682,7 +682,7 @@ module.exports = {
               } else error = 'Segmentation Fault: strlen - elements missing'
               break
 
-              case 72: //charat
+            case 72: //charat
               if (operand_stack.length >= frame_pointer + 2){
                 var n = operand_stack.pop()
                 var m = operand_stack.pop()
@@ -697,6 +697,14 @@ module.exports = {
                 else
                   error = 'Illegal Operand: charat - elements not Number and String Reference'
               } else error = 'Segmentation Fault:  - elements missing'
+              break
+
+            case 73: //pushst
+              var n = c[2]
+              if (n < struct_heap.length) {
+                operand_stack.push(this.toRef("struct", n.toString().concat('#0')))
+              } else
+                error = 'Illegal Operand: pushstr - index out of range of Struct Heap'
               break
 
             default: 

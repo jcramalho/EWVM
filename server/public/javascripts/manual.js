@@ -63,6 +63,7 @@ var manual = [
           "PUSHSP": "stacks the value of the register sp",
           "PUSHFP": "stacks the value of the register fp",
           "PUSHGP": "stacks the value of the register gp",
+          "PUSHST": "integer_n :: pushes the address of the struct heap at index n to the stack",
           "LOAD": "integer_n :: takes an address a from the pile and stacks the value found in a[n] in the pile or in the heap (depending on a) ",
           "LOADN": "takes an integer n and an address a from the pile and stacks the value found in a[n] in the pile or in the heap (depending on a) ",
           "DUP": "integer_n :: duplicates and stacks the n values of the top of the pile",
