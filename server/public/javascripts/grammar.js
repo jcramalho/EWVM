@@ -74,11 +74,13 @@ module.exports = {
          / "writechr" {return 70}
          / "strlen" {return 71}
          / "charat" {return 72}
+         / "popst" {return 74}
 
        
        Inst_Int = "pushi" {return 47} / "pushn" {return 48} / "pushg" {return 49} 
          / "pushl" {return 50} / "load" {return 51} / "dup" {return 52} / "pop" {return 53} 
-         / "storel" {return 54} / "storeg" {return 55} / "store" {return 56} / "alloc" {return 57} 
+         / "storel" {return 54} / "storeg" {return 55} / "store" {return 56} / "alloc" {return 57}
+         / "pushst" {return 73}
        
        Comment = "//" [^\\n]*
        
