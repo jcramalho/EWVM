@@ -1,3 +1,7 @@
+/* -- Metadados de controlo -- */
+var metadados = {version: "1.1", vdate: "2024-04-30"}
+/* -- Metadados de controlo -- */
+
 var express = require('express');
 var router = express.Router();
 var peggy = require("peggy");
@@ -45,7 +49,7 @@ router.get('/manual', function(req, res, next) {
 
 
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'EWVM', code: '', terminal: [], input:0, animation:[], index:0});
+  res.render('index', { title: 'EWVM', code: '', terminal: [], input:0, animation:[], index:0, metadados: metadados});
   // clean components
   Components.change(0, [], [], 0, [], [], [])
 });
