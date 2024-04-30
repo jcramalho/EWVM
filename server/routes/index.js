@@ -39,21 +39,20 @@ Components = {
   },
 }
 
-
 /* GET home page. */
-
-router.get('/manual', function(req, res, next) {
-  // render page
-  res.render('manual', { title: 'EWVM-Manual', manual:manual });
-})
-
-
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'EWVM', code: '', terminal: [], input:0, animation:[], index:0, metadados: metadados});
   // clean components
   Components.change(0, [], [], 0, [], [], [])
 });
 
+router.get('/manual', function(req, res) {
+  res.render('manual', { title: 'EWVM-Manual', manual:manual });
+})
+
+router.get('/credits', function(req, res) {
+  res.render('credits', { metadados: metadados });
+})
 
 router.get('/run', function(req, res, next) {
   res.redirect('/')
