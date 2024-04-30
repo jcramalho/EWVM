@@ -447,6 +447,14 @@ module.exports = {
                 var a = operand_stack.pop()
                 if (Array.isArray(a))
                   a = null
+                else if (this.isString(a)){
+                  var ref = this.getRef(a)
+                  if (ref[0] === "struct"){
+                    struct_heap[ref[1]] = null
+                  }
+                  else
+                    error = 'Illegal Operand: free - element not Struct Address'
+                }
                 else if (a == null)
                   error = 'Illegal Operand: free - element null'
                 else
