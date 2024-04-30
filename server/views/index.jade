@@ -9,9 +9,9 @@ block content
             a(href='/' style="text-decoration: none;") Virtual Machine EWVM
         div.w3-right.w3-margin-right
           h6(style="display: inline;")
-            .w3-btn.w3-round(class="button" style="margin-right:3px" onclick="new_window('/examples')") Examples
-            .w3-btn.w3-round(class="button" style="margin-right:3px" onclick="new_window('/manual')") Documentation
-            .w3-btn.w3-round(class="button" onclick="new_window('/credits')") Credits
+            a(href="/examples", class="w3.button w3-padding-small w3-round-large w3-indigo", style="margin-right:3px") Examples
+            a(href="/manual", class="w3.button w3-padding-small w3-round-large w3-indigo", style="margin-right:3px") Documentation
+            a(href="/credits", class="w3.button w3-padding-small w3-round-large w3-indigo") Credits
 
     .w3-bar(style="height:100%; overflow:auto")
         
@@ -92,7 +92,7 @@ block content
                   textarea.w3-white(id="input" name="input" rows="1" style="flex: 1 1 auto;" autofocus)
 
         .w3-container 
-          address Versão: #{metadados.version} (#{metadados.vdate})
+          address.w3-indigo Versão: #{metadados.version} (#{metadados.vdate})
 
     // filename
     .w3-modal(id="div_filename" style="display:none")

@@ -3,14 +3,14 @@ extends layout
 block content
     .w3-container.w3-margin
         .w3-card-4.w3-margin
-            header.w3-container.w3-teal
+            header.w3-container.w3-indigo
                 h2 Autoria e contributos 
 
             .w3-container 
                 p Nesta página identificam-se as pessoas que com o seu trabalho permitiram ter esta plataforma online e operacional. 
                 p Um grande obrigado a todos pelo seu contributo nesta ferramenta pedagógica.
                 hr
-                table.w3-table.all 
+                table.w3-table-all 
                     tr 
                         td Sofia Teixeira
                         td Outubro de 2022 
@@ -36,7 +36,7 @@ block content
                         td Desde sempre...
                         td O devops sempre de serviço...
 
-            footer.w3-container.w3-teal
-                address Versão: #{metadados.version} (#{metadados.vdate}) 
+            footer.w3-container.w3-indigo
+                address Versão: #{metadados.version} (#{metadados.vdate}) #[a(href="/") Voltar]
     
         
