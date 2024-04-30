@@ -74,6 +74,7 @@ module.exports = {
          / "writechr" {return 70}
          / "strlen" {return 71}
          / "charat" {return 72}
+         / "popst" {return 74}
 
        
        Inst_Int = "pushi" {return 47} / "pushn" {return 48} / "pushg" {return 49} 

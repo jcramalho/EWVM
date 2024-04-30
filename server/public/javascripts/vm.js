@@ -447,14 +447,6 @@ module.exports = {
                 var a = operand_stack.pop()
                 if (Array.isArray(a))
                   a = null
-                else if (this.isString(a)){
-                  var ref = this.getRef(a)
-                  if (ref[0] === "struct"){
-                    struct_heap[ref[1]] = null
-                  }
-                  else
-                    error = 'Illegal Operand: free - element not Struct Address'
-                }
                 else if (a == null)
                   error = 'Illegal Operand: free - element null'
                 else
@@ -712,8 +704,16 @@ module.exports = {
               if (n < struct_heap.length) {
                 operand_stack.push(this.toRef("struct", n.toString().concat('#0')))
               } else
-                error = 'Illegal Operand: pushstr - index out of range of Struct Heap'
+                error = 'Illegal Operand: pushst - index out of range of Struct Heap'
               break
+
+            case 74: // popst
+              if (struct_heap.length >= 1) {
+                struct_heap.pop()
+              } else
+                error = 'Segmentation Fault: popst - elements missing'
+              break
+
 
             default: 
               error = 'Anomaly: Default case'

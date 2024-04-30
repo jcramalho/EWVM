@@ -38,6 +38,7 @@ var manual = [
           "ALLOC": "integer_n :: allocates a structured block, sized n, and stacks its address",
           "ALLOCN": "takes an integer n from the pile and allocates a structured block, sized n, and stacks its address",
           "FREE": "takes an address a from the pile and frees its allocated structured block",
+          "POPST": "removes the last structured block from the heap",
         }],
         [ "Equality" , {
           "EQUAL": "takes n and m from the pile and stacks the result n = m",
