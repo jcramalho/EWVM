@@ -1,5 +1,5 @@
 /* -- Metadados de controlo -- */
-var metadados = {version: "1.1", vdate: "2024-04-30"}
+var metadados = {version: "1.2", vdate: "2024-05-01"}
 /* -- Metadados de controlo -- */
 
 var express = require('express');
@@ -112,7 +112,7 @@ router.post('/run', function(req, res, next) {
       animation = ["error"]
     }
   // render page
-  res.render('index', { title: 'EWVM', code: code, terminal: result, input: read, animation:JSON.stringify(animation), index:index });
+  res.render('index', { title: 'EWVM', code: code, terminal: result, input: read, animation:JSON.stringify(animation), index:index, metadados: metadados });
 });
 
 
