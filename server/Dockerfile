@@ -5,9 +5,8 @@ WORKDIR .
 COPY . .
 
 RUN npm i
+RUN npm run build
 
 EXPOSE 50520
 
 CMD ["npm", "start"]
-
-

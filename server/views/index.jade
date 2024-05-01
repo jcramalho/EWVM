@@ -10,6 +10,7 @@ block content
         
         div.w3-right.w3-margin-right
           h6(style="display: inline;")
+            button(id="run_btn", class="w3-button w3-padding-small w3-round-large w3-blue-grey", style="margin-right:3px" onclick="document.getElementById('form').submit()") Run
             a(href="/examples", class="w3-button w3-padding-small w3-round-large w3-blue-grey", style="margin-right:3px") Examples
             a(href="/manual", class="w3-button w3-padding-small w3-round-large w3-blue-grey", style="margin-right:3px") Documentation
             a(href="/credits", class="w3-button w3-padding-small w3-round-large w3-blue-grey") Credits
@@ -19,25 +20,9 @@ block content
         //left side
         .w3-left.w3-third(style="padding-right:3%; height:100%;")
           
-          form(id="form" action=`/run` method='POST' style="display:flex; flex-flow:column; height:100%;")
-            p(style="margin-top:5px; margin-bottom:5px")
-              span Write your code in the text area.
-              b.w3-right.w3-text-blue-grey(id="clear" style="cursor:pointer; opacity:0.7" onclick="clear_code()")
-                span(class="fa fa-times-circle" style="margin-right:4px") 
-                span Clear
-            div(id="div_code" style="flex: 1 1 auto;") 
-              //code area
-              textarea(class="lined" id="code" name="code" spellcheck="false" style="width: 100%; height:100%" )= code
-            .w3-bar(style="flex: 0 1 140px;")
-              // instruction description
-              .w3-row
-                .w3-display-container.w3-border-right.w3-border-left.w3-border-bottom( id="explanation" style="width: 100%; padding-left:5px; overflow:auto; font-size:13px; max-height:50px;" )
-              // buttons
-              .w3-row(style="margin-top:4px; display:flex; flex-flow:row; flex-wrap:wrap")
-                input(type="file" id="file" name="file" style="margin-bottom:2px; min-width:30px; flex:1 1 170px; overflow:hidden")
-                input.w3-btn.w3-round.w3-right(class="button" style="margin-bottom:2px; margin-right:1%; flex: 0 1 auto" type="submit" value="Run")
-                .w3-btn.w3-round.w3-right(class="button" style="margin-bottom:2px; margin-right:1%; flex: 0 1 auto" onclick="document.getElementById('div_filename').style.display='block'; document.getElementById('filename').focus();" )
-                  i(class="fa fa-save")
+          form(id="form" action=`/run` method='POST' style="display:flex; flex-flow:column; height:95%;")
+            input(id="code" type="hidden" name="code" value=code)
+            div(id="monaco-editor-container", style="height: 100%; width: 100%")
 
         //right side
         .w3-right.w3-twothird(style="display:flex; flex-flow:column; padding-right:1%; height: 100%;")
@@ -111,4 +96,4 @@ block content
                 i(class="fa fa-check")
                 
             
-        
+  script(src="monaco/editor.js")

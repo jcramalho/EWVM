@@ -82,9 +82,6 @@ router.post('/run', function(req, res, next) {
       result = ["GRAMMAR - ".concat(error)]
       animation = ["error"]
     }
-
-    // textarea in front end deletes one \n if at first
-    code = '\n'.concat(code)
   }
 
   // Grammar Error
@@ -114,39 +111,6 @@ router.post('/run', function(req, res, next) {
   // render page
   res.render('index', { title: 'EWVM', code: code, terminal: result, input: read, animation:JSON.stringify(animation), index:index, metadados: metadados });
 });
-
-
-router.post('/save', function(req, res, next) {
-  
-  // delete strings
-  var code = req.body.code.replace( /[^"]+|".*?"/g, function(match){
-    if(match.charAt(0) != '"' || match.charAt(match.length - 1) != '"') {
-      return match.toUpperCase(); 
-    }
-    else return ''
-  })
-
-  // take off tabs and enters ; split words
-  var code_divided = code.split('\n').join(' ').split('\t').join(' ').split(' ')
-
-  // increment instructions counter in json data
-  code_divided.forEach( c => {
-    if(c!='' && isNaN(parseInt(c)) ) {
-      if(counter_file.hasOwnProperty(c))
-        counter_file[c] += 1
-    }
-  })
-
-  // update json file
-  const absPath = path.join(__dirname, counter_path);
-  fs.writeFile(absPath, JSON.stringify(counter_file, null, 4), (err) => {
-    if (err)
-      console.log(err);
-  });
-  
-  res.sendStatus(200);
-});
-
 
 router.get('/examples', function(req, res, next) {
   
