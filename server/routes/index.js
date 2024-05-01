@@ -112,7 +112,7 @@ router.post('/run', function(req, res, next) {
       animation = ["error"]
     }
   // render page
-  res.render('index', { title: 'EWVM', code: code, terminal: result, input: read, animation:JSON.stringify(animation), index:index });
+  res.render('index', { title: 'EWVM', code: code, terminal: result, input: read, animation:JSON.stringify(animation), index:index, metadados: metadados });
 });
 
 
