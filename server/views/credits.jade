@@ -4,7 +4,9 @@ block content
     .w3-container.w3-margin
         .w3-card-4.w3-margin
             header.w3-container.w3-blue-grey
-                h2 Autoria e contributos 
+                h2(style="display: inline;") Autoria e contributos 
+                h6.w3-right(style="display: inline;")
+                    a(href="/", class="w3-button w3-padding-small w3-round-large w3-blue-grey", style="margin-right:3px") Voltar
 
             .w3-container 
                 p Nesta página identificam-se as pessoas que com o seu trabalho permitiram ter esta plataforma online e operacional. 
@@ -37,6 +39,8 @@ block content
                         td O devops sempre de serviço...
 
             footer.w3-container.w3-blue-grey
-                address Versão: #{metadados.version} (#{metadados.vdate}) #[a(href="/") Voltar]
+                address(style="display: inline;") Versão: #{metadados.version} (#{metadados.vdate})
+                h6.w3-right(style="display: inline;")
+                    a(href="/", class="w3-button w3-padding-small w3-round-large w3-blue-grey", style="margin-right:3px") Voltar
     
         
