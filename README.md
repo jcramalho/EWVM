@@ -8,3 +8,7 @@ departamento de informática da universidade do minho.
 --- 
 
 ## Disponibilização 
+
+Esta aplicação é disponibilizada de várias formas:
+- Está instalada num servidor do DI/UM e pode ser usada por qualquer um através da internet no link: [https://ewvm.epl.di.uminho.pt/](https://ewvm.epl.di.uminho.pt/);
+- Este repositório GIT é público, permitindo que qualquer pessoa o possa copiar para a sua máquina: `git clone`
