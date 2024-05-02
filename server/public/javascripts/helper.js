@@ -4,17 +4,6 @@ var z = 4
 
 function on_ready(animation){
 	if(animation) this.animation = animation
-	manual.map( x => {
-		if(Array.isArray(x[1])) x[1].map( y => { instructions = Object.assign({}, instructions, y[1]) } )
-		else instructions = Object.assign({}, instructions, x[1])
-	})
-
-
-	// create lined text
-	$(".lined").linedtextarea(
-        {selectedLine: -1, animation: animation}
-      );
-
 
   	// create operand stack pointers
 	var offsetHeight = document.getElementById('square').offsetHeight;
@@ -22,196 +11,14 @@ function on_ready(animation){
 	var translate = element.offsetHeight - offsetHeight
 	if (translate <= 0) translate = 0
 	$(`<div id="square" class="square" style="position:relative; border-bottom:7px solid; border-color:white; border-image: linear-gradient(to right, blue 50%, green 50% ) 3; background-color:transparent; top:${translate}px; min-width:100%; height:${offsetHeight}px"></div>`).appendTo('#operand_stack');
-		
-
-	// lined text accept tab
-	document.getElementById('code').addEventListener("keydown", function(e) {
-		if (e.key==='Tab') {
-			// get caret position/selection
-			var start = this.selectionStart;
-			var end = this.selectionEnd;
-	
-			var target = e.target;
-			var value = target.value;
-	
-			// set textarea value to: text before caret + tab + text after caret
-			target.value = value.substring(0, start)
-						+ "\t"
-						+ value.substring(end);
-	
-			// put caret at right position again (add one for the tab)
-			this.selectionStart = this.selectionEnd = start + 1;
-	
-			// prevent the focus lose
-			e.preventDefault();
-
-		}
-	}, false);
 }
 
-
-$(document).ready(function() {
-    // when file is uploaded, print text
-    $('#file').change(function(e) {
-        if (e.target.files != undefined) {
-            var reader = new FileReader();
-            
-            reader.onload = function(e) {
-                $('#code').text(e.target.result);
-            };
-
-            reader.readAsText(e.target.files.item(0));
-        }
-    });
-
-    // keeps animation where it was last
-    var index = parseInt($(".index").text())
-    goToIndex(animation, 0, index)
-});
-
-
-// resize code window when window size is changed
-window.addEventListener('resize', function(event) {
-	// resize code height
-    $("#linedwrap").height(`10px`)
-    $("#linedwrap").height(`${$('#div_code').height()}px`)
-    $(".lines").height("100%")
-	$(".lineno").remove()
-	fillOutLines( $(".codelines"), $(".lines").height(), 1, -1 )
-	clickable_numbers(animation)
-
-	// resize code width
-	var sidebarWidth = $(".lines").outerWidth();
-	var paddingHorizontal = parseInt( $(".linedwrap").css("border-left-width") ) + parseInt( $(".linedwrap").css("border-right-width") ) + parseInt( $(".linedwrap").css("padding-left") ) + parseInt( $(".linedwrap").css("padding-right") );
-	var originalTextAreaWidth = $("#form").width() - sidebarWidth - paddingHorizontal - 20
-    $("#code").width(`${originalTextAreaWidth}px`)
-    $(".linedwrap").width(`50px`)
-    $(".linedwrap").width(`${$("#div_code").width() - paddingHorizontal}px`)
-
-	// resize animations
-	var index = parseInt($(".index").text())
-	goToIndex(this.animation, 0, index)
-
-}, true);
-
-
-// button enter submits read form
 $(function(){	
 	$("#input").keypress(function(e){
 		if(e.keyCode == 13)
 			e.currentTarget.closest('form').submit()
 		});
 });
-
-
-// clickable code words - explanation / description
-var stopCharacters = [' ', '\n', '\r', '\t']
-$(function(){	
-	$("#code").on('click', function() {
-		var text = $(this).val();
-		var start = $(this)[0].selectionStart;
-		var end = $(this)[0].selectionEnd;
-		while (start >= 0) {
-			if (stopCharacters.indexOf(text[start]) == -1) {
-				--start;
-			} else {
-				break;
-			}                        
-		};
-		++start;
-		while (end < text.length) {
-			if (stopCharacters.indexOf(text[end]) == -1) {
-				++end;
-			} else {
-				break;
-			}
-		}
-		var currentWord = text.substr(start, end - start);
-
-		// if clicked on instruction, display explanation
-		if ( currentWord.toUpperCase() in instructions){
-			var description = instructions[currentWord.toUpperCase()]
-			var info = description.split(' ::')
-			if (info.length > 1) $('#explanation').html(`
-				<div style="padding-top:4px; padding-bottom:4px;">
-					<div style="margin-right:25px;">
-						<b class="w3-text-blue-grey">${currentWord} ${info[0]}:</b> ${info[1]}
-					</div>
-					<b class="w3-text-blue-grey w3-display-topright" style="margin-right:8px; cursor:pointer;" onclick="close_explanation()">x</b>
-				</div>
-			`)
-			else $('#explanation').html(`
-				<div style="padding-top:4px; padding-bottom:4px;">
-					<div style="margin-right:25px;">
-						<b class="w3-text-blue-grey">${currentWord}:</b> ${description}
-					</div>
-					<b class="w3-text-blue-grey w3-display-topright" style="margin-right:8px; cursor:pointer;" onclick="close_explanation()">x</b>
-				</div>
-				`)
-		}
-		
-	});
-});
-
-
-//x button - close explanation window
-function close_explanation(){
-	$('#explanation').empty()
-}
-
-// send code for statistics
-function submitForm(textcontent) {
-	var http = new XMLHttpRequest();
-	http.open("POST", "/save", true);
-	http.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-	var params = "code=" + textcontent; 
-	http.send(params);
-	http.onload = function() {
-		var answer = http.responseText;
-	}
-}
-
-// button save
-function download_file(){
-	var filename = document.getElementById("filename").value;
-	var textcontent = document.getElementById("code").value;
-
-	// send code for statistics
-	submitForm(textcontent)
-
-	// save file
-	var downloadableLink = document.createElement('a');
-	downloadableLink.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(textcontent));
-	if(filename) downloadableLink.download = filename + ".vm";
-	else downloadableLink.download = "mycode" + ".vm";
-	document.body.appendChild(downloadableLink);
-	downloadableLink.click();
-	document.body.removeChild(downloadableLink);
-
-	// hide modal
-	document.getElementById('div_filename').style.display='none'
-}
-
-
-// button enter submits filename
-$(function(){	
-	$("#filename").keypress(function(e){
-		if(e.keyCode == 13) download_file()
-	})
-});
-
-
-// button clear
-function clear_code(){
-	$('#code').val('')
-}
-
-
-// open in new tab
-function new_window(path){
-	window.open(path);
-}
-
 
 // run code example
 function run_example(id){
@@ -270,12 +77,6 @@ function reorder_examples(order) {
 
 // ---------------------------- ANIMATION ------------------------
 
-function scrollToLine(line){
-	var offsetHeight = document.getElementById('line1').offsetHeight;
-	document.getElementById(`code`).scrollTop = 0;
-	document.getElementById(`code`).scrollTop += (offsetHeight * line) + 5;
-}
-
 function update_terminal(new_index, animation){
 	var terminal_index = [-1, 0]
 	if (new_index > 0) terminal_index = animation[new_index-1][6]
@@ -327,7 +128,7 @@ function goToIndex(animation, ex_index, new_index){
 			$(`.line${new_line}`).html(`<b>${new_line}</b>`)
 		}
 
-		scrollToLine(new_line-1)
+		CodeEditor.highlightLine(new_line);
 		update_terminal(new_index, animation)
 		build_stacks(new_index, animation)
 	}
@@ -449,6 +250,3 @@ function build_stacks(index, animation){
 	if(!$('.square').length)
 		$(`<div id="square" class="square" style="position:absolute; border-bottom:1px solid #ccc; visibility: hidden;">cell</div>`).appendTo('#string_heap');
 }
-
-
-
