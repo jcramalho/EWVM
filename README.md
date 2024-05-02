@@ -5,6 +5,8 @@ Este projeto, iniciado no âmbito da tese de mestrado da Sofia Teixeira (termina
 de uma máquina virtual (VM), utilizada como ferramenta de suporte nos cursos de Processamento de Linguagens e Compiladores, lecionados pelo
 departamento de informática da universidade do minho. 
 
+![Imagem do ambiente](ewvm.png)
+
 --- 
 
 ## Disponibilização 
