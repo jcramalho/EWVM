@@ -714,7 +714,36 @@ module.exports = {
                 error = 'Segmentation Fault: popst - elements missing'
               break
 
+            case 75: // copyn
+              if (operand_stack.length >= frame_pointer + 1){
+                var n = operand_stack.pop()
+                if (operand_stack.length >= frame_pointer + n){
+                  var values = []
+                  for (let i=0; i < n; i++){
+                    var v = operand_stack.pop()
+                    values.push(v)
+                  }
+                  values = [...values, ...values]
+                  for (const v of values)
+                    operand_stack.push(v)
+                } else error = 'Segmentation Fault: copyn - elements missing'
+              } else error = 'Segmentation Fault: copyn - elements missing'
+              break
 
+            case 76: // copy
+              var values = []
+              if (operand_stack.length >= frame_pointer + c[2]){
+                for (let i=0; i < c[2]; i++){
+                  var v = operand_stack.pop()
+                  values.push(v)
+                }
+                values = [...values, ...values]
+                for (const v of values)
+                  operand_stack.push(v)
+              } else error = 'Segmentation Fault: copy - elements missing'
+              break
+
+            
             default: 
               error = 'Anomaly: Default case'
           }

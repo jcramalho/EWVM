@@ -69,6 +69,8 @@ var manual = [
           "LOADN": "takes an integer n and an address a from the pile and stacks the value found in a[n] in the pile or in the heap (depending on a) ",
           "DUP": "integer_n :: duplicates and stacks the n values of the top of the pile",
           "DUPN": "takes the integer n from the pile and duplicates and stacks n times the value of the top of the pile",
+          "COPY": "integer_n :: copies the n values of the top of the pile and stacks them in the same order",
+          "COPYN": "takes the integer n from the pile and copies and stacks the n values of the top of the pile in the same order",
         }],
         [ "Taking from Stack" , {
           "POP": "integer_n :: takes n values from the pile",
