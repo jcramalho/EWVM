@@ -724,8 +724,8 @@ module.exports = {
                     values.push(v)
                   }
                   values = [...values, ...values]
-                  for (const v of values)
-                    operand_stack.push(v)
+                  for (var i = values.length - 1; i >= 0; i--)
+                    operand_stack.push(values[i])
                 } else error = 'Segmentation Fault: copyn - elements missing'
               } else error = 'Segmentation Fault: copyn - elements missing'
               break
@@ -738,8 +738,8 @@ module.exports = {
                   values.push(v)
                 }
                 values = [...values, ...values]
-                for (const v of values)
-                  operand_stack.push(v)
+                for (var i = values.length - 1; i >= 0; i--)
+                  operand_stack.push(values[i])
               } else error = 'Segmentation Fault: copy - elements missing'
               break
 
