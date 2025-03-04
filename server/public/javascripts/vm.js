@@ -439,7 +439,7 @@ module.exports = {
                 var n = operand_stack.pop()
                 var struct = []
                 struct.length = n
-                operand_stack.push( this.putStruct(struct_heap, h) )
+                operand_stack.push( this.putStruct(struct_heap, struct) )
               } else error = 'Segmentation Fault: allocn - elements missing'
               break
             case 43: //free                                                 // heap
