@@ -47,7 +47,7 @@ module.exports = {
          / "pushf" _ info:Float							{ codigos.push([lines, 58, info]) }
          / "pushs" _ info:String        				{ codigos.push([lines, 59, info]) }
          / "err" _ info:String        					{ codigos.push([lines, 60, info]) }
-         / "check" _ info:(Integer _ "," _ Integer)   	{ codigos.push([lines, 61, info[0], info[1]]) }
+         / "check" _ info:(Integer _ "," _ Integer)   	{ codigos.push([lines, 61, info[0], info[4]]) }
          / "jump" _ info:Label 							{ labelsUsed.push(info); codigos.push([lines, 62, info]) }
          / "jz" _ info:Label 							{ labelsUsed.push(info); codigos.push([lines, 63, info]) }
          / "pusha" _ info:Label 						{ labelsUsed.push(info); codigos.push([lines, 64, info]) }

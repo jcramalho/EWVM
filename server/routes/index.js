@@ -85,7 +85,10 @@ router.post('/run', function(req, res, next) {
   }
 
   // Grammar Error
-  if (!Array.isArray(code_stack)) result = code_stack
+  if (!Array.isArray(code_stack)) {
+    result = [code_stack]
+    animation = ["error"]
+  }
   // Assembly Code done
   else if (result == null) 
     try{ 
