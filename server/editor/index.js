@@ -195,6 +195,7 @@ const highlighter = editor.createDecorationsCollection();
 editor.getModel().onDidChangeContent((e) => {
     let src = editor.getValue();
     document.getElementById('code').value = src;
+    document.getElementById('input_code').value = src;
 });
 
 // Debug highlight
