@@ -145,8 +145,6 @@ router.get('/run', function(req, res, next) {
 });
 
 router.post('/run', function(req, res) {
-  // console.log("RUN:", req.body);
-
   const sessionId = req.body.sessionId ?? makeId(64);
   /** @type {SessionData} */
   let sessionData, ressurected = false;
@@ -155,13 +153,11 @@ router.post('/run', function(req, res) {
     sessionStorage.add(sessionId, _sessionData);
 
     sessionData = _sessionData;
-    // console.log("NEW SESSION DATA", sessionId);
   } else {
     sessionData = sessionStorage.get(req.body.sessionId);
     ressurected = true;
   }
 
-  // console.log("SESSION DATA:", sessionData);
   // Supposedly, req.file could also be handled here, but I haven't looked at the file processing leftovers yet.
   // if (req.body.code !== undefined && (!req.body.input || (req.body.input && !ressurected))) {
   if (req.body.code !== undefined && (!req.body.input || !ressurected)) {
@@ -188,7 +184,6 @@ router.post('/run', function(req, res) {
     sessionData.run();
   }
 
-  // console.log("OUT:", sessionData.out());
   return res.render("index", sessionData.out());
 });
 

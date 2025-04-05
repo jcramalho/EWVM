@@ -56,10 +56,8 @@ class EphemeralStorage {
      * Removes expired entries from the storage. Called by either the autoprunning timer, or entry accessors.
      */
     _prune() {
-        // console.log("ES AUTOPRUNE")
         for (const [k, v] of this.storage) {
             if (v.addedAt + v.expire <= Date.now()) {
-                // console.log(`PRUNNED:`, k, v)
                 this.storage.delete(k);
             }
         }
