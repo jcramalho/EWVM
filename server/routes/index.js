@@ -1,49 +1,134 @@
 /* -- Metadados de controlo -- */
-var metadados = {version: "1.3", vdate: "2024-05-02"}
+const metadados = { version: "1.3", vdate: "2024-05-02" }
 /* -- Metadados de controlo -- */
 
-var express = require('express');
-var router = express.Router();
-var peggy = require("peggy");
+const express = require('express');
+const router = express.Router();
+const peggy = require("peggy");
 const fs = require('fs');
 const path = require('path');
 
 const grammar = require('../public/javascripts/grammar.js');
 const { manual } = require('../public/javascripts/manual.js');
 const vm = require('../public/javascripts/vm.js');
-var counter_path = '../instruction_counter.json'
-const counter_file = require(counter_path);
 const catalogo = require('../catalogo.json');
+const EphemeralStorage = require('../util/EphemeralStorage.js');
+const makeId = require('../util/makeId.js');
 
-var parser = peggy.generate(grammar.grammar())
+const parser = peggy.generate(grammar.grammar());
 
-var pointer_code = 0
-var call_stack = []
-var operand_stack = []
-var frame_pointer = 0
-var code_stack = []
-var string_heap = []
-var struct_heap = []
-var code
-var animation
-
-Components = {
-  change: function(pc, call_s, operand_s, fp, string_h, struct_h, a){
-    pointer_code = pc
-    call_stack = call_s
-    operand_stack = operand_s
-    frame_pointer = fp
-    string_heap = string_h
-    struct_heap = struct_h
-    animation = a
+const sessionStorage = new EphemeralStorage({
+  autoPrune: {
+    // interval: 15 * 60000 // 15m
+    interval: 500
   },
+  ttl: 15 * 60000 // 15m
+  // ttl: 1000
+});
+
+class SessionData {
+  constructor(sessionId) {
+    this.sessionId = sessionId;
+    this.reset();
+  }
+
+  reset() {
+    this.pointer_code = 0;
+    this.call_stack = [];
+    this.operand_stack = [];
+    this.frame_pointer = 0;
+    this.code_stack = [];
+    this.string_heap = [];
+    this.struct_heap = [];
+    this.code = "";
+    this.animation = [];
+
+    this.result = undefined;
+    this.index = 0;
+    this.input = 0;
+    this.terminal = [];
+  }
+
+  loadCode(code) {
+    this.code = code;
+
+    const preparedCode = grammar.lowerGrammar(code)
+    try {
+      this.code_stack = parser.parse(preparedCode)
+      return true;
+    } catch (error) {
+      this.result = [`GRAMMAR - ${error}`];
+      this.animation = ["error"];
+      return false;
+    }
+  }
+
+  run(input = null) {
+    try {
+      const results = vm.run(
+        input, 
+        this.code_stack, 
+        this.pointer_code, 
+        this.call_stack, 
+        this.operand_stack, 
+        this.frame_pointer, 
+        this.string_heap, 
+        this.struct_heap, 
+        this.animation, 
+        this.terminal.length - 1
+      ); 
+
+      this.input = results[0];
+      if (Array.isArray(results[1])) this.result = this.terminal.concat(results[1])  // keep terminal info + new results
+      else this.result = [results[1]]    // result is an error
+
+      this.pointer_code = results[2];
+      this.call_stack = results[3];
+      this.operand_stack = results[4];
+      this.frame_pointer = results[5];
+      this.string_heap = results[6];
+      this.struct_heap = results[7];
+      this.animation = results[8];
+    } catch(e) {
+      this.result = [`Anomaly: ${e?.message ?? e ?? "Unknown"}`];
+      this.animation = ["error"];
+    }
+  }
+
+  out() {
+    return { 
+      title: 'EWVM', 
+      code: this.code, 
+      terminal: this.result, 
+      input: this.input, 
+      animation: JSON.stringify(this.animation), 
+      index: this.index, 
+      metadados: metadados, 
+      sessionId: this.sessionId
+    };
+  }
+
+  error(result) {
+    this.animation = ["error"];
+    this.result = [result];
+
+    return this.out();
+  }
 }
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'EWVM', code: '', terminal: [], input:0, animation:[], index:0, metadados: metadados});
-  // clean components
-  Components.change(0, [], [], 0, [], [], [])
+  const sessionId = req.query._q ?? makeId(64);
+  res.render('index', { 
+    title: 'EWVM', 
+    code: '', 
+    terminal: [], 
+    input: 0, 
+    animation: [], 
+    index: 0, 
+    metadados: metadados, 
+    sessionId: sessionId 
+  });
 });
 
 router.get('/manual', function(req, res) {
@@ -55,61 +140,51 @@ router.get('/credits', function(req, res) {
 })
 
 router.get('/run', function(req, res, next) {
-  res.redirect('/')
+  const sessionId = req.query._q;
+  res.redirect(`/${sessionId !== undefined ? `?_q=${sessionId}` : ""}`);
 });
 
+router.post('/run', function(req, res) {
+  const sessionId = req.body.sessionId ?? makeId(64);
+  /** @type {SessionData} */
+  let sessionData, ressurected = false;
+  if (!sessionStorage.has(sessionId)) {
+    const _sessionData = new SessionData(sessionId);
+    sessionStorage.add(sessionId, _sessionData);
 
-router.post('/run', function(req, res, next) {
-  var result = null
-  var read = 0
-  var input = null
-  var index = 0
-  var terminal = []
-
-  // New code submitted
-  if (req.file != undefined || req.body.code != undefined){
-    // new program, clean components
-    Components.change(0, [], [], 0, [], [], [])
-
-    // Written code submitted
-    if (req.body.code != undefined) code = req.body.code
-
-    // Run Assembler
-    var prepared_code = grammar.lowerGrammar(code)
-    try{
-      code_stack = parser.parse(prepared_code)
-    } catch (error) { // Grammar Error
-      result = ["GRAMMAR - ".concat(error)]
-      animation = ["error"]
-    }
+    sessionData = _sessionData;
+  } else {
+    sessionData = sessionStorage.get(req.body.sessionId);
+    ressurected = true;
   }
 
-  // Grammar Error
-  if (!Array.isArray(code_stack)) result = code_stack
-  // Assembly Code done
-  else if (result == null) 
-    try{ 
-      // input submitted
-      if (req.body.input != undefined){
-        input = req.body.input
-        index = req.body.index
-        terminal = req.body.terminal.replace(/\\n/g,'\n').split('"')
-      }
-      // run vm
-      results = vm.run(input, code_stack, pointer_code, call_stack, operand_stack, frame_pointer, string_heap, struct_heap, animation, terminal.length - 1) 
+  // Supposedly, req.file could also be handled here, but I haven't looked at the file processing leftovers yet.
+  // if (req.body.code !== undefined && (!req.body.input || (req.body.input && !ressurected))) {
+  if (req.body.code !== undefined && (!req.body.input || !ressurected)) {
+    sessionData.reset();
 
-      read = results[0]
-      if (Array.isArray(results[1])) result = terminal.concat(results[1])  // keep terminal info + new results
-      else result = [results[1]]    // result is an error
-
-      Components.change(results[2], results[3], results[4], results[5], results[6], results[7], results[8])
-
-    } catch(error){ 
-      result = ["Anomaly: ".concat(error)]
-      animation = ["error"]
+    let lCodeRes;
+    lCodeRes = sessionData.loadCode(req.body.code);
+    if (lCodeRes !== true) {
+      return res.render("index", sessionData.out());
     }
-  // render page
-  res.render('index', { title: 'EWVM', code: code, terminal: result, input: read, animation:JSON.stringify(animation), index:index, metadados: metadados });
+
+    // Grammar error
+    if (!Array.isArray(sessionData.code_stack)) {
+      return res.render("index", sessionData.error(sessionData.code_stack));
+    }
+  }
+  
+  // Process input. If it wasn't ressurected, start from 0.
+  if (req.body.input != undefined && ressurected) {
+    sessionData.index = req.body.index;
+    sessionData.terminal = req.body.terminal.replace(/\\n/g,'\n').split('"');
+    sessionData.run(req.body.input);
+  } else {
+    sessionData.run();
+  }
+
+  return res.render("index", sessionData.out());
 });
 
 router.get('/examples', function(req, res, next) {

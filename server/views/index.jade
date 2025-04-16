@@ -22,6 +22,7 @@ block content
           
           form(id="form" action=`/run` method='POST' style="display:flex; flex-flow:column; height:95%;")
             input(id="code" type="hidden" name="code" value=code)
+            input(type="hidden" name="sessionId" value=sessionId)
             div(id="monaco-editor-container", style="height: 100%; width: 100%")
 
         //right side
@@ -64,6 +65,8 @@ block content
 
           //interaction area
           form.w3-margin-bottom(action=`/run` method='POST' style="flex: 0 1 140px;")
+            input(id="input_code" type="hidden" name="code" value=code)
+            input(type="hidden" name="sessionId" value=sessionId)
             b.w3-text-blue-grey Output:
             .w3-display-container.w3-white(style="height: 60%;")
               input(id="index" name="index" value="3" type="hidden")
