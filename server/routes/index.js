@@ -1,5 +1,5 @@
 /* -- Metadados de controlo -- */
-const metadados = { version: "1.3", vdate: "2024-05-02" }
+const metadados = { version: "1.4", vdate: "2025-04-17" }
 /* -- Metadados de controlo -- */
 
 const express = require('express');
